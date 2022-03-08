@@ -1,4 +1,6 @@
 spring:
+  profiles:
+    active: local # 디폴트 환경
   jpa:
     show-sql: true
     hibernate:
