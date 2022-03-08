@@ -54,13 +54,35 @@
         X
       </button>
       <h1>⏰최저가 설정하기</h1>
-      <p>최저가를 설정해두면 선택하신 상품의 최저가가 떴을 때<br/> 표시해드려요!</p>
+      <p>최저가를 설정해두면 선택하신 상품의 최저가가 떴을 때
+        <br/> 표시해드려요!</p>
       <div>
         <input type="text" id="myprice" placeholder="200,000">원
       </div>
       <button class="cta" onclick="setMyprice()">설정하기</button>
     </div>
   </div>
+</div>
+
+<div id="login-form">
+  <div id="login-title">Log into Select Shop</div>
+  <!--  커밋하기전에 지울것 -->
+  <button id="login-kakao-btn" onclick="location.href='https://kauth.kakao.com/oauth/authorize?client_id=92a62693e2a3d4127741055ed3bea1dc&redirect_uri=http://localhost:8080/member/kakao/callback&response_type=code'">
+    카카오로 로그인하기
+  </button>
+  <button id="login-id-btn" onclick="location.href='/user/signup'">
+    회원 가입하기
+  </button>
+  <form action="/user/login" method="post">
+    <div class="login-id-label">아이디</div>
+    <input type="text" name="username" class="login-input-box">
+
+    <div class="login-id-label">비밀번호</div>
+    <input type="password" name="password" class="login-input-box">
+
+    <button id="login-id-submit">로그인</button>
+  </form>
+  <div id="login-failed" style="display:none" class="alert alert-danger" role="alert">로그인에 실패하였습니다.</div>
 </div>
 </body>
 </html>
