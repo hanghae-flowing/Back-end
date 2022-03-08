@@ -6,6 +6,7 @@ build/
 !**/src/test/**/build/
 
 application-aws.properties
+index.html
 
 ### STS ###
 .apt_generated

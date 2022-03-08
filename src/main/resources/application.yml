@@ -10,3 +10,6 @@ spring:
     url: ${RDS_URL}
     username: ${RDS_USERNAME}
     password: ${RDS_PASSWORD}
+
+kakao_api : ${KAKAO_REST_API}
+
