@@ -6,12 +6,12 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
-
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
 public class Member extends Timestamped {
+
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Id //pk값으로 쓰겠다
     @Column(name = "userid")
@@ -20,12 +20,11 @@ public class Member extends Timestamped {
     @Column(nullable = false, unique = true)
     private Long kakaoId;
 
-    @Column(nullable = false, unique = true)
+    @Column(unique = true)  //선택사항 이기때문에 nullable=true(default)
     private String email;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false) // 카카오 닉네임은 중복 될 수 있다.
     private String nickname;
-
 
     public Member(Long kakaoId,String email, String nickname) {
         this.kakaoId = kakaoId;
