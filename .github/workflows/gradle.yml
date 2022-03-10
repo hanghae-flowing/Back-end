@@ -48,5 +48,5 @@ jobs:
             docker stop server
             docker rm server
             docker pull ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPOSITORY }}
-            docker run -d --name server -e RDS_URL=${{ secret.RDS_URL }} -e RDS_USERNAME=${{ secret.RDS_USERNAME }} -e RDS_PASSWORD=${{ secret.RDS_PASSWORD }} -e KAKAO_REST_API=${{ secret.KAKAO_REST_API }} ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPOSITORY }}:latest
+            docker run -d --name server -e RDS_URL=${{ secrets.RDS_URL }} -e RDS_USERNAME=${{ secrets.RDS_USERNAME }} -e RDS_PASSWORD=${{ secrets.RDS_PASSWORD }} -e KAKAO_REST_API=${{ secrets.KAKAO_REST_API }} ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPOSITORY }}:latest
             docker image prune -f
