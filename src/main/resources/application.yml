@@ -1,0 +1,12 @@
+spring:
+  profiles:
+    active: local # 디폴트 환경
+  jpa:
+    show-sql: true
+    hibernate:
+      use-new-id-generator-mappings: true
+      ddl-auto: update
+  datasource:
+    url: ${RDS_URL}
+    username: ${RDS_USERNAME}
+    password: ${RDS_PASSWORD}
