@@ -4,9 +4,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pjt.flowing.dto.KakaoUserInfoDto;
+import com.pjt.flowing.dto.LoginResponseDto;
 import com.pjt.flowing.model.Member;
 import com.pjt.flowing.repository.MemberRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -19,11 +19,6 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 
 
 @Service
@@ -34,37 +29,10 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
 
+
     public MemberService(MemberRepository memberRepository) {
         this.memberRepository = memberRepository;
     }
-
-    @Transactional
-    public void kakaoLogout(String accessToken) {
-        String reqURL = "https://kapi.kakao.com/v1/user/logout";
-        try {
-            URL url = new URL(reqURL);
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("POST");
-            conn.setRequestProperty("Authorization", "Bearer " + accessToken);
-
-            int responseCode = conn.getResponseCode();
-            System.out.println("responseCode : " + responseCode);
-
-            BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-
-            String result = "";
-            String line = "";
-
-            while ((line = br.readLine()) != null) {
-                result += line;
-            }
-            System.out.println(result);
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-    }
-
 
     @Transactional
     public String kakaoLogin(String code) throws JsonProcessingException {
@@ -85,12 +53,33 @@ public class MemberService {
         if (!memberRepository.findByKakaoId(kakaoId).isPresent()) {
             String nickname = kakaoUserInfoDto.getNickname();
             String email = kakaoUserInfoDto.getEmail();
-            Member member = new Member(kakaoId,nickname,email);
+            Member member = new Member(kakaoId,email,nickname);
             memberRepository.save(member);
-            obj.put("msg","OK");
-            return obj.toString();
+            obj.put("msg","signup ok");
+            System.out.println("이프문에 걸리니?");
         }
-        obj.put("msg","already exist");
+        else{
+            System.out.println("엘스문에 걸리니?");
+            obj.put("msg","already exist");
+        }
+
+        obj.put("msg","login ok");
+        LoginResponseDto loginResponseDto = LoginResponseDto.builder()
+                .kakaoId(getKakaoUserInfo(accessToken).getId())
+                .ACCESS_TOKEN(accessToken)
+                .nickname(getKakaoUserInfo(accessToken).getNickname())
+                .Email(getKakaoUserInfo(accessToken).getEmail())
+                .build();
+
+        String mail = loginResponseDto.getEmail();
+        Long kakaoid = loginResponseDto.getKakaoId();
+        String name = loginResponseDto.getNickname();
+        String token = loginResponseDto.getACCESS_TOKEN();
+
+        obj.put("kakaoId",kakaoid);
+        obj.put("Email",mail);
+        obj.put("nickname",name);
+        obj.put("ACCESS_TOKEN",token);
         //여기서 프론트에 userinfo를 response로 줘야하나?
         return obj.toString();
     }
@@ -103,7 +92,8 @@ public class MemberService {
         MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
         body.add("grant_type", "authorization_code");
         body.add("client_id", kakao_api);
-        body.add("redirect_uri", "http://localhost:8080/member/kakao/callback");
+//        body.add("redirect_uri", "http://localhost:8080/member/kakao/callback");
+        body.add("redirect_uri", "http://localhost:3000/member/kakao/callback");
         body.add("code", code);
 
         // HTTP 요청 보내기
@@ -112,6 +102,7 @@ public class MemberService {
         ResponseEntity<String> response = rt.exchange("https://kauth.kakao.com/oauth/token",
                 HttpMethod.POST, kakaoTokenRequest, String.class);
         System.out.println("토큰정보"+response);
+
         // HTTP 응답 (JSON) -> 액세스 토큰 파싱
         String responseBody = response.getBody();
         ObjectMapper objectMapper = new ObjectMapper();
@@ -122,7 +113,6 @@ public class MemberService {
     private KakaoUserInfoDto getKakaoUserInfo(String accessToken) throws JsonProcessingException {
 
         //모든 요청에 이걸 넣어야 되나?를 고민 해봐야 할듯. write only?
-
         // HTTP Header 생성
         HttpHeaders headers = new HttpHeaders();
         headers.add("Authorization", "Bearer " + accessToken); //카카오에서 공식적으로 해달라고 했다
