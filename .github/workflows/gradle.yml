@@ -45,8 +45,8 @@ jobs:
           username: ec2-user
           key: ${{ secrets.EC2_PRIVATE_KEY }}
           script: |
-          docker stop server
-          docker rm server
-          docker pull ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPOSITORY }}
-          docker run -d --name server -e RDS_URL=${{ secret.RDS_URL }} -e RDS_USERNAME=${{ secret.RDS_USERNAME }} -e RDS_PASSWORD=${{ secret.RDS_PASSWORD }} -e KAKAO_REST_API=${{ secret.KAKAO_REST_API }} ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPOSITORY }}:latest
-          docker image prune -f
+            docker stop server
+            docker rm server
+            docker pull ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPOSITORY }}
+            docker run -d --name server -e RDS_URL=${{ secret.RDS_URL }} -e RDS_USERNAME=${{ secret.RDS_USERNAME }} -e RDS_PASSWORD=${{ secret.RDS_PASSWORD }} -e KAKAO_REST_API=${{ secret.KAKAO_REST_API }} ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPOSITORY }}:latest
+            docker image prune -f
