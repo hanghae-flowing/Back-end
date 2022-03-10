@@ -5,10 +5,10 @@ import lombok.Getter;
 
 @Getter
 public class LoginResponseDto {
-    private String nickname;
-    private String Email;
-    private String ACCESS_TOKEN;
-    private Long kakaoId;
+    private final String nickname;
+    private final String Email;
+    private final String ACCESS_TOKEN;
+    private final Long kakaoId;
 
     @Builder
     public LoginResponseDto(String nickname, String Email, String ACCESS_TOKEN,Long kakaoId){
