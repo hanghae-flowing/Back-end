@@ -4,6 +4,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @NoArgsConstructor
@@ -26,4 +28,10 @@ public class Project extends Timestamped{
 
     @Column(nullable = false)
     private int thumbNailNum;
+
+    @OneToMany(mappedBy = "project",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Bookmark> BookmarkList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "project",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<ProjectMember> ProjectMemberList = new ArrayList<>();
 }
