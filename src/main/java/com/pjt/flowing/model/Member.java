@@ -12,7 +12,7 @@ import javax.persistence.*;
 @Entity
 public class Member extends Timestamped {
 
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Id //pk값으로 쓰겠다
     @Column(name = "userid")
     private Long id;
