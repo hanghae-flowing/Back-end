@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pjt.flowing.dto.KakaoUserInfoDto;
-import com.pjt.flowing.dto.LoginResponseDto;
 import com.pjt.flowing.model.Member;
 import com.pjt.flowing.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Value;
@@ -60,22 +59,10 @@ public class MemberService {
         }
 
         obj.put("msg","true");
-        LoginResponseDto loginResponseDto = LoginResponseDto.builder()
-                .kakaoId(kakaoId)
-                .ACCESS_TOKEN(accessToken)
-                .nickname(nickname)
-                .Email(email)
-                .build();
-
-        String mail = loginResponseDto.getEmail();
-        Long kakaoid = loginResponseDto.getKakaoId();
-        String name = loginResponseDto.getNickname();
-        String token = loginResponseDto.getACCESS_TOKEN();
-
-        obj.put("kakaoId",kakaoid);
-        obj.put("Email",mail);
-        obj.put("nickname",name);
-        obj.put("ACCESS_TOKEN",token);
+        obj.put("kakaoId",kakaoId);
+        obj.put("Email",email);
+        obj.put("nickname",nickname);
+        obj.put("ACCESS_TOKEN",accessToken);
         return obj.toString();
     }
 
