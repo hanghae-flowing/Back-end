@@ -4,10 +4,7 @@ package com.pjt.flowing.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.pjt.flowing.service.MemberService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 @RequiredArgsConstructor
@@ -24,7 +21,7 @@ public class MemberController {
     }
 
     @PostMapping("/api/logout")
-    public String kakaoLogout(@RequestParam String accessToken) throws JsonProcessingException{
+    public String kakaoLogout(@RequestBody String accessToken) throws JsonProcessingException{
         System.out.println("엑세스 토큰"+accessToken);
         return memberService.kakaoLogout(accessToken);
     }
