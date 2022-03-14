@@ -1,5 +1,6 @@
 package com.pjt.flowing.controller;
 
+<<<<<<< refs/remotes/origin/develop
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.pjt.flowing.dto.AuthorizationDto;
 import com.pjt.flowing.dto.MsgResponseDto;
@@ -16,9 +17,25 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Objects;
 
+=======
+import com.pjt.flowing.dto.ProjectResponseDto;
+import com.pjt.flowing.service.ProjectService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+>>>>>>> Auto stash before rebase of "origin/develop"
 @RequiredArgsConstructor
 @RestController
 public class ProjectController {
+    private final ProjectService projectService;
+    @GetMapping("/api/post")
+    public List<ProjectResponseDto> getProject(){
+        List<ProjectResponseDto> response = projectService.getAll();
+        return response;
+    }
 
     private final MemberRepository memberRepository;
     private final ProjectRepository projectRepository;
