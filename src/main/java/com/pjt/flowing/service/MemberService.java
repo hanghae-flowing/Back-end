@@ -44,13 +44,14 @@ public class MemberService {
         Long kakaoId = kakaoUserInfoDto.getId();
         String nickname = kakaoUserInfoDto.getNickname();
         String email = kakaoUserInfoDto.getEmail();
+        String profileImageURL=kakaoUserInfoDto.getProfileImageURL();
         System.out.println(kakaoId);
         System.out.println("엑세스 토큰"+accessToken);
         JSONObject obj = new JSONObject();
 
         // 회원가입
         if (!memberRepository.findByKakaoId(kakaoId).isPresent()) {
-            Member member = new Member(kakaoId,email,nickname);
+            Member member = new Member(kakaoId,email,nickname,profileImageURL);
             memberRepository.save(member);
             System.out.println("이프문에 걸리니?");
         }
@@ -63,6 +64,7 @@ public class MemberService {
         obj.put("Email",email);
         obj.put("nickname",nickname);
         obj.put("ACCESS_TOKEN",accessToken);
+        obj.put("ProfileImageURL",profileImageURL);
         return obj.toString();
     }
 
@@ -138,8 +140,9 @@ public class MemberService {
         Long id = jsonNode.get("id").asLong();
         String nickname = jsonNode.get("properties").get("nickname").asText();
         String email = jsonNode.get("kakao_account").get("email").asText();
+        String profileImageURL = jsonNode.get("properties").get("profileImageURL").asText();
         System.out.println("카카오 api호출 response"+response);
-        return new KakaoUserInfoDto(id,nickname,email);
+        return new KakaoUserInfoDto(id,nickname,email,profileImageURL);
     }
     
 }
