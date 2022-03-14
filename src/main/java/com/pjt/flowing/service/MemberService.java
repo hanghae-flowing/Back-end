@@ -18,6 +18,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import org.json.JSONObject;
 
+import java.util.Optional;
 
 
 @Service
@@ -52,6 +53,7 @@ public class MemberService {
         JSONObject obj = new JSONObject();
 
         // 회원가입
+
         if (!memberRepository.findByKakaoId(kakaoId).isPresent()) {
             Member member = new Member(kakaoId,email,nickname,profileImageURL);
             memberRepository.save(member);
@@ -60,15 +62,18 @@ public class MemberService {
         else{
             System.out.println("엘스문에 걸리니?");
         }
+        Optional<Member> member = memberRepository.findByKakaoId(kakaoId);
 
         obj.put("msg","true");
+        obj.put("userId",member.get().getId());
         obj.put("kakaoId",kakaoId);
         obj.put("Email",email);
         obj.put("nickname",nickname);
-        obj.put("ACCESS_TOKEN",accessToken);
+        obj.put("accessToken",accessToken);
         obj.put("ProfileImageURL",profileImageURL);
         return obj.toString();
     }
+    //
 
     public String kakaoLogout(String accessToken) throws JsonProcessingException {
         // HTTP Header 생성
