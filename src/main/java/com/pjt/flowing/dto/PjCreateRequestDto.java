@@ -11,5 +11,5 @@ public class PjCreateRequestDto {
     private int thumbNailNum;
     private Long objectId;
     private Long kakaoId;
-    private String ACCESS_TOKEN;
+    private String accessToken;
 }

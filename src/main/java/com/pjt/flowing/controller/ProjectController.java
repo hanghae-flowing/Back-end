@@ -40,7 +40,7 @@ public class ProjectController {
 
     @PostMapping("/api/project/create")
     public MsgResponseDto createProject(@RequestBody PjCreateRequestDto pjCreateRequestDto) throws JsonProcessingException {
-        AuthorizationDto authorizationDto = new AuthorizationDto(pjCreateRequestDto.getKakaoId(), pjCreateRequestDto.getACCESS_TOKEN());
+        AuthorizationDto authorizationDto = new AuthorizationDto(pjCreateRequestDto.getKakaoId(), pjCreateRequestDto.getAccessToken());
         MsgResponseDto msgResponseDto = new MsgResponseDto();
         System.out.println("여기");
         if (authorization.getKakaoId(authorizationDto) == 0){

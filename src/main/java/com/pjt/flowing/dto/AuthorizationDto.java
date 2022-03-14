@@ -7,5 +7,5 @@ import lombok.Getter;
 @AllArgsConstructor
 public class AuthorizationDto {
     private Long kakaoId;
-    private String ACCESS_TOKEN;
+    private String accessToken;
 }
