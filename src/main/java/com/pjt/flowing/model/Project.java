@@ -22,9 +22,9 @@ public class Project extends Timestamped{
     @Column(nullable = false)
     private String projectName;
 
-    // 일단 보류!!!
-//    @Column(nullable = false)
-//    private Long objectId;
+
+    @Column
+    private Long objectId;
 
     @ManyToOne
     @JoinColumn(name="kakao_id")
@@ -39,8 +39,9 @@ public class Project extends Timestamped{
     @OneToMany(mappedBy = "project",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<ProjectMember> ProjectMemberList = new ArrayList<>();
 
-    public Project(String projectName, Member member, int thumbNailNum) {
+    public Project(String projectName, Long objectId, Member member, int thumbNailNum) {
         this.projectName = projectName;
+        this.objectId = objectId;
         this.member = member;
         this.thumbNailNum = thumbNailNum;
     }

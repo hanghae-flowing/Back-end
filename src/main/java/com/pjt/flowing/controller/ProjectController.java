@@ -28,7 +28,7 @@ public class ProjectController {
     public MsgResponseDto createProject(@RequestBody PjCreateRequestDto pjCreateRequestDto) throws JsonProcessingException {
         AuthorizationDto authorizationDto = new AuthorizationDto(pjCreateRequestDto.getKakaoId(), pjCreateRequestDto.getAccessToken());
         MsgResponseDto msgResponseDto = new MsgResponseDto();
-        if (Objects.equals(authorization.getKakaoId(authorizationDto), "kakaoId가 다르거나 유효하지 않은 토큰입니다.")){
+        if (authorization.getKakaoId(authorizationDto) == 0){
             msgResponseDto.setMsg("kakaoId가 다르거나 유효하지 않은 토큰입니다.");
             return msgResponseDto;
         }
@@ -38,8 +38,9 @@ public class ProjectController {
         );
         Project project = new Project(
                 pjCreateRequestDto.getProjectName(),
+                pjCreateRequestDto.getObjectId(),
                 member,
-                pjCreateRequestDto.getThumbnailNum()
+                pjCreateRequestDto.getThumbNailNum()
         );
         projectRepository.save(project);
         msgResponseDto.setMsg("프로젝트 생성 완료");
