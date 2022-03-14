@@ -19,6 +19,7 @@ import org.springframework.web.client.RestTemplate;
 @Service
 public class Authorization {
 
+
     private String getKakaoId(@RequestBody AuthorizationDto autorizationDto) throws JsonProcessingException {
 
         HttpHeaders headers = new HttpHeaders();
@@ -46,4 +47,5 @@ public class Authorization {
         }
         return obj.toString();
     }
+
 }
