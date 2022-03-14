@@ -17,7 +17,7 @@ public class Member extends Timestamped {
     @Column(name = "userId")
     private Long id;
 
-    @Column(nullable = false, unique = true)
+    @Column(name="kakao_id",nullable = false, unique = true)
     private Long kakaoId;
 
     @Column(unique = true)  //선택사항 이기때문에 nullable=true(default)

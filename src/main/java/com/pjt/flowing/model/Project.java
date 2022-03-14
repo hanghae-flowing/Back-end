@@ -16,7 +16,7 @@ import java.util.Optional;
 public class Project extends Timestamped{
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="projectId")
+    @Column(name="project_id")
     private Long id;
 
     @Column(nullable = false)
@@ -26,7 +26,7 @@ public class Project extends Timestamped{
     private Long objectId;
 
     @ManyToOne
-    @JoinColumn(name="kakaoId")
+    @JoinColumn(name="kakao_id",referencedColumnName = "kakao_id")
     private Member member;
 
     @Column(nullable = false)
