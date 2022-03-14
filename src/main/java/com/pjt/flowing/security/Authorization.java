@@ -20,7 +20,7 @@ import org.springframework.web.client.RestTemplate;
 public class Authorization {
 
 
-    private String getKakaoId(@RequestBody AuthorizationDto autorizationDto) throws JsonProcessingException {
+    private int getKakaoId(@RequestBody AuthorizationDto autorizationDto) throws JsonProcessingException {
 
         HttpHeaders headers = new HttpHeaders();
         headers.add("Authorization", "Bearer " + autorizationDto.getAccessToken());
@@ -36,16 +36,16 @@ public class Authorization {
 
         Long kakaoId = jsonNode.get("id").asLong();
         System.out.println("카카오 Authorization");
-        JSONObject obj = new JSONObject();
 
+        int flag;
         if(kakaoId.equals(autorizationDto.getKakaoId()))
-        {
-            obj.put("msg","정보가 일치합니다");
+        {       //인가 허가시 flag =1, 정보 틀릴시 flag=0
+            flag=1;
         }
         else{
-            obj.put("msg","kakaoId가 다르거나 유효하지 않은 토큰입니다.");
+            flag=0;
         }
-        return obj.toString();
+        return flag;
     }
 
 }
