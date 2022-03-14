@@ -14,7 +14,7 @@ public class Member extends Timestamped {
 
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Id //pk값으로 쓰겠다
-    @Column(name = "userid")
+    @Column(name = "userId")
     private Long id;
 
     @Column(nullable = false, unique = true)

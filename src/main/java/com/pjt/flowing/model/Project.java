@@ -16,18 +16,17 @@ import java.util.Optional;
 public class Project extends Timestamped{
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="project_id")
+    @Column(name="projectId")
     private Long id;
 
     @Column(nullable = false)
     private String projectName;
 
-
     @Column
     private Long objectId;
 
     @ManyToOne
-    @JoinColumn(name="kakao_id")
+    @JoinColumn(name="kakaoId")
     private Member member;
 
     @Column(nullable = false)
@@ -42,7 +41,8 @@ public class Project extends Timestamped{
     public Project(String projectName, Long objectId, Member member, int thumbNailNum) {
         this.projectName = projectName;
         this.objectId = objectId;
-        this.member = member;
+        this.member = member;   //여기서의 member는 프로젝트 생성자를 말한다.
         this.thumbNailNum = thumbNailNum;
     }
+
 }

@@ -32,10 +32,11 @@ public class ProjectController {
             System.out.println("인가x");
         }
         List<ProjectResponseDto> response = projectService.getAll(requestDto.getKakaoId());
-
+        //수정필요
         return response;
     }
 
+    //api/project/read 만들어야됨
 
     @PostMapping("/api/project/create")
     public MsgResponseDto createProject(@RequestBody PjCreateRequestDto pjCreateRequestDto) throws JsonProcessingException {
@@ -49,10 +50,12 @@ public class ProjectController {
         Member member = memberRepository.findByKakaoId(pjCreateRequestDto.getKakaoId()).orElseThrow(
                 () -> new IllegalArgumentException("아이디가 존재하지 않습니다.")
         );
+
+//        member.getKakaoId();
         Project project = new Project(
                 pjCreateRequestDto.getProjectName(),
                 pjCreateRequestDto.getObjectId(),
-                member,
+                member, //여기 리팩토링 해야됨
                 pjCreateRequestDto.getThumbNailNum()
         );
         projectRepository.save(project);

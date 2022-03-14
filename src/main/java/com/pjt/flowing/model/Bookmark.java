@@ -13,11 +13,11 @@ public class Bookmark extends Timestamped{
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name="project_id")
+    @JoinColumn(name="projectId")
     private Project project;
 
     @ManyToOne
-    @JoinColumn(name="kakao_id")
+    @JoinColumn(name="kakaoId")
     private Member member;
 
 }
