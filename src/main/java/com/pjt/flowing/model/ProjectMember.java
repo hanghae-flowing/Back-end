@@ -14,7 +14,7 @@ public class ProjectMember {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name="kakaoId")
+    @JoinColumn(name="userId")
     private Member member;
 
     @ManyToOne

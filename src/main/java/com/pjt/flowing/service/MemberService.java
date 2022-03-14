@@ -102,8 +102,8 @@ public class MemberService {
         body.add("grant_type", "authorization_code");
         body.add("client_id", kakao_api);
 //        body.add("redirect_uri", "http://localhost:8080/member/kakao/callback");
-//        body.add("redirect_uri", "http://localhost:3000/member/kakao/callback");
-        body.add("redirect_uri", "http://hanghae-toaster.s3-website.ap-northeast-2.amazonaws.com/member/kakao/callback");
+        body.add("redirect_uri", "http://localhost:3000/member/kakao/callback");
+//        body.add("redirect_uri", "http://hanghae-toaster.s3-website.ap-northeast-2.amazonaws.com/member/kakao/callback");
         body.add("code", code);
 
         // HTTP 요청 보내기
@@ -131,28 +131,22 @@ public class MemberService {
 
         // HTTP 요청 보내기
         HttpEntity<MultiValueMap<String, String>> kakaoUserInfoRequest = new HttpEntity<>(headers);
-        System.out.println("http요청 보내기");
         //토큰을 url로 보내주면 reponse를 주게 된다.
         RestTemplate rt = new RestTemplate();
         ResponseEntity<String> response = rt.exchange("https://kapi.kakao.com/v2/user/me", HttpMethod.POST, kakaoUserInfoRequest, String.class);
         String responseBody = response.getBody();
-        System.out.println("http요청 보내기22");
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode jsonNode = objectMapper.readTree(responseBody);
-        System.out.println("http요청 보내기33");
 
         Long id = jsonNode.get("id").asLong();
         String nickname = jsonNode.get("properties").get("nickname").asText();
-        System.out.println("http요청 보내기44");
         String email = jsonNode.get("kakao_account").get("email").asText();
-        System.out.println("http요청 보내기55");
         String profileImageURL = "";
         try {
             profileImageURL = jsonNode.get("properties").get("profile_image").asText();
         } catch (NullPointerException e) {
             System.out.println("없어");
         }
-        System.out.println("http요청 보내기66");
         System.out.println("카카오 api호출 response" + response);
         return new KakaoUserInfoDto(id, nickname, email, profileImageURL);
     }
