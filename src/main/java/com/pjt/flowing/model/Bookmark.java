@@ -2,7 +2,6 @@ package com.pjt.flowing.model;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
 import javax.persistence.*;
 
 @Getter
