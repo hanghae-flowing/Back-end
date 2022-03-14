@@ -141,6 +141,5 @@ public class MemberService {
         System.out.println("카카오 api호출 response"+response);
         return new KakaoUserInfoDto(id,nickname,email);
     }
-
-
+    
 }
