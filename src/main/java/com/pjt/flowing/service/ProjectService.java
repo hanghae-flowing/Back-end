@@ -18,9 +18,11 @@ public class ProjectService {
     private final ProjectRepository projectRepository;
 
     public List<ProjectResponseDto> getAll(Long kakaoId){
+        System.out.println(kakaoId);
         List<Project> all = projectRepository.findProjectsByMember_KakaoId(kakaoId);
+        System.out.println(all);
         List<ProjectResponseDto> dto = all.stream()
-                .map(project->ProjectResponseDto.from(project))
+                .map(ProjectResponseDto::from)
                 .collect(Collectors.toList());
         return dto;
     }
