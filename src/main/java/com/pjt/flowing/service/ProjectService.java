@@ -17,8 +17,8 @@ import java.util.stream.Collectors;
 public class ProjectService {
     private final ProjectRepository projectRepository;
 
-    public List<ProjectResponseDto> getAll(){
-        List<Project> all = projectRepository.findAll();
+    public List<ProjectResponseDto> getAll(Long kakaoId){
+        List<Project> all = projectRepository.findProjectsByMember_KakaoId(kakaoId);
         List<ProjectResponseDto> dto = all.stream()
                 .map(project->ProjectResponseDto.from(project))
                 .collect(Collectors.toList());
