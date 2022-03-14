@@ -2,7 +2,7 @@
 항해5기 D반 5조 실전프로젝트 flowing
 
  <image src="https://img.shields.io/website?down_message=DOWN&up_message=UP&label=server&url=http://3.39.10.246:8888/health"/>  
-
+ <image src="https://img.shields.io/website?down_message=DOWN&up_message=UP&label=testServer&url=http://13.209.41.157"/>
 <br>
 
 ## 🏄‍♂️팀원
