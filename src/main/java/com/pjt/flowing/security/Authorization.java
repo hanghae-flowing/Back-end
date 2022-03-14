@@ -20,7 +20,7 @@ import org.springframework.web.client.RestTemplate;
 public class Authorization {
 
 
-    private String getKakaoId(@RequestBody AuthorizationDto autorizationDto) throws JsonProcessingException {
+    public String getKakaoId(@RequestBody AuthorizationDto autorizationDto) throws JsonProcessingException {
 
         HttpHeaders headers = new HttpHeaders();
         headers.add("Authorization", "Bearer " + autorizationDto.getAccessToken());
