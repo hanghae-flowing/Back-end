@@ -21,7 +21,7 @@ public class Authorization {
     public int getKakaoId(@RequestBody AuthorizationDto autorizationDto) throws JsonProcessingException {
 
         HttpHeaders headers = new HttpHeaders();
-        headers.add("Authorization", "Bearer " + autorizationDto.getAccessToken());
+        headers.add("Authorization", "Bearer " + autorizationDto.getACCESS_TOKEN());
         headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
 
         HttpEntity<MultiValueMap<String, String>> kakaoRequest = new HttpEntity<>(headers);
