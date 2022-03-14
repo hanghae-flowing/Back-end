@@ -1,14 +1,17 @@
 package com.pjt.flowing.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
 public class Project extends Timestamped{
 
@@ -19,7 +22,8 @@ public class Project extends Timestamped{
     @Column(nullable = false)
     private String projectName;
 
-    @Column(nullable = false)
+
+    @Column
     private Long objectId;
 
     @ManyToOne
@@ -34,4 +38,11 @@ public class Project extends Timestamped{
 
     @OneToMany(mappedBy = "project",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<ProjectMember> ProjectMemberList = new ArrayList<>();
+
+    public Project(String projectName, Long objectId, Member member, int thumbNailNum) {
+        this.projectName = projectName;
+        this.objectId = objectId;
+        this.member = member;
+        this.thumbNailNum = thumbNailNum;
+    }
 }

@@ -52,3 +52,4 @@ jobs:
             -e "TZ=Asia/Seoul" -e RDS_URL=${{ secrets.RDS_URL }} -e RDS_USERNAME=${{ secrets.RDS_USERNAME }} -e RDS_PASSWORD=${{ secrets.RDS_PASSWORD }} -e KAKAO_REST_API=${{ secrets.KAKAO_REST_API }} \
             ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPOSITORY }}:latest
             sudo docker image prune -f
+

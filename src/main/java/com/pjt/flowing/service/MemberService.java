@@ -146,16 +146,14 @@ public class MemberService {
         System.out.println("http요청 보내기44");
         String email = jsonNode.get("kakao_account").get("email").asText();
         System.out.println("http요청 보내기55");
-        String profileImageURL ="";
-        try{
+        String profileImageURL = "";
+        try {
             profileImageURL = jsonNode.get("properties").get("profile_image").asText();
-        }
-        catch(NullPointerException e){
+        } catch (NullPointerException e) {
             System.out.println("없어");
         }
         System.out.println("http요청 보내기66");
-        System.out.println("카카오 api호출 response"+response);
-        return new KakaoUserInfoDto(id,nickname,email,profileImageURL);
+        System.out.println("카카오 api호출 response" + response);
+        return new KakaoUserInfoDto(id, nickname, email, profileImageURL);
     }
-    
 }
