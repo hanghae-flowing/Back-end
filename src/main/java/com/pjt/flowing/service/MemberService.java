@@ -36,21 +36,24 @@ public class MemberService {
 
         // 1. "인가 코드"로 "액세스 토큰" 요청
         String accessToken = getAccessToken(code);
+        System.out.println("getaccessToken 실행후");
 
         // 2. 토큰으로 카카오 API 호출
         KakaoUserInfoDto kakaoUserInfoDto = getKakaoUserInfo(accessToken);
+        System.out.println(("kakaouserinfodto 실행후"));
 
         // DB 에 중복된 Kakao Id 가 있는지 확인
         Long kakaoId = kakaoUserInfoDto.getId();
         String nickname = kakaoUserInfoDto.getNickname();
         String email = kakaoUserInfoDto.getEmail();
+        String profileImageURL=kakaoUserInfoDto.getProfileImageURL();
         System.out.println(kakaoId);
         System.out.println("엑세스 토큰"+accessToken);
         JSONObject obj = new JSONObject();
 
         // 회원가입
         if (!memberRepository.findByKakaoId(kakaoId).isPresent()) {
-            Member member = new Member(kakaoId,email,nickname);
+            Member member = new Member(kakaoId,email,nickname,profileImageURL);
             memberRepository.save(member);
             System.out.println("이프문에 걸리니?");
         }
@@ -63,6 +66,7 @@ public class MemberService {
         obj.put("Email",email);
         obj.put("nickname",nickname);
         obj.put("ACCESS_TOKEN",accessToken);
+        obj.put("ProfileImageURL",profileImageURL);
         return obj.toString();
     }
 
@@ -127,19 +131,31 @@ public class MemberService {
 
         // HTTP 요청 보내기
         HttpEntity<MultiValueMap<String, String>> kakaoUserInfoRequest = new HttpEntity<>(headers);
-
+        System.out.println("http요청 보내기");
         //토큰을 url로 보내주면 reponse를 주게 된다.
         RestTemplate rt = new RestTemplate();
         ResponseEntity<String> response = rt.exchange("https://kapi.kakao.com/v2/user/me", HttpMethod.POST, kakaoUserInfoRequest, String.class);
         String responseBody = response.getBody();
+        System.out.println("http요청 보내기22");
         ObjectMapper objectMapper = new ObjectMapper();
-        JsonNode jsonNode = objectMapper.readTree(responseBody); //objectmapper는 jsonnode 형태이다.
+        JsonNode jsonNode = objectMapper.readTree(responseBody);
+        System.out.println("http요청 보내기33");
 
         Long id = jsonNode.get("id").asLong();
         String nickname = jsonNode.get("properties").get("nickname").asText();
+        System.out.println("http요청 보내기44");
         String email = jsonNode.get("kakao_account").get("email").asText();
+        System.out.println("http요청 보내기55");
+        String profileImageURL ="";
+        try{
+            profileImageURL = jsonNode.get("properties").get("profile_image").asText();
+        }
+        catch(NullPointerException e){
+            System.out.println("없어");
+        }
+        System.out.println("http요청 보내기66");
         System.out.println("카카오 api호출 response"+response);
-        return new KakaoUserInfoDto(id,nickname,email);
+        return new KakaoUserInfoDto(id,nickname,email,profileImageURL);
     }
     
 }
