@@ -11,7 +11,7 @@ public class HealthController {
     @GetMapping("/health")
     public String healthCheck(){
 
-        //return "I'm still alive~!!!";
-        return LocalDateTime.now().toString();
+        return "I'm still alive~!!!";
+        //return LocalDateTime.now().toString();
     }
 }
