@@ -14,10 +14,10 @@ public class ProjectMember {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name="userId")
+    @JoinColumn(name="user_id")
     private Member member;
 
     @ManyToOne
-    @JoinColumn(name="projectId")
+    @JoinColumn(name="project_id")
     private Project project;
 }
