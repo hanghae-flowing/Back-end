@@ -5,17 +5,18 @@ import com.pjt.flowing.dto.AuthorizationDto;
 import com.pjt.flowing.dto.MsgResponseDto;
 import com.pjt.flowing.dto.PjCreateRequestDto;
 import com.pjt.flowing.dto.ProjectResponseDto;
+import com.pjt.flowing.model.Bookmark;
 import com.pjt.flowing.model.Member;
 import com.pjt.flowing.model.Project;
+import com.pjt.flowing.repository.BookmarkRepository;
 import com.pjt.flowing.repository.MemberRepository;
 import com.pjt.flowing.repository.ProjectRepository;
 import com.pjt.flowing.security.Authorization;
 import com.pjt.flowing.service.ProjectService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -25,6 +26,7 @@ public class ProjectController {
     private final MemberRepository memberRepository;
     private final Authorization authorization;
     private final ProjectRepository projectRepository;
+    private final BookmarkRepository bookmarkRepository;
 
     @PostMapping("api/project/readAll")
     public List<ProjectResponseDto> getProject(@RequestBody AuthorizationDto requestDto) throws JsonProcessingException {
@@ -57,5 +59,31 @@ public class ProjectController {
         projectRepository.save(project);
         msgResponseDto.setMsg("프로젝트 생성 완료");
         return msgResponseDto;
+    }
+
+    @Transactional
+    @PostMapping("/api/bookmark/{projectId}")
+    public MsgResponseDto CheckBookmark(@PathVariable Long projectId , @RequestBody AuthorizationDto authorizationDto) {
+        System.out.println(projectId);
+        boolean check = bookmarkRepository.existsByMember_IdAndProject_Id(authorizationDto.getUserId(), projectId);
+
+        Project project = projectRepository.findById(projectId).orElseThrow(
+                () -> new IllegalArgumentException("프로젝트가 존재하지 않아요~")
+        );
+        Member member = memberRepository.findById(authorizationDto.getUserId()).orElseThrow(
+                () -> new IllegalArgumentException("아이디가 존재하지 않아요~")
+        );
+        MsgResponseDto msgResponseDto = new MsgResponseDto();
+        if (check == false) {
+            Bookmark bookmark = new Bookmark(project, member);
+            bookmarkRepository.save(bookmark);
+            msgResponseDto.setMsg("북마크 생성!");
+            return msgResponseDto;
+        }
+        else {
+            bookmarkRepository.deleteByMember_IdAndProject_Id(authorizationDto.getUserId(), projectId);
+            msgResponseDto.setMsg("북마크 취소!");
+            return msgResponseDto;
+        }
     }
 }
