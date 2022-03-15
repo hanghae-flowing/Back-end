@@ -37,7 +37,16 @@ public class ProjectController {
         return response;
     }
 
-    //api/project/read 만들어야됨
+
+    @PostMapping("/api/project/read")
+    public List<ProjectResponseDto> getProjectWith4(@RequestBody AuthorizationDto requestDto){
+
+        // Userid로 북마크4개 조회 ->
+        List<ProjectResponseDto> response = projectService.get4(requestDto.getUserId());
+        return response;
+
+
+    }
 
     @PostMapping("/api/project/create")
     public MsgResponseDto createProject(@RequestBody PjCreateRequestDto pjCreateRequestDto) throws JsonProcessingException {
