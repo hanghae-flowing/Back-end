@@ -26,7 +26,7 @@ public class Project extends Timestamped{
     private Long objectId;
 
     @ManyToOne
-    @JoinColumn(name="kakao_id",referencedColumnName = "kakao_id")
+    @JoinColumn(name="user_id")
     private Member member;
 
     @Column(nullable = false)

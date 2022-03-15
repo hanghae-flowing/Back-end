@@ -10,6 +10,7 @@ public class PjCreateRequestDto {
     private String projectName;
     private int thumbNailNum;
     private Long objectId;
+    private Long userId;
     private Long kakaoId;
     private String accessToken;
 }
