@@ -125,7 +125,8 @@ public class MemberService {
         return jsonNode.get("access_token").asText();   //엑세스 토큰 카카오로 부터 받아옴
     }
 
-    private KakaoUserInfoDto getKakaoUserInfo(String accessToken) throws JsonProcessingException {
+//    private KakaoUserInfoDto getKakaoUserInfo(String accessToken) throws JsonProcessingException {
+    public KakaoUserInfoDto getKakaoUserInfo(String accessToken) throws JsonProcessingException {
 
         //모든 요청에 이걸 넣어야 되나?를 고민 해봐야 할듯. write only?
         // HTTP Header 생성

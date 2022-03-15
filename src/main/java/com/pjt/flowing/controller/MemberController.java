@@ -2,6 +2,8 @@ package com.pjt.flowing.controller;
 
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.pjt.flowing.dto.AuthorizationDto;
+import com.pjt.flowing.dto.KakaoUserInfoDto;
 import com.pjt.flowing.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -26,4 +28,8 @@ public class MemberController {
         return memberService.kakaoLogout(accessToken);
     }
 
+    @PostMapping("/api/mypage")
+    public KakaoUserInfoDto myInfo(@RequestBody AuthorizationDto dto) throws JsonProcessingException {
+        return memberService.getKakaoUserInfo(dto.getAccessToken());
+    }
 }
