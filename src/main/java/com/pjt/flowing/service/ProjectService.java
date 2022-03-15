@@ -10,8 +10,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @RequiredArgsConstructor
 @Service
@@ -29,14 +31,28 @@ public class ProjectService {
     }
 
     public List<ProjectResponseDto> get4(Long userId){
-        //List<Project> all = projectRepository.findAllByMember_IdOrderByModifiedAtDesc(userId);
-        List<Project> bookmarked = bookmarkRepository.findAllByMember_IdOrderByModifiedAtDesc(userId);
-        for(int i = 0 ;i<4;i++){
-            System.out.println(bookmarked.get(i));
-        }
-        List<ProjectResponseDto> dto = bookmarked.stream()
+        List<Project> all = projectRepository.findFirst4ByMember_IdOrderByModifiedAtDesc(userId);
+        List<Bookmark> bookmarked = bookmarkRepository.findAllByMember_IdOrderByModifiedAtDesc(userId); //userId가 누른 북마크
+
+        List <ProjectResponseDto> re = bookmarked.stream()
+                .map(ProjectResponseDto::from2)
+                .collect(Collectors.toList());
+
+
+        List<ProjectResponseDto> dto = all.stream()
                 .map(ProjectResponseDto::from)
                 .collect(Collectors.toList());
-        return dto;
+
+        List<ProjectResponseDto> joined = new ArrayList<>();
+        joined.addAll(re);
+        joined.addAll(dto);
+
+        List<ProjectResponseDto> response = joined.stream()
+                .limit(4)
+                .distinct()
+                .collect(Collectors.toList());
+
+
+        return response;
     }
 }

@@ -1,5 +1,6 @@
 package com.pjt.flowing.dto;
 
+import com.pjt.flowing.model.Bookmark;
 import com.pjt.flowing.model.Project;
 import lombok.Builder;
 import lombok.Getter;
@@ -25,6 +26,16 @@ public class ProjectResponseDto {
                 //.memberList(project.getProjectMemberList())
                 //.bookmark(project.getBookmarkList())
                 .thumbnailNum(project.getThumbNailNum())
+                .build();
+    }
+    public static ProjectResponseDto from2(Bookmark bookmark){
+        return ProjectResponseDto.builder()
+                .projectId(bookmark.getProject().getId())
+                .projectName(bookmark.getProject().getProjectName())
+                .modifiedAt(bookmark.getProject().getModifiedAt())
+                //.memberList(project.getProjectMemberList())
+                //.bookmark(project.getBookmarkList())
+                .thumbnailNum(bookmark.getProject().getThumbNailNum())
                 .build();
     }
 }
