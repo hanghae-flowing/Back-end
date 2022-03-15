@@ -56,7 +56,7 @@ public class ProjectController {
             msgResponseDto.setMsg("kakaoId가 다르거나 유효하지 않은 토큰입니다.");
             return msgResponseDto;
         }
-        Member member = memberRepository.findByKakaoId(pjCreateRequestDto.getKakaoId()).orElseThrow(
+        Member member = memberRepository.findById(pjCreateRequestDto.getUserId()).orElseThrow(
                 () -> new IllegalArgumentException("아이디가 존재하지 않습니다.")
         );
         Project project = new Project(
