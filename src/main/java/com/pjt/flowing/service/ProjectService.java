@@ -12,6 +12,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -28,6 +32,10 @@ public class ProjectService {
                 .map(ProjectResponseDto::from)
                 .collect(Collectors.toList());
         return dto;
+    }
+    public static <T> Predicate<T> distinctByKey(Function<? super T, ?> keyExtractor) {
+        Set<Object> seen = ConcurrentHashMap.newKeySet();
+        return t -> seen.add(keyExtractor.apply(t));
     }
 
     public List<ProjectResponseDto> get4(Long userId){
@@ -47,9 +55,9 @@ public class ProjectService {
         joined.addAll(re);
         joined.addAll(dto);
 
-        List<ProjectResponseDto> response = joined.stream()
+        List<ProjectResponseDto> response =joined.stream()
+                .filter(distinctByKey(ProjectResponseDto::getProjectId))
                 .limit(4)
-                .distinct()
                 .collect(Collectors.toList());
 
 
