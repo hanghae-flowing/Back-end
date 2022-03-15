@@ -51,7 +51,7 @@ public class ProjectController {
         Project project = new Project(
                 pjCreateRequestDto.getProjectName(),
                 pjCreateRequestDto.getObjectId(),
-                member, //여기 리팩토링 해야됨
+                member,
                 pjCreateRequestDto.getThumbNailNum()
         );
         projectRepository.save(project);

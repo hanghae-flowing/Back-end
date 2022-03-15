@@ -18,7 +18,7 @@ public class ProjectService {
     private final ProjectRepository projectRepository;
 
     public List<ProjectResponseDto> getAll(Long userId){
-        List<Project> all = projectRepository.findAllByMemberId(userId);
+        List<Project> all = projectRepository.findAllByMember_IdOrderByModifiedAtDesc(userId);
         List<ProjectResponseDto> dto = all.stream()
                 .map(ProjectResponseDto::from)
                 .collect(Collectors.toList());

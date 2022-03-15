@@ -53,7 +53,6 @@ public class MemberService {
         JSONObject obj = new JSONObject();
 
         // 회원가입
-
         if (!memberRepository.findByKakaoId(kakaoId).isPresent()) {
             Member member = new Member(kakaoId,email,nickname,profileImageURL);
             memberRepository.save(member);
@@ -73,7 +72,7 @@ public class MemberService {
         obj.put("ProfileImageURL",profileImageURL);
         return obj.toString();
     }
-    //
+
 
     public String kakaoLogout(String accessToken) throws JsonProcessingException {
         // HTTP Header 생성
