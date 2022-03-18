@@ -5,7 +5,6 @@ import com.pjt.flowing.dto.AuthorizationDto;
 import com.pjt.flowing.dto.ProjectResponseDto;
 import com.pjt.flowing.dto.ProjectEditRequestDto;
 import com.pjt.flowing.model.Bookmark;
-import com.pjt.flowing.model.Member;
 import com.pjt.flowing.model.Project;
 import com.pjt.flowing.repository.BookmarkRepository;
 import com.pjt.flowing.repository.ProjectRepository;

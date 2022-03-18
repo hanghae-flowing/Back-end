@@ -11,6 +11,7 @@ import com.pjt.flowing.repository.ProjectRepository;
 import com.pjt.flowing.security.Authorization;
 import com.pjt.flowing.service.ProjectService;
 import lombok.RequiredArgsConstructor;
+import org.json.JSONObject;
 import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
@@ -41,12 +42,12 @@ public class ProjectController {
     }
 
     @PostMapping("/api/project/create")
-    public MsgResponseDto createProject(@RequestBody PjCreateRequestDto pjCreateRequestDto) throws JsonProcessingException {
+    public String createProject(@RequestBody PjCreateRequestDto pjCreateRequestDto) throws JsonProcessingException {
         AuthorizationDto authorizationDto = new AuthorizationDto( pjCreateRequestDto.getAccessToken(),pjCreateRequestDto.getKakaoId(),pjCreateRequestDto.getUserId());
-        MsgResponseDto msgResponseDto = new MsgResponseDto();
+        JSONObject obj = new JSONObject();
         if (authorization.getKakaoId(authorizationDto) == 0){
-            msgResponseDto.setMsg("kakaoId가 다르거나 유효하지 않은 토큰입니다.");
-            return msgResponseDto;
+            obj.put("msg","false");
+            return obj.toString();
         }
         Member member = memberRepository.findById(pjCreateRequestDto.getUserId()).orElseThrow(
                 () -> new IllegalArgumentException("아이디가 존재하지 않습니다.")
@@ -58,8 +59,10 @@ public class ProjectController {
                 pjCreateRequestDto.getThumbNailNum()
         );
         projectRepository.save(project);
-        msgResponseDto.setMsg("프로젝트 생성 완료");
-        return msgResponseDto;
+
+        obj.put("msg","true");
+        obj.put("projectId",project.getId());
+        return obj.toString();
     }
 
     @Transactional
