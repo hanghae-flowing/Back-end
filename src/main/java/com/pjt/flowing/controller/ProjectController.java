@@ -1,10 +1,7 @@
 package com.pjt.flowing.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.pjt.flowing.dto.AuthorizationDto;
-import com.pjt.flowing.dto.MsgResponseDto;
-import com.pjt.flowing.dto.PjCreateRequestDto;
-import com.pjt.flowing.dto.ProjectResponseDto;
+import com.pjt.flowing.dto.*;
 import com.pjt.flowing.model.Bookmark;
 import com.pjt.flowing.model.Member;
 import com.pjt.flowing.model.Project;
@@ -33,19 +30,14 @@ public class ProjectController {
         if(authorization.getKakaoId(requestDto)==0){
             System.out.println("인가x");
         }
-        List<ProjectResponseDto> response = projectService.getAll(requestDto.getUserId());
-        return response;
+        return projectService.getAll(requestDto.getUserId());
     }
-
 
     @PostMapping("/api/project/read")
     public List<ProjectResponseDto> getProjectWith4(@RequestBody AuthorizationDto requestDto){
 
         // Userid로 북마크4개 조회 ->
-        List<ProjectResponseDto> response = projectService.get4(requestDto.getUserId());
-        return response;
-
-
+        return projectService.get4(requestDto.getUserId());
     }
 
     @PostMapping("/api/project/create")
@@ -83,7 +75,7 @@ public class ProjectController {
                 () -> new IllegalArgumentException("아이디가 존재하지 않아요~")
         );
         MsgResponseDto msgResponseDto = new MsgResponseDto();
-        if (check == false) {
+        if (!check) {
             Bookmark bookmark = new Bookmark(project, member);
             bookmarkRepository.save(bookmark);
             msgResponseDto.setMsg("북마크 생성!");
@@ -94,5 +86,20 @@ public class ProjectController {
             msgResponseDto.setMsg("북마크 취소!");
             return msgResponseDto;
         }
+    }
+
+    @DeleteMapping("api/delete/{projectId}")    //프로젝트 삭제
+    public String deleteProject(@PathVariable Long projectId,AuthorizationDto dto){
+        return projectService.deleteproject(projectId, dto);
+    }
+
+    @PutMapping("api/edit/{projectId}")     //프로젝트 수정(파티장만 가능하게 해달랬음)
+    public String editProject(@PathVariable Long projectId, ProjectEditRequestDto dto) {
+        return projectService.editproject(projectId, dto);
+    }
+
+    @GetMapping("api/detail/{projectId}")   //프로젝트 상세페이지 정보 보내주기
+    public String detail(@PathVariable Long projectId){
+        return projectService.detail(projectId);
     }
 }

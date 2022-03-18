@@ -1,23 +1,24 @@
 package com.pjt.flowing.service;
 
 
+import com.pjt.flowing.dto.AuthorizationDto;
 import com.pjt.flowing.dto.ProjectResponseDto;
+import com.pjt.flowing.dto.ProjectEditRequestDto;
 import com.pjt.flowing.model.Bookmark;
+import com.pjt.flowing.model.Member;
 import com.pjt.flowing.model.Project;
 import com.pjt.flowing.repository.BookmarkRepository;
 import com.pjt.flowing.repository.ProjectRepository;
 import lombok.RequiredArgsConstructor;
+import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @RequiredArgsConstructor
 @Service
@@ -60,7 +61,53 @@ public class ProjectService {
                 .limit(4)
                 .collect(Collectors.toList());
 
-
         return response;
+    }
+
+    @Transactional
+    public String deleteproject(Long projectId, AuthorizationDto dto){
+        JSONObject obj = new JSONObject();
+        Optional<Project> project = projectRepository.findById(projectId);
+        if(Objects.equals(dto.getUserId(), project.get().getMember().getId())){
+            projectRepository.deleteById(projectId);
+            obj.put("msg","삭제완료");
+        }
+        else{
+            obj.put("msg","프로젝트 장이 아닙니다");
+        }
+        return obj.toString();
+    }
+
+    @Transactional
+    public String editproject(Long projectId, ProjectEditRequestDto dto){
+        JSONObject obj = new JSONObject();
+        Optional<Project> project = projectRepository.findById(projectId);
+        if(Objects.equals(dto.getUserId(), project.get().getMember().getId())){
+            project.get().update(dto);
+            obj.put("msg","수정 완료");
+        }
+        else{
+            obj.put("msg","프로젝트 장이 아닙니다");
+        }
+        return obj.toString();
+    }
+
+    public String detail(Long projectId){
+        JSONObject obj = new JSONObject();
+        Optional<Project> project = projectRepository.findById(projectId);
+
+        //나중에 멤버리스트 추가되면  멤버 리스트일 경우만 불러올 수 있게 수정해야함.
+        //어차피 멤버만 볼 수 있으니까 일단은 그냥 보여줬음.
+
+        ProjectResponseDto dto = ProjectResponseDto.builder()
+                .projectId(project.get().getId())
+                .projectName(project.get().getProjectName())
+                .modifiedAt(project.get().getModifiedAt())
+                .thumbnailNum(project.get().getThumbNailNum())
+                .build();
+        obj.put("msg","불러오기");
+        JSONObject DTO = new JSONObject(dto);
+        obj.put("info",DTO);
+        return obj.toString();
     }
 }
