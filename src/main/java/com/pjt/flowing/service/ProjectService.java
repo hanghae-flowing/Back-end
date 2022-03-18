@@ -98,7 +98,7 @@ public class ProjectService {
 
         //나중에 멤버리스트 추가되면  멤버 리스트일 경우만 불러올 수 있게 수정해야함.
         //어차피 멤버만 볼 수 있으니까 일단은 그냥 보여줬음.
-        
+
         ProjectResponseDto dto = ProjectResponseDto.builder()
                 .projectId(project.get().getId())
                 .projectName(project.get().getProjectName())
@@ -106,7 +106,8 @@ public class ProjectService {
                 .thumbnailNum(project.get().getThumbNailNum())
                 .build();
         obj.put("msg","불러오기");
-        obj.put("info",dto);
+        JSONObject DTO = new JSONObject(dto);
+        obj.put("info",DTO);
         return obj.toString();
     }
 }
