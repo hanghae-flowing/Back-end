@@ -1,23 +1,22 @@
 package com.pjt.flowing.service;
 
 
+import com.pjt.flowing.dto.AuthorizationDto;
 import com.pjt.flowing.dto.ProjectResponseDto;
 import com.pjt.flowing.model.Bookmark;
 import com.pjt.flowing.model.Project;
 import com.pjt.flowing.repository.BookmarkRepository;
 import com.pjt.flowing.repository.ProjectRepository;
 import lombok.RequiredArgsConstructor;
+import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @RequiredArgsConstructor
 @Service
@@ -60,7 +59,20 @@ public class ProjectService {
                 .limit(4)
                 .collect(Collectors.toList());
 
-
         return response;
+    }
+
+    @Transactional
+    public String deleteproject(Long projectId, AuthorizationDto dto){
+        JSONObject obj = new JSONObject();
+        Optional<Project> project = projectRepository.findById(projectId);
+        if(Objects.equals(dto.getUserId(), project.get().getMember().getId())){
+            projectRepository.deleteById(projectId);
+            obj.put("msg","삭제완료");
+        }
+        else{
+            obj.put("msg","프로젝트 장이 아닙니다");
+        }
+        return obj.toString();
     }
 }

@@ -95,4 +95,9 @@ public class ProjectController {
             return msgResponseDto;
         }
     }
+
+    @DeleteMapping("api/delete/{projectId}")
+    public String deleteProject(@PathVariable Long projectId,AuthorizationDto dto){
+        return projectService.deleteproject(projectId, dto);
+    }
 }
