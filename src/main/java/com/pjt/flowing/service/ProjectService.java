@@ -3,6 +3,7 @@ package com.pjt.flowing.service;
 
 import com.pjt.flowing.dto.AuthorizationDto;
 import com.pjt.flowing.dto.ProjectResponseDto;
+import com.pjt.flowing.dto.ProjectEditRequestDto;
 import com.pjt.flowing.model.Bookmark;
 import com.pjt.flowing.model.Project;
 import com.pjt.flowing.repository.BookmarkRepository;
@@ -69,6 +70,20 @@ public class ProjectService {
         if(Objects.equals(dto.getUserId(), project.get().getMember().getId())){
             projectRepository.deleteById(projectId);
             obj.put("msg","삭제완료");
+        }
+        else{
+            obj.put("msg","프로젝트 장이 아닙니다");
+        }
+        return obj.toString();
+    }
+
+    @Transactional
+    public String editproject(Long projectId, ProjectEditRequestDto dto){
+        JSONObject obj = new JSONObject();
+        Optional<Project> project = projectRepository.findById(projectId);
+        if(Objects.equals(dto.getUserId(), project.get().getMember().getId())){
+            project.get().update(dto);
+            obj.put("msg","수정 완료");
         }
         else{
             obj.put("msg","프로젝트 장이 아닙니다");

@@ -1,5 +1,6 @@
 package com.pjt.flowing.model;
 
+import com.pjt.flowing.dto.ProjectEditRequestDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -43,6 +44,11 @@ public class Project extends Timestamped{
         this.objectId = objectId;
         this.member = member;   //여기서의 member는 프로젝트 생성자를 말한다.
         this.thumbNailNum = thumbNailNum;
+    }
+
+    public void update(ProjectEditRequestDto dto){
+        this.projectName=dto.getProjectName();
+        this.thumbNailNum=dto.getThumbNailNum();
     }
 
 }
