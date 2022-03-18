@@ -88,13 +88,18 @@ public class ProjectController {
         }
     }
 
-    @DeleteMapping("api/delete/{projectId}")
+    @DeleteMapping("api/delete/{projectId}")    //프로젝트 삭제
     public String deleteProject(@PathVariable Long projectId,AuthorizationDto dto){
         return projectService.deleteproject(projectId, dto);
     }
 
-    @PutMapping("api/edit/{projectId}")
+    @PutMapping("api/edit/{projectId}")     //프로젝트 수정(파티장만 가능하게 해달랬음)
     public String editProject(@PathVariable Long projectId, ProjectEditRequestDto dto) {
         return projectService.editproject(projectId, dto);
+    }
+
+    @GetMapping("api/detail/{projectId}")   //프로젝트 상세페이지 정보 보내주기
+    public String detail(@PathVariable Long projectId){
+        return projectService.detail(projectId);
     }
 }

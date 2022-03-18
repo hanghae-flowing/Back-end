@@ -5,6 +5,7 @@ import com.pjt.flowing.dto.AuthorizationDto;
 import com.pjt.flowing.dto.ProjectResponseDto;
 import com.pjt.flowing.dto.ProjectEditRequestDto;
 import com.pjt.flowing.model.Bookmark;
+import com.pjt.flowing.model.Member;
 import com.pjt.flowing.model.Project;
 import com.pjt.flowing.repository.BookmarkRepository;
 import com.pjt.flowing.repository.ProjectRepository;
@@ -88,6 +89,24 @@ public class ProjectService {
         else{
             obj.put("msg","프로젝트 장이 아닙니다");
         }
+        return obj.toString();
+    }
+
+    public String detail(Long projectId){
+        JSONObject obj = new JSONObject();
+        Optional<Project> project = projectRepository.findById(projectId);
+
+        //나중에 멤버리스트 추가되면  멤버 리스트일 경우만 불러올 수 있게 수정해야함.
+        //어차피 멤버만 볼 수 있으니까 일단은 그냥 보여줬음.
+        
+        ProjectResponseDto dto = ProjectResponseDto.builder()
+                .projectId(project.get().getId())
+                .projectName(project.get().getProjectName())
+                .modifiedAt(project.get().getModifiedAt())
+                .thumbnailNum(project.get().getThumbNailNum())
+                .build();
+        obj.put("msg","불러오기");
+        obj.put("info",dto);
         return obj.toString();
     }
 }
