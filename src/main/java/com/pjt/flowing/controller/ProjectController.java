@@ -102,4 +102,9 @@ public class ProjectController {
     public String detail(@PathVariable Long projectId){
         return projectService.detail(projectId);
     }
+
+    @PostMapping("api/mytoast/create")             //자기가만든 프로젝트 리스트
+    public List<ProjectResponseDto> inProject(@RequestBody AuthorizationDto requestDto){
+        return projectService.getAll(requestDto.getUserId());
+    }
 }
