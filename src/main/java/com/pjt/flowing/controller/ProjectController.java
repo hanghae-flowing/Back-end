@@ -103,8 +103,14 @@ public class ProjectController {
         return projectService.detail(projectId);
     }
 
+<<<<<<< refs/remotes/origin/develop
     @PostMapping("api/mytoast/create")             //자기가만든 프로젝트 리스트
     public List<ProjectResponseDto> inProject(@RequestBody AuthorizationDto requestDto){
         return projectService.getAll(requestDto.getUserId());
+=======
+    @PostMapping("api/mytoast/included")
+    public List<ProjectResponseDto> getProjectIncluded(@RequestBody AuthorizationDto requestDto){
+        return projectService.getAllIncluded(requestDto.getUserId());
+>>>>>>> feat: 자기가포함된 프로젝트리스트
     }
 }
