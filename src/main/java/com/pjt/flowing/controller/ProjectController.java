@@ -5,8 +5,10 @@ import com.pjt.flowing.dto.*;
 import com.pjt.flowing.model.Bookmark;
 import com.pjt.flowing.model.Member;
 import com.pjt.flowing.model.Project;
+import com.pjt.flowing.model.ProjectMember;
 import com.pjt.flowing.repository.BookmarkRepository;
 import com.pjt.flowing.repository.MemberRepository;
+import com.pjt.flowing.repository.ProjectMemberRepository;
 import com.pjt.flowing.repository.ProjectRepository;
 import com.pjt.flowing.security.Authorization;
 import com.pjt.flowing.service.ProjectService;
@@ -25,6 +27,7 @@ public class ProjectController {
     private final Authorization authorization;
     private final ProjectRepository projectRepository;
     private final BookmarkRepository bookmarkRepository;
+    private final ProjectMemberRepository projectMemberRepository;
 
     @PostMapping("api/project/readAll")
     public List<ProjectResponseDto> getProject(@RequestBody AuthorizationDto requestDto) throws JsonProcessingException {
@@ -62,6 +65,11 @@ public class ProjectController {
 
         obj.put("msg","true");
         obj.put("projectId",project.getId());
+
+        //projectmember 넣어주기 초대 api를 이거로 하면 될듯함
+        ProjectMember projectMember = new ProjectMember(project, member);
+        projectMemberRepository.save(projectMember);
+        System.out.println("파티장 멤버로 저장 완료");
         return obj.toString();
     }
 
