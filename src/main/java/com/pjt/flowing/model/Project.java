@@ -28,7 +28,7 @@ public class Project extends Timestamped{
 
     @ManyToOne
     @JoinColumn(name="user_id")
-    private Member member;
+    private Member member; // 생성한사람...
 
     @Column(nullable = false)
     private int thumbNailNum;

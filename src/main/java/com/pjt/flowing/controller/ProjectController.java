@@ -102,4 +102,9 @@ public class ProjectController {
     public String detail(@PathVariable Long projectId){
         return projectService.detail(projectId);
     }
+
+    @PostMapping("api/mytoast/included")
+    public List<ProjectResponseDto> getProjectIncluded(@RequestBody AuthorizationDto requestDto){
+        return projectService.getAllIncluded(requestDto.getUserId());
+    }
 }
