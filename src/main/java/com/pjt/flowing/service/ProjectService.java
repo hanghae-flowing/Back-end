@@ -6,7 +6,9 @@ import com.pjt.flowing.dto.ProjectResponseDto;
 import com.pjt.flowing.dto.ProjectEditRequestDto;
 import com.pjt.flowing.model.Bookmark;
 import com.pjt.flowing.model.Project;
+import com.pjt.flowing.model.ProjectMember;
 import com.pjt.flowing.repository.BookmarkRepository;
+import com.pjt.flowing.repository.ProjectMemberRepository;
 import com.pjt.flowing.repository.ProjectRepository;
 import lombok.RequiredArgsConstructor;
 import org.json.JSONObject;
@@ -25,6 +27,7 @@ import java.util.stream.Collectors;
 public class ProjectService {
     private final ProjectRepository projectRepository;
     private final BookmarkRepository bookmarkRepository;
+    private final ProjectMemberRepository projectMemberRepository;
 
     public List<ProjectResponseDto> getAll(Long userId){
         List<Project> all = projectRepository.findAllByMember_IdOrderByModifiedAtDesc(userId);
@@ -108,5 +111,17 @@ public class ProjectService {
         JSONObject DTO = new JSONObject(dto);
         obj.put("info",DTO);
         return obj.toString();
+    }
+
+    public List<ProjectResponseDto> getAllIncluded(Long userId){
+        // userid 를 받아와서 projectmember에서 projectid를 찾아온다 -> 프로젝트 id를 가지고 프로젝트리스트를 불러와서 리턴.
+        List<ProjectMember> all = projectMemberRepository.findAllByMember_Id(userId); // userId가지고 프로젝트멤버 쿼리 쫙뽑아옴->projectId를 가지고 해야함.
+
+
+        //List<Project> all = projectRepository.findAllByMember_IdOrderByModifiedAtDesc(userId);
+        List<ProjectResponseDto> dto = all.stream()
+                .map(ProjectResponseDto::includedProject)
+                .collect(Collectors.toList());
+        return dto;
     }
 }

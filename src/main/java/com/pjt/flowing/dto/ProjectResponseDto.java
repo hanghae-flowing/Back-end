@@ -2,6 +2,7 @@ package com.pjt.flowing.dto;
 
 import com.pjt.flowing.model.Bookmark;
 import com.pjt.flowing.model.Project;
+import com.pjt.flowing.model.ProjectMember;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -36,6 +37,17 @@ public class ProjectResponseDto {
                 //.memberList(project.getProjectMemberList())
                 //.bookmark(project.getBookmarkList())
                 .thumbnailNum(bookmark.getProject().getThumbNailNum())
+                .build();
+    }
+
+    public static ProjectResponseDto includedProject(ProjectMember projectMember){
+        return ProjectResponseDto.builder()
+                .projectId(projectMember.getProject().getId())
+                .projectName(projectMember.getProject().getProjectName())
+                .modifiedAt(projectMember.getProject().getModifiedAt())
+                //.memberList(project.getProjectMemberList())
+                //.bookmark(project.getBookmarkList())
+                .thumbnailNum(projectMember.getProject().getThumbNailNum())
                 .build();
     }
 }
