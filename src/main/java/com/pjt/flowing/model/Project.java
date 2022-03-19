@@ -33,11 +33,14 @@ public class Project extends Timestamped{
     @Column(nullable = false)
     private int thumbNailNum;
 
-    @OneToMany(mappedBy = "project",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "project",fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<Bookmark> BookmarkList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "project",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "project",fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<ProjectMember> ProjectMemberList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "project",fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    private List<Node> NodeList = new ArrayList<>();    //node 단방향 매핑
 
     public Project(String projectName, Long objectId, Member member, int thumbNailNum) {
         this.projectName = projectName;
