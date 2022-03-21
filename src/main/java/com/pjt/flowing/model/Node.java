@@ -1,6 +1,7 @@
 package com.pjt.flowing.model;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -20,10 +21,10 @@ public class Node {
     private Long id;
 
     @Column(nullable = false)
-    private String xVal;
+    private String xval;
 
     @Column(nullable = false)
-    private String yVal;
+    private String yval;
 
     @Column(nullable = false)
     private String width;
@@ -44,5 +45,17 @@ public class Node {
     @JoinColumn(name="project_id")
     private Project project;
 
+    @Builder
+    public Node(String xval,String yval,String width,
+                String height,String text,String radius,boolean isChecked,Project project){
+        this.xval=xval;
+        this.yval=yval;
+        this.width=width;
+        this.height = height;
+        this.text=text;
+        this.radius=radius;
+        this.isChecked=isChecked;
+        this.project=project;
+    }
 
 }
