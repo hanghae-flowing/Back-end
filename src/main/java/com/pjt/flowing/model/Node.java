@@ -20,22 +20,22 @@ public class Node {
     private Long id;
 
     @Column(nullable = false)
-    private int xVal;
+    private String xVal;
 
     @Column(nullable = false)
-    private int yVal;
+    private String yVal;
 
     @Column(nullable = false)
-    private int width;
+    private String width;
 
     @Column(nullable = false)
-    private int height;
+    private String height;
 
     @Column
     private String text;
 
     @Column(nullable = false)
-    private int radius;
+    private String radius;
 
     @Column(nullable = false)
     private boolean isChecked;  //chap2~3에서 키워드 보여주려면 필요함
