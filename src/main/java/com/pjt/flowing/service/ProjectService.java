@@ -1,6 +1,7 @@
 package com.pjt.flowing.service;
 
 
+import com.pjt.flowing.dto.AcceptRequestDto;
 import com.pjt.flowing.dto.AuthorizationDto;
 import com.pjt.flowing.dto.ProjectResponseDto;
 import com.pjt.flowing.dto.ProjectEditRequestDto;
@@ -9,6 +10,7 @@ import com.pjt.flowing.model.Member;
 import com.pjt.flowing.model.Project;
 import com.pjt.flowing.model.ProjectMember;
 import com.pjt.flowing.repository.BookmarkRepository;
+import com.pjt.flowing.repository.MemberRepository;
 import com.pjt.flowing.repository.ProjectMemberRepository;
 import com.pjt.flowing.repository.ProjectRepository;
 import lombok.RequiredArgsConstructor;
@@ -29,12 +31,23 @@ public class ProjectService {
     private final ProjectRepository projectRepository;
     private final BookmarkRepository bookmarkRepository;
     private final ProjectMemberRepository projectMemberRepository;
+    private final MemberRepository memberRepository;
 
     public List<ProjectResponseDto> getAll(Long userId){
-        List<Project> all = projectRepository.findAllByMember_IdOrderByModifiedAtDesc(userId);
-        List<ProjectResponseDto> dto = all.stream()
+        List<Project> myCreateProjects = projectRepository.findAllByMember_IdOrderByModifiedAtDesc(userId); // 자기가 만든 프로젝트 리스트
+        List<ProjectResponseDto> CreateDto = myCreateProjects.stream()
                 .map(ProjectResponseDto::from)
                 .collect(Collectors.toList());
+
+        List<ProjectMember> myIncludedProjects = projectMemberRepository.findAllByMember_Id(userId); // 자기가 포함된 프로젝트 리스트
+        List<ProjectResponseDto> includedDto = myIncludedProjects.stream()
+                .map(ProjectResponseDto::includedProject)
+                .collect(Collectors.toList());
+
+        List<ProjectResponseDto> dto = new ArrayList<>();//만든거랑 멤버로 포함된거랑 더해서 수정날짜로 정렬.
+        dto.addAll(CreateDto);
+        dto.addAll(includedDto);
+        dto.stream().sorted(Comparator.comparing(ProjectResponseDto::getModifiedAt));
         return dto;
     }
     public static <T> Predicate<T> distinctByKey(Function<? super T, ?> keyExtractor) {
@@ -114,15 +127,37 @@ public class ProjectService {
         return obj.toString();
     }
 
-    public List<ProjectResponseDto> getAllIncluded(Long userId){
-        // userid 를 받아와서 projectmember에서 projectid를 찾아온다 -> 프로젝트 id를 가지고 프로젝트리스트를 불러와서 리턴.
-        List<ProjectMember> all = projectMemberRepository.findAllByMember_Id(userId); // userId가지고 프로젝트멤버 쿼리 쫙뽑아옴->projectId를 가지고 해야함.
+    public List<ProjectResponseDto> getAllBookmarked(Long userId){
+        List<Bookmark> bookmarked = bookmarkRepository.findAllByMember_IdOrderByModifiedAtDesc(userId); //userId가 누른 북마크
 
-
-        //List<Project> all = projectRepository.findAllByMember_IdOrderByModifiedAtDesc(userId);
-        List<ProjectResponseDto> dto = all.stream()
-                .map(ProjectResponseDto::includedProject)
+        List <ProjectResponseDto> dto = bookmarked.stream()
+                .map(ProjectResponseDto::from2)
                 .collect(Collectors.toList());
         return dto;
+    }
+
+    public List<ProjectResponseDto> getAllCreate(Long userId){
+        List<Project> myCreateProjects = projectRepository.findAllByMember_IdOrderByModifiedAtDesc(userId); // 자기가 만든 프로젝트 리스트
+        List<ProjectResponseDto> createDto = myCreateProjects.stream()
+                .map(ProjectResponseDto::from)
+                .collect(Collectors.toList());
+        return createDto;
+    }
+    
+    @Transactional
+    public String accept(AcceptRequestDto acceptRequestDto){
+        Long projectId = acceptRequestDto.getProjectId();
+        Long userId = acceptRequestDto.getUserId();
+
+        Project project = projectRepository.findById(projectId).orElseThrow(
+                () -> new IllegalArgumentException("몰라")
+        );
+        Member member = memberRepository.findById(userId).orElseThrow(
+                ()-> new IllegalArgumentException("몰라")
+        );      //리팩토링 할 부분
+
+        ProjectMember projectMember = new ProjectMember(project,member);
+        projectMemberRepository.save(projectMember);
+        return "수락 완료";
     }
 }

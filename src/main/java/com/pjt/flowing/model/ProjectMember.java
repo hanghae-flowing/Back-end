@@ -1,13 +1,16 @@
 package com.pjt.flowing.model;
 
+import com.pjt.flowing.dto.AcceptRequestDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 
 @Getter
 @NoArgsConstructor
 @Entity
+@Setter
 public class ProjectMember {
 
     @Id @GeneratedValue
@@ -20,4 +23,10 @@ public class ProjectMember {
     @ManyToOne
     @JoinColumn(name="project_id")
     private Project project;
+
+    public ProjectMember(Project project, Member member) {
+        this.project = project;
+        this.member = member;
+    }
+
 }

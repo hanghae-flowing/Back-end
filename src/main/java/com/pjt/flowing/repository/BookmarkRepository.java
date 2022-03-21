@@ -8,7 +8,6 @@ public interface BookmarkRepository extends JpaRepository<Bookmark, Long> {
     boolean existsByMember_IdAndProject_Id(Long userId, Long projectId);
     void deleteByMember_IdAndProject_Id(Long userId, Long projectId);
 
-    //List<Bookmark> findAllByMember_IdOrderByModifiedAtDesc(Long userId);
     List<Bookmark> findAllByMember_IdOrderByModifiedAtDesc(Long UserId);
 
 
