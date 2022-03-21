@@ -143,7 +143,7 @@ public class ProjectService {
                 .collect(Collectors.toList());
         return createDto;
     }
-
+    
     @Transactional
     public String accept(AcceptRequestDto acceptRequestDto){
         Long projectId = acceptRequestDto.getProjectId();
