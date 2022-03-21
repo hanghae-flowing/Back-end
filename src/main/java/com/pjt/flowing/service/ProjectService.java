@@ -34,10 +34,20 @@ public class ProjectService {
     private final MemberRepository memberRepository;
 
     public List<ProjectResponseDto> getAll(Long userId){
-        List<Project> all = projectRepository.findAllByMember_IdOrderByModifiedAtDesc(userId);
-        List<ProjectResponseDto> dto = all.stream()
+        List<Project> myCreateProjects = projectRepository.findAllByMember_IdOrderByModifiedAtDesc(userId); // 자기가 만든 프로젝트 리스트
+        List<ProjectResponseDto> CreateDto = myCreateProjects.stream()
                 .map(ProjectResponseDto::from)
                 .collect(Collectors.toList());
+
+        List<ProjectMember> myIncludedProjects = projectMemberRepository.findAllByMember_Id(userId); // 자기가 포함된 프로젝트 리스트
+        List<ProjectResponseDto> includedDto = myIncludedProjects.stream()
+                .map(ProjectResponseDto::includedProject)
+                .collect(Collectors.toList());
+
+        List<ProjectResponseDto> dto = new ArrayList<>();//만든거랑 멤버로 포함된거랑 더해서 수정날짜로 정렬.
+        dto.addAll(CreateDto);
+        dto.addAll(includedDto);
+        dto.stream().sorted(Comparator.comparing(ProjectResponseDto::getModifiedAt));
         return dto;
     }
     public static <T> Predicate<T> distinctByKey(Function<? super T, ?> keyExtractor) {
