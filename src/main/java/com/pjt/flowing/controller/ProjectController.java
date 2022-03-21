@@ -25,7 +25,7 @@ public class ProjectController {
     private final ProjectRepository projectRepository;
     private final BookmarkRepository bookmarkRepository;
 
-    @PostMapping("api/project/readAll")
+    @PostMapping("api/project/readAll") // 더보기페이지
     public List<ProjectResponseDto> getProject(@RequestBody AuthorizationDto requestDto) throws JsonProcessingException {
         if(authorization.getKakaoId(requestDto)==0){
             System.out.println("인가x");
@@ -33,7 +33,7 @@ public class ProjectController {
         return projectService.getAll(requestDto.getUserId());
     }
 
-    @PostMapping("/api/project/read")
+    @PostMapping("/api/project/read") // 홈화면에 북마크된거 4개 아니면 최신순으로 보여주기
     public List<ProjectResponseDto> getProjectWith4(@RequestBody AuthorizationDto requestDto){
 
         // Userid로 북마크4개 조회 ->
