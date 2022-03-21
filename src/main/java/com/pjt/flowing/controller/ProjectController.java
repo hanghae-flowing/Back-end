@@ -116,12 +116,12 @@ public class ProjectController {
 
     @PostMapping("api/mytoast/create")             //자기가만든 프로젝트 리스트
     public List<ProjectResponseDto> inProject(@RequestBody AuthorizationDto requestDto) {
-        return projectService.getAll(requestDto.getUserId());
+        return projectService.getAllCreate(requestDto.getUserId());
     }
 
-    @PostMapping("api/mytoast/included")
-    public List<ProjectResponseDto> getProjectIncluded(@RequestBody AuthorizationDto requestDto){
-        return projectService.getAllIncluded(requestDto.getUserId());
+    @PostMapping("api/mytoast/bookmarked")            //북마크한 프로젝트 리스트
+    public List<ProjectResponseDto> getProjectBookmarked(@RequestBody AuthorizationDto requestDto){
+        return projectService.getAllBookmarked(requestDto.getUserId());
 
     }
 
