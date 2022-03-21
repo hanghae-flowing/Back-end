@@ -37,6 +37,9 @@ public class Node {
     @Column(nullable = false)
     private int radius;
 
+    @Column(nullable = false)
+    private boolean isChecked;  //chap2~3에서 키워드 보여주려면 필요함
+
     @ManyToOne
     @JoinColumn(name="project_id")
     private Project project;

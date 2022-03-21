@@ -124,4 +124,9 @@ public class ProjectController {
         return projectService.getAllIncluded(requestDto.getUserId());
 
     }
+
+    @PostMapping("api/accept")  //초대 수락하는 api
+    public String accept(@RequestBody AcceptRequestDto acceptRequestDto){
+        return projectService.accept(acceptRequestDto);
+    }
 }
