@@ -127,16 +127,21 @@ public class ProjectService {
         return obj.toString();
     }
 
-    public List<ProjectResponseDto> getAllIncluded(Long userId){
-        // userid 를 받아와서 projectmember에서 projectid를 찾아온다 -> 프로젝트 id를 가지고 프로젝트리스트를 불러와서 리턴.
-        List<ProjectMember> all = projectMemberRepository.findAllByMember_Id(userId); // userId가지고 프로젝트멤버 쿼리 쫙뽑아옴->projectId를 가지고 해야함.
+    public List<ProjectResponseDto> getAllBookmarked(Long userId){
+        List<Bookmark> bookmarked = bookmarkRepository.findAllByMember_IdOrderByModifiedAtDesc(userId); //userId가 누른 북마크
 
-
-        //List<Project> all = projectRepository.findAllByMember_IdOrderByModifiedAtDesc(userId);
-        List<ProjectResponseDto> dto = all.stream()
-                .map(ProjectResponseDto::includedProject)
+        List <ProjectResponseDto> dto = bookmarked.stream()
+                .map(ProjectResponseDto::from2)
                 .collect(Collectors.toList());
         return dto;
+    }
+
+    public List<ProjectResponseDto> getAllCreate(Long userId){
+        List<Project> myCreateProjects = projectRepository.findAllByMember_IdOrderByModifiedAtDesc(userId); // 자기가 만든 프로젝트 리스트
+        List<ProjectResponseDto> createDto = myCreateProjects.stream()
+                .map(ProjectResponseDto::from)
+                .collect(Collectors.toList());
+        return createDto;
     }
 
     public String accept(AcceptRequestDto acceptRequestDto){
