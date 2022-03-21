@@ -5,12 +5,15 @@ import com.pjt.flowing.dto.*;
 import com.pjt.flowing.model.Bookmark;
 import com.pjt.flowing.model.Member;
 import com.pjt.flowing.model.Project;
+import com.pjt.flowing.model.ProjectMember;
 import com.pjt.flowing.repository.BookmarkRepository;
 import com.pjt.flowing.repository.MemberRepository;
+import com.pjt.flowing.repository.ProjectMemberRepository;
 import com.pjt.flowing.repository.ProjectRepository;
 import com.pjt.flowing.security.Authorization;
 import com.pjt.flowing.service.ProjectService;
 import lombok.RequiredArgsConstructor;
+import org.json.JSONObject;
 import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
@@ -24,6 +27,7 @@ public class ProjectController {
     private final Authorization authorization;
     private final ProjectRepository projectRepository;
     private final BookmarkRepository bookmarkRepository;
+    private final ProjectMemberRepository projectMemberRepository;
 
     @PostMapping("api/project/readAll")
     public List<ProjectResponseDto> getProject(@RequestBody AuthorizationDto requestDto) throws JsonProcessingException {
@@ -41,12 +45,12 @@ public class ProjectController {
     }
 
     @PostMapping("/api/project/create")
-    public MsgResponseDto createProject(@RequestBody PjCreateRequestDto pjCreateRequestDto) throws JsonProcessingException {
+    public String createProject(@RequestBody PjCreateRequestDto pjCreateRequestDto) throws JsonProcessingException {
         AuthorizationDto authorizationDto = new AuthorizationDto( pjCreateRequestDto.getAccessToken(),pjCreateRequestDto.getKakaoId(),pjCreateRequestDto.getUserId());
-        MsgResponseDto msgResponseDto = new MsgResponseDto();
+        JSONObject obj = new JSONObject();
         if (authorization.getKakaoId(authorizationDto) == 0){
-            msgResponseDto.setMsg("kakaoId가 다르거나 유효하지 않은 토큰입니다.");
-            return msgResponseDto;
+            obj.put("msg","false");
+            return obj.toString();
         }
         Member member = memberRepository.findById(pjCreateRequestDto.getUserId()).orElseThrow(
                 () -> new IllegalArgumentException("아이디가 존재하지 않습니다.")
@@ -58,8 +62,15 @@ public class ProjectController {
                 pjCreateRequestDto.getThumbNailNum()
         );
         projectRepository.save(project);
-        msgResponseDto.setMsg("프로젝트 생성 완료");
-        return msgResponseDto;
+
+        obj.put("msg","true");
+        obj.put("projectId",project.getId());
+
+        //projectmember 넣어주기 초대 api를 이거로 하면 될듯함
+        ProjectMember projectMember = new ProjectMember(project, member);
+        projectMemberRepository.save(projectMember);
+        System.out.println("파티장 멤버로 저장 완료");
+        return obj.toString();
     }
 
     @Transactional
@@ -112,5 +123,10 @@ public class ProjectController {
     public List<ProjectResponseDto> getProjectIncluded(@RequestBody AuthorizationDto requestDto){
         return projectService.getAllIncluded(requestDto.getUserId());
 
+    }
+
+    @PostMapping("api/accept")  //초대 수락하는 api
+    public String accept(@RequestBody AcceptRequestDto acceptRequestDto){
+        return projectService.accept(acceptRequestDto);
     }
 }

@@ -1,6 +1,7 @@
 package com.pjt.flowing.service;
 
 
+import com.pjt.flowing.dto.AcceptRequestDto;
 import com.pjt.flowing.dto.AuthorizationDto;
 import com.pjt.flowing.dto.ProjectResponseDto;
 import com.pjt.flowing.dto.ProjectEditRequestDto;
@@ -9,6 +10,7 @@ import com.pjt.flowing.model.Member;
 import com.pjt.flowing.model.Project;
 import com.pjt.flowing.model.ProjectMember;
 import com.pjt.flowing.repository.BookmarkRepository;
+import com.pjt.flowing.repository.MemberRepository;
 import com.pjt.flowing.repository.ProjectMemberRepository;
 import com.pjt.flowing.repository.ProjectRepository;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +31,7 @@ public class ProjectService {
     private final ProjectRepository projectRepository;
     private final BookmarkRepository bookmarkRepository;
     private final ProjectMemberRepository projectMemberRepository;
+    private final MemberRepository memberRepository;
 
     public List<ProjectResponseDto> getAll(Long userId){
         List<Project> all = projectRepository.findAllByMember_IdOrderByModifiedAtDesc(userId);
@@ -124,5 +127,21 @@ public class ProjectService {
                 .map(ProjectResponseDto::includedProject)
                 .collect(Collectors.toList());
         return dto;
+    }
+
+    public String accept(AcceptRequestDto acceptRequestDto){
+        Long projectId = acceptRequestDto.getProjectId();
+        Long userId = acceptRequestDto.getUserId();
+
+        Project project = projectRepository.findById(projectId).orElseThrow(
+                () -> new IllegalArgumentException("몰라")
+        );
+        Member member = memberRepository.findById(userId).orElseThrow(
+                ()-> new IllegalArgumentException("몰라")
+        );      //리팩토링 할 부분
+
+        ProjectMember projectMember = new ProjectMember(project,member);
+        projectMemberRepository.save(projectMember);
+        return "수락 완료";
     }
 }
