@@ -139,6 +139,7 @@ public class ProjectService {
         return dto;
     }
 
+    @Transactional
     public String accept(AcceptRequestDto acceptRequestDto){
         Long projectId = acceptRequestDto.getProjectId();
         Long userId = acceptRequestDto.getUserId();
