@@ -30,21 +30,14 @@ public class PollingTestController {
 
     @GetMapping("api/test/showall")
     public String textshow(){
-        JSONObject obj = new JSONObject();
-
         List<PollingTest> pollingTestList = pollingRepository.findAll();
-        System.out.println("폴링테스트" + pollingTestList);
         List<PollingResponseDto> pollingResponseDtoList = new ArrayList<>();
         for(PollingTest pollingTest : pollingTestList){
             PollingResponseDto pollingResponseDto = new PollingResponseDto(pollingTest.getId(),
                     pollingTest.getText());
             pollingResponseDtoList.add(pollingResponseDto);
-            System.out.println("pollingResponseDto" + pollingResponseDto);
-            System.out.println("pollingResponseDtoList" + pollingResponseDtoList);
         }
-        obj.put("msg","테스트 전체 불러오기");
         JSONArray jsonArray = new JSONArray(pollingResponseDtoList);
-        System.out.println(jsonArray);
         return jsonArray.toString();
     }
 

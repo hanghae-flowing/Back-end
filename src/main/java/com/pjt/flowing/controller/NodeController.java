@@ -4,6 +4,7 @@ import com.pjt.flowing.dto.NodeCreateRequestDto;
 import com.pjt.flowing.dto.NodeEditRequestDto;
 import com.pjt.flowing.dto.NodePinRequestDto;
 import com.pjt.flowing.service.NodeService;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,5 +32,11 @@ public class NodeController {
     public String nodeEdit(@PathVariable Long id,@RequestBody NodeEditRequestDto nodeEditRequestDto){
         return nodeService.nodeEdit(id,nodeEditRequestDto);
     }
+
+    @GetMapping("api/node/showall/{projectId}")
+    public String getall(@PathVariable Long projectId){
+        return nodeService.showall(projectId);
+    }
+
 
 }
