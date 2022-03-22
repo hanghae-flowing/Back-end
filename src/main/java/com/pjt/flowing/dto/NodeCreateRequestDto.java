@@ -13,6 +13,7 @@ public class NodeCreateRequestDto {
     private String height;
     private String text;
     private String radius;
-    private boolean isChecked;  //chap2~3에서 키워드 보여주려면 필요함
+    private int isChecked;  //chap2~3에서 키워드 보여주려면 필요함
     private Long projectId;
+
 }

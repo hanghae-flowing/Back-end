@@ -1,14 +1,12 @@
 package com.pjt.flowing.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
 
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -39,7 +37,7 @@ public class Node {
     private String radius;
 
     @Column(nullable = false)
-    private boolean isChecked;  //chap2~3에서 키워드 보여주려면 필요함
+    private int isChecked;  //chap2~3에서 키워드 보여주려면 필요함
 
     @ManyToOne
     @JoinColumn(name="project_id")
@@ -47,7 +45,7 @@ public class Node {
 
     @Builder
     public Node(String xval,String yval,String width,
-                String height,String text,String radius,boolean isChecked,Project project){
+                String height,String text,String radius,int isChecked,Project project){
         this.xval=xval;
         this.yval=yval;
         this.width=width;

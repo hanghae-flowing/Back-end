@@ -1,6 +1,5 @@
 package com.pjt.flowing.model;
 
-import com.pjt.flowing.dto.AcceptRequestDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
