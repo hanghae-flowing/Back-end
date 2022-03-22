@@ -154,7 +154,7 @@ public class ProjectService {
         );
         Member member = memberRepository.findById(userId).orElseThrow(
                 ()-> new IllegalArgumentException("accept (member) error")
-        );      //리팩토링 할 부분
+        );
 
         ProjectMember projectMember = new ProjectMember(project,member);
         projectMemberRepository.save(projectMember);

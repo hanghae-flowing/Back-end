@@ -44,9 +44,10 @@ public class ProjectController {
         return projectService.get4(requestDto.getUserId());
     }
 
+    @Transactional
     @PostMapping("/api/project/create")
     public String createProject(@RequestBody PjCreateRequestDto pjCreateRequestDto) throws JsonProcessingException {
-        AuthorizationDto authorizationDto = new AuthorizationDto( pjCreateRequestDto.getAccessToken(),pjCreateRequestDto.getKakaoId(),pjCreateRequestDto.getUserId());
+        AuthorizationDto authorizationDto = new AuthorizationDto(pjCreateRequestDto.getAccessToken(),pjCreateRequestDto.getKakaoId(),pjCreateRequestDto.getUserId());
         JSONObject obj = new JSONObject();
         if (authorization.getKakaoId(authorizationDto) == 0){
             obj.put("msg","false");
@@ -128,5 +129,12 @@ public class ProjectController {
     @PostMapping("api/accept")  //초대 수락하는 api
     public String accept(@RequestBody AcceptRequestDto acceptRequestDto){
         return projectService.accept(acceptRequestDto);
+    }
+
+    @GetMapping("api/test") //test api
+    public String testt(){
+        JSONObject obj = new JSONObject();
+        obj.put("msg","응애응애 폴링테스트에용");
+        return obj.toString();
     }
 }
