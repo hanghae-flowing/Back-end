@@ -10,5 +10,5 @@ import lombok.Setter;
 public class InviteResponseDto {
 
     private Long senderId;
-    private Long receiverid;
+    private Long receiverId;
 }
