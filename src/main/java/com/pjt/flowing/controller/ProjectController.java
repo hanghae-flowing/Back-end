@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.UUID;
 
 @RequiredArgsConstructor
 @RestController
@@ -135,6 +136,9 @@ public class ProjectController {
     public String testt(){
         JSONObject obj = new JSONObject();
         obj.put("msg","응애응애 폴링테스트에용");
+        String id = UUID.randomUUID().toString();
+        obj.put("랜덤이에용",id);
+        System.out.println("uuid test"+id);
         return obj.toString();
     }
 }
