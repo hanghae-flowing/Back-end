@@ -27,7 +27,7 @@ public class NodeService {
 
         Node node = Node.builder()
                 .height(nodeCreateRequestDto.getHeight())
-                .isChecked(nodeCreateRequestDto.isChecked())
+                .isChecked(nodeCreateRequestDto.getIsChecked())
                 .radius(nodeCreateRequestDto.getRadius())
                 .text(nodeCreateRequestDto.getText())
                 .width(nodeCreateRequestDto.getWidth())
@@ -44,12 +44,18 @@ public class NodeService {
     @Transactional
     public String pin(NodePinRequestDto nodePinRequestDto){
         JSONObject obj = new JSONObject();
-        Long projectId = nodePinRequestDto.getProjectId();
-
-        Project project = projectRepository.findById(projectId).orElseThrow(
-                () -> new IllegalArgumentException("몰라")
+        Node node = nodeRepository.findById(nodePinRequestDto.getNodeId()).orElseThrow(
+                ()-> new IllegalArgumentException("ㅁ?ㄹ")
         );
 
+        if(node.getIsChecked()==0){
+            node.setIsChecked(1);
+            obj.put("msg","체크 완료");
+        }
+        else{
+            node.setIsChecked(0);
+            obj.put("msg","체크 해제");
+        }
         return obj.toString();
     }
 
