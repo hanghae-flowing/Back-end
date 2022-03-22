@@ -150,14 +150,16 @@ public class ProjectService {
         Long userId = acceptRequestDto.getUserId();
 
         Project project = projectRepository.findById(projectId).orElseThrow(
-                () -> new IllegalArgumentException("몰라")
+                () -> new IllegalArgumentException("accept (project) error")
         );
         Member member = memberRepository.findById(userId).orElseThrow(
-                ()-> new IllegalArgumentException("몰라")
+                ()-> new IllegalArgumentException("accept (member) error")
         );      //리팩토링 할 부분
 
         ProjectMember projectMember = new ProjectMember(project,member);
         projectMemberRepository.save(projectMember);
-        return "수락 완료";
+        JSONObject obj = new JSONObject();
+        obj.put("msg","수락 완료");
+        return obj.toString();
     }
 }
