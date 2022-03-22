@@ -90,7 +90,6 @@ public class MemberService {
         JsonNode jsonNode = objectMapper.readTree(responseBody);
         Long id = jsonNode.get("id").asLong();
         System.out.println("로그아웃 id"+id);
-        System.out.println("로그아웃 response"+response);
 
         JSONObject obj = new JSONObject();
         obj.put("msg","logout");
@@ -107,7 +106,7 @@ public class MemberService {
         body.add("client_id", kakao_api);
 //        body.add("redirect_uri", "http://localhost:8080/member/kakao/callback");
 //        body.add("redirect_uri", "http://localhost:3000/member/kakao/callback");
-        body.add("redirect_uri", "http://hanghae-toaster.s3-website.ap-northeast-2.amazonaws.com/member/kakao/callback");
+        body.add("redirect_uri", "http://hanghae-final5.s3-website.ap-northeast-2.amazonaws.com/member/kakao/callback");
         body.add("code", code);
 
         // HTTP 요청 보내기
@@ -150,7 +149,7 @@ public class MemberService {
         try {
             profileImageURL = jsonNode.get("properties").get("profile_image").asText();
         } catch (NullPointerException e) {
-            System.out.println("없어");
+            System.out.println("null profile Image URL");
         }
         System.out.println("카카오 api호출 response" + response);
         return new KakaoUserInfoDto(id, nickname, email, profileImageURL);

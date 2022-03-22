@@ -1,6 +1,7 @@
 package com.pjt.flowing.service;
 
 import com.pjt.flowing.dto.NodeCreateRequestDto;
+import com.pjt.flowing.dto.NodeEditRequestDto;
 import com.pjt.flowing.dto.NodePinRequestDto;
 import com.pjt.flowing.model.Node;
 import com.pjt.flowing.model.Project;
@@ -22,7 +23,7 @@ public class NodeService {
     public String nodeCreate(NodeCreateRequestDto nodeCreateRequestDto){
         JSONObject obj = new JSONObject();
         Project project = projectRepository.findById(nodeCreateRequestDto.getProjectId()).orElseThrow(
-                ()->new IllegalArgumentException("없냐")
+                ()->new IllegalArgumentException("node Create error")
         );
 
         Node node = Node.builder()
@@ -45,7 +46,7 @@ public class NodeService {
     public String pin(NodePinRequestDto nodePinRequestDto){
         JSONObject obj = new JSONObject();
         Node node = nodeRepository.findById(nodePinRequestDto.getNodeId()).orElseThrow(
-                ()-> new IllegalArgumentException("ㅁ?ㄹ")
+                ()-> new IllegalArgumentException("pin error")
         );
 
         if(node.getIsChecked()==0){
@@ -56,6 +57,25 @@ public class NodeService {
             node.setIsChecked(0);
             obj.put("msg","체크 해제");
         }
+        return obj.toString();
+    }
+
+    @Transactional
+    public String nodeDelete(Long id){
+        nodeRepository.deleteById(id);
+        JSONObject obj = new JSONObject();
+        obj.put("msg","노드 삭제");
+        return obj.toString();
+    }
+
+    @Transactional
+    public String nodeEdit(Long id,NodeEditRequestDto nodeEditRequestDto){
+        Node node = nodeRepository.findById(id).orElseThrow(
+                ()->new IllegalArgumentException("edit error")
+        );
+        node.update(nodeEditRequestDto);
+        JSONObject obj = new JSONObject();
+        obj.put("msg","수정 완료");
         return obj.toString();
     }
 
