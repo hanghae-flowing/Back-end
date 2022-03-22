@@ -2,14 +2,8 @@ package com.pjt.flowing.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.pjt.flowing.dto.*;
-import com.pjt.flowing.model.Bookmark;
-import com.pjt.flowing.model.Member;
-import com.pjt.flowing.model.Project;
-import com.pjt.flowing.model.ProjectMember;
-import com.pjt.flowing.repository.BookmarkRepository;
-import com.pjt.flowing.repository.MemberRepository;
-import com.pjt.flowing.repository.ProjectMemberRepository;
-import com.pjt.flowing.repository.ProjectRepository;
+import com.pjt.flowing.model.*;
+import com.pjt.flowing.repository.*;
 import com.pjt.flowing.security.Authorization;
 import com.pjt.flowing.service.ProjectService;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
 import java.util.List;
-import java.util.UUID;
 
 @RequiredArgsConstructor
 @RestController
@@ -29,6 +22,7 @@ public class ProjectController {
     private final ProjectRepository projectRepository;
     private final BookmarkRepository bookmarkRepository;
     private final ProjectMemberRepository projectMemberRepository;
+    private final PollingRepository pollingRepository;
 
     @PostMapping("api/project/readAll") // 더보기페이지
     public List<ProjectResponseDto> getProject(@RequestBody AuthorizationDto requestDto) throws JsonProcessingException {
@@ -132,13 +126,4 @@ public class ProjectController {
         return projectService.accept(acceptRequestDto);
     }
 
-    @GetMapping("api/test") //test api
-    public String testt(){
-        JSONObject obj = new JSONObject();
-        obj.put("msg","응애응애 폴링테스트에용");
-        String id = UUID.randomUUID().toString();
-        obj.put("랜덤이에용",id);
-        System.out.println("uuid test"+id);
-        return obj.toString();
-    }
 }
