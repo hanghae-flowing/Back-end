@@ -2,7 +2,6 @@ package com.pjt.flowing.service;
 
 import com.pjt.flowing.dto.*;
 import com.pjt.flowing.model.Node;
-import com.pjt.flowing.model.PollingTest;
 import com.pjt.flowing.model.Project;
 import com.pjt.flowing.repository.NodeRepository;
 import com.pjt.flowing.repository.ProjectRepository;
@@ -42,6 +41,7 @@ public class NodeService {
 
         nodeRepository.save(node);
         obj.put("msg","노드생성");
+        obj.put("nodeId",node.getId());
         return obj.toString();
     }
 
@@ -96,6 +96,7 @@ public class NodeService {
                     .yval(node.getYval())
                     .width(node.getWidth())
                     .projectId(projectId)
+                    .nodeId(node.getId())
                     .build();
             nodeResponseDtoList.add(nodeResponseDto);
         }

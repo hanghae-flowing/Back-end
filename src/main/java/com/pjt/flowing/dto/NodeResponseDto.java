@@ -15,10 +15,11 @@ public class NodeResponseDto {
     private String radius;
     private int isChecked;  //chap2~3에서 키워드 보여주려면 필요함
     private Long projectId;
+    private Long nodeId;
 
     @Builder
     public NodeResponseDto(String xval, String yval, String width, String height, String text,
-                           String radius, int isChecked, Long projectId) {
+                           String radius, int isChecked, Long projectId, Long nodeId) {
         this.xval = xval;
         this.yval = yval;
         this.width = width;
@@ -27,5 +28,6 @@ public class NodeResponseDto {
         this.radius = radius;
         this.isChecked = isChecked;
         this.projectId = projectId;
+        this.nodeId=nodeId;
     }
 }

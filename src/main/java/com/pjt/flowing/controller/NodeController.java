@@ -33,7 +33,7 @@ public class NodeController {
         return nodeService.nodeEdit(id,nodeEditRequestDto);
     }
 
-    @GetMapping("api/node/showall/{projectId}")
+    @GetMapping("api/node/showall/{projectId}") // 노드 전체보기
     public String getall(@PathVariable Long projectId){
         return nodeService.showall(projectId);
     }
