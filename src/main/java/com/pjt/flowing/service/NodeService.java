@@ -43,7 +43,7 @@ public class NodeService {
                 .build();
 
         nodeRepository.save(node);
-        obj.put("msg","노드생성");
+        obj.put("msg","노드 생성");
         obj.put("nodeId",node.getId());
         return obj.toString();
     }
@@ -105,6 +105,24 @@ public class NodeService {
         }
         JSONArray jsonArray = new JSONArray(nodeResponseDtoList);
         return jsonArray.toString();
+    }
+
+    public String showone(Long nodeId){
+        Node node = nodeRepository.findById(nodeId).orElseThrow(
+                ()->new IllegalArgumentException("node showone error")
+        );
+        NodeResponseDto nodeResponseDto = NodeResponseDto.builder()
+                .height(node.getHeight())
+                .radius(node.getRadius())
+                .isChecked(node.getIsChecked())
+                .text(node.getText())
+                .xval(node.getXval())
+                .yval(node.getYval())
+                .width(node.getWidth())
+                .nodeId(node.getId())
+                .build();
+        JSONObject obj = new JSONObject(nodeResponseDto);
+        return obj.toString();
     }
 
 }

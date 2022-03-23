@@ -37,5 +37,7 @@ public class NodeController {
         return nodeService.showall(projectId);
     }
 
+    @GetMapping("api/node/showone/{nodeId}")
+    public String getone(@PathVariable Long nodeId) {return nodeService.showone(nodeId);}
 
 }
