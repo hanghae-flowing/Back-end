@@ -22,7 +22,6 @@ public class ProjectController {
     private final ProjectRepository projectRepository;
     private final BookmarkRepository bookmarkRepository;
     private final ProjectMemberRepository projectMemberRepository;
-    private final PollingRepository pollingRepository;
 
     @PostMapping("api/project/readAll") // 더보기페이지
     public List<ProjectResponseDto> getProject(@RequestBody AuthorizationDto requestDto) throws JsonProcessingException {

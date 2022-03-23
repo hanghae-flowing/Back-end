@@ -4,7 +4,6 @@ import com.pjt.flowing.dto.NodeCreateRequestDto;
 import com.pjt.flowing.dto.NodeEditRequestDto;
 import com.pjt.flowing.dto.NodePinRequestDto;
 import com.pjt.flowing.service.NodeService;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
