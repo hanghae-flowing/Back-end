@@ -1,6 +1,6 @@
 package com.pjt.flowing.model;
 
-import com.pjt.flowing.dto.ProjectEditRequestDto;
+import com.pjt.flowing.dto.request.ProjectEditRequestDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

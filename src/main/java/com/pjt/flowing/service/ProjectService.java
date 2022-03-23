@@ -1,10 +1,10 @@
 package com.pjt.flowing.service;
 
 
-import com.pjt.flowing.dto.AcceptRequestDto;
+import com.pjt.flowing.dto.request.AcceptRequestDto;
 import com.pjt.flowing.dto.AuthorizationDto;
-import com.pjt.flowing.dto.ProjectResponseDto;
-import com.pjt.flowing.dto.ProjectEditRequestDto;
+import com.pjt.flowing.dto.request.ProjectResponseDto;
+import com.pjt.flowing.dto.request.ProjectEditRequestDto;
 import com.pjt.flowing.model.Bookmark;
 import com.pjt.flowing.model.Member;
 import com.pjt.flowing.model.Project;

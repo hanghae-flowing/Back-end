@@ -1,8 +1,8 @@
 package com.pjt.flowing.controller;
 
-import com.pjt.flowing.dto.NodeCreateRequestDto;
-import com.pjt.flowing.dto.NodeEditRequestDto;
-import com.pjt.flowing.dto.NodePinRequestDto;
+import com.pjt.flowing.dto.request.NodeCreateRequestDto;
+import com.pjt.flowing.dto.request.NodeEditRequestDto;
+import com.pjt.flowing.dto.request.NodePinRequestDto;
 import com.pjt.flowing.service.NodeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;

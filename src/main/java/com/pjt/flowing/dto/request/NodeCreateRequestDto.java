@@ -1,4 +1,4 @@
-package com.pjt.flowing.dto;
+package com.pjt.flowing.dto.request;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
