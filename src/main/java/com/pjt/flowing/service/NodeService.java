@@ -1,16 +1,18 @@
 package com.pjt.flowing.service;
 
-import com.pjt.flowing.dto.NodeCreateRequestDto;
-import com.pjt.flowing.dto.NodeEditRequestDto;
-import com.pjt.flowing.dto.NodePinRequestDto;
+import com.pjt.flowing.dto.*;
 import com.pjt.flowing.model.Node;
 import com.pjt.flowing.model.Project;
 import com.pjt.flowing.repository.NodeRepository;
 import com.pjt.flowing.repository.ProjectRepository;
 import lombok.RequiredArgsConstructor;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @RequiredArgsConstructor
 @Service
@@ -39,6 +41,7 @@ public class NodeService {
 
         nodeRepository.save(node);
         obj.put("msg","노드생성");
+        obj.put("nodeId",node.getId());
         return obj.toString();
     }
 
@@ -77,6 +80,28 @@ public class NodeService {
         JSONObject obj = new JSONObject();
         obj.put("msg","수정 완료");
         return obj.toString();
+    }
+
+    public String showall(Long projectId){
+
+        List<Node> nodeList = nodeRepository.findAllByProject_Id(projectId);
+        List<NodeResponseDto> nodeResponseDtoList = new ArrayList<>();
+        for(Node node : nodeList){
+            NodeResponseDto nodeResponseDto = NodeResponseDto.builder()
+                    .height(node.getHeight())
+                    .radius(node.getRadius())
+                    .isChecked(node.getIsChecked())
+                    .text(node.getText())
+                    .xval(node.getXval())
+                    .yval(node.getYval())
+                    .width(node.getWidth())
+                    .projectId(projectId)
+                    .nodeId(node.getId())
+                    .build();
+            nodeResponseDtoList.add(nodeResponseDto);
+        }
+        JSONArray jsonArray = new JSONArray(nodeResponseDtoList);
+        return jsonArray.toString();
     }
 
 }

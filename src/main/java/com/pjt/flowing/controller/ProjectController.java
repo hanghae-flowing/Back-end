@@ -2,14 +2,8 @@ package com.pjt.flowing.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.pjt.flowing.dto.*;
-import com.pjt.flowing.model.Bookmark;
-import com.pjt.flowing.model.Member;
-import com.pjt.flowing.model.Project;
-import com.pjt.flowing.model.ProjectMember;
-import com.pjt.flowing.repository.BookmarkRepository;
-import com.pjt.flowing.repository.MemberRepository;
-import com.pjt.flowing.repository.ProjectMemberRepository;
-import com.pjt.flowing.repository.ProjectRepository;
+import com.pjt.flowing.model.*;
+import com.pjt.flowing.repository.*;
 import com.pjt.flowing.security.Authorization;
 import com.pjt.flowing.service.ProjectService;
 import lombok.RequiredArgsConstructor;
@@ -44,9 +38,10 @@ public class ProjectController {
         return projectService.get4(requestDto.getUserId());
     }
 
+    @Transactional
     @PostMapping("/api/project/create")
     public String createProject(@RequestBody PjCreateRequestDto pjCreateRequestDto) throws JsonProcessingException {
-        AuthorizationDto authorizationDto = new AuthorizationDto( pjCreateRequestDto.getAccessToken(),pjCreateRequestDto.getKakaoId(),pjCreateRequestDto.getUserId());
+        AuthorizationDto authorizationDto = new AuthorizationDto(pjCreateRequestDto.getAccessToken(),pjCreateRequestDto.getKakaoId(),pjCreateRequestDto.getUserId());
         JSONObject obj = new JSONObject();
         if (authorization.getKakaoId(authorizationDto) == 0){
             obj.put("msg","false");
@@ -129,4 +124,5 @@ public class ProjectController {
     public String accept(@RequestBody AcceptRequestDto acceptRequestDto){
         return projectService.accept(acceptRequestDto);
     }
+
 }

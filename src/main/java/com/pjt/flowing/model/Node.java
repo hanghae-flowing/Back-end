@@ -55,6 +55,7 @@ public class Node {
         this.radius=radius;
         this.isChecked=isChecked;
         this.project=project;
+
     }
 
     public void update(NodeEditRequestDto dto){
