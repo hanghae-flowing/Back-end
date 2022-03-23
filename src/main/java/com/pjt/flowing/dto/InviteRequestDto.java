@@ -7,7 +7,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class InviteRequestDto {
 
-    private Long senderId;
-
     private String email;
 }

@@ -9,6 +9,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class InviteResponseDto {
 
-    private Long senderId;
-    private Long receiverId;
+    private String msg;
+    private String senderEmail;
+    private String receiverEmail;
 }
