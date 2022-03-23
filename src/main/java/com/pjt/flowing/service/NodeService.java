@@ -43,8 +43,22 @@ public class NodeService {
                 .build();
 
         nodeRepository.save(node);
+
+        NodeResponseDto nodeResponseDto = NodeResponseDto.builder()
+                .height(node.getHeight())
+                .radius(node.getRadius())
+                .isChecked(node.getIsChecked())
+                .text(node.getText())
+                .xval(node.getXval())
+                .yval(node.getYval())
+                .width(node.getWidth())
+                .nodeId(node.getId())
+                .projectId(project.getId())
+                .build();
+        JSONObject obj2 = new JSONObject(nodeResponseDto);
         obj.put("msg","노드 생성");
-        obj.put("nodeId",node.getId());
+        obj.put("nodeInfo",obj2);
+
         return obj.toString();
     }
 
