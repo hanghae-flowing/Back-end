@@ -20,7 +20,7 @@ public class PollingTest {
     @Column(name="project_id")
     private Long id;
 
-    @Column
+    @Column(length=10000)
     private String text;
 
     public PollingTest(String text) {

@@ -42,7 +42,7 @@ public class PollingTestController {
     }
 
     @PostMapping("api/test/text")   //맨처음 생성시, 풀링 x
-    public String textt(@RequestBody PollingTestDto dto){
+    public String textt(PollingTestDto dto){
         JSONObject obj = new JSONObject();
         obj.put("msg","pollingtest");
         PollingTest pollingTest = new PollingTest(dto.getText());
