@@ -1,6 +1,6 @@
 package com.pjt.flowing.model;
 
-import com.pjt.flowing.dto.NodeEditRequestDto;
+import com.pjt.flowing.dto.request.NodeEditRequestDto;
 import lombok.*;
 
 import javax.persistence.*;

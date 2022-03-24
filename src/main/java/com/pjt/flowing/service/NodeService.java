@@ -1,6 +1,9 @@
 package com.pjt.flowing.service;
 
-import com.pjt.flowing.dto.*;
+import com.pjt.flowing.dto.request.NodeCreateRequestDto;
+import com.pjt.flowing.dto.request.NodeEditRequestDto;
+import com.pjt.flowing.dto.request.NodePinRequestDto;
+import com.pjt.flowing.dto.response.NodeResponseDto;
 import com.pjt.flowing.model.Node;
 import com.pjt.flowing.model.Project;
 import com.pjt.flowing.repository.NodeRepository;
@@ -40,8 +43,22 @@ public class NodeService {
                 .build();
 
         nodeRepository.save(node);
-        obj.put("msg","노드생성");
-        obj.put("nodeId",node.getId());
+
+        NodeResponseDto nodeResponseDto = NodeResponseDto.builder()
+                .height(node.getHeight())
+                .radius(node.getRadius())
+                .isChecked(node.getIsChecked())
+                .text(node.getText())
+                .xval(node.getXval())
+                .yval(node.getYval())
+                .width(node.getWidth())
+                .nodeId(node.getId())
+                .projectId(project.getId())
+                .build();
+        JSONObject obj2 = new JSONObject(nodeResponseDto);
+        obj.put("msg","노드 생성");
+        obj.put("nodeInfo",obj2);
+
         return obj.toString();
     }
 
@@ -72,7 +89,7 @@ public class NodeService {
     }
 
     @Transactional
-    public String nodeEdit(Long id,NodeEditRequestDto nodeEditRequestDto){
+    public String nodeEdit(Long id, NodeEditRequestDto nodeEditRequestDto){
         Node node = nodeRepository.findById(id).orElseThrow(
                 ()->new IllegalArgumentException("edit error")
         );
@@ -102,6 +119,24 @@ public class NodeService {
         }
         JSONArray jsonArray = new JSONArray(nodeResponseDtoList);
         return jsonArray.toString();
+    }
+
+    public String showone(Long nodeId){
+        Node node = nodeRepository.findById(nodeId).orElseThrow(
+                ()->new IllegalArgumentException("node showone error")
+        );
+        NodeResponseDto nodeResponseDto = NodeResponseDto.builder()
+                .height(node.getHeight())
+                .radius(node.getRadius())
+                .isChecked(node.getIsChecked())
+                .text(node.getText())
+                .xval(node.getXval())
+                .yval(node.getYval())
+                .width(node.getWidth())
+                .nodeId(node.getId())
+                .build();
+        JSONObject obj = new JSONObject(nodeResponseDto);
+        return obj.toString();
     }
 
 }
