@@ -1,7 +1,9 @@
 package com.pjt.flowing.controller;
 
+import com.pjt.flowing.dto.PollingEditDto;
 import com.pjt.flowing.dto.response.PollingResponseDto;
 import com.pjt.flowing.dto.PollingTestDto;
+import com.pjt.flowing.model.Node;
 import com.pjt.flowing.model.PollingTest;
 import com.pjt.flowing.repository.PollingRepository;
 import lombok.RequiredArgsConstructor;
@@ -9,6 +11,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.web.bind.annotation.*;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -41,20 +44,27 @@ public class PollingTestController {
         return jsonArray.toString();
     }
 
+    @Transactional
     @PostMapping("api/test/text")   //맨처음 생성시, 풀링 x
-    public String textt(PollingTestDto dto){
+    public String textt(@RequestBody PollingTestDto dto){
         JSONObject obj = new JSONObject();
-        obj.put("msg","pollingtest");
+        obj.put("msg","폴링 생성 테스트");
         PollingTest pollingTest = new PollingTest(dto.getText());
         pollingRepository.save(pollingTest);
         obj.put("text",dto.getText());
+        obj.put("textId",pollingTest.getId());
         return obj.toString();
     }
 
-    @PutMapping("api/test/textput")
-    public String textp(@RequestBody PollingTestDto dto){
-        JSONObject obj = new JSONObject();
-        obj.put("msg","polling 수정");
+    @Transactional
+    @PutMapping("api/test/textput/{textId}")
+    public String textp(@PathVariable Long textId,@RequestBody PollingEditDto dto){
+        PollingTest pollingTest  = pollingRepository.findById(textId).orElseThrow(
+                ()->new IllegalArgumentException("edit error")
+        );
+        pollingTest.update(dto);
+        JSONObject obj = new JSONObject(pollingTest.getText());
+        obj.put("textinfo",obj);
         return obj.toString();
     }
 }

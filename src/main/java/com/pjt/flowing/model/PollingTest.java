@@ -2,6 +2,7 @@ package com.pjt.flowing.model;
 
 
 import com.pjt.flowing.dto.PollingEditDto;
+import com.pjt.flowing.dto.PollingTestDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,8 +28,8 @@ public class PollingTest {
         this.text = text;
     }
 
-    public void update(PollingEditDto editDto){
-        this.text=editDto.getText();
+    public void update(PollingEditDto Dto){
+        this.text=Dto.getText();
     }
 
 }
