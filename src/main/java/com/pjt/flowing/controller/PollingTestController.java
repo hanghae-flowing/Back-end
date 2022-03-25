@@ -3,7 +3,6 @@ package com.pjt.flowing.controller;
 import com.pjt.flowing.dto.PollingEditDto;
 import com.pjt.flowing.dto.response.PollingResponseDto;
 import com.pjt.flowing.dto.PollingTestDto;
-import com.pjt.flowing.model.Node;
 import com.pjt.flowing.model.PollingTest;
 import com.pjt.flowing.repository.PollingRepository;
 import lombok.RequiredArgsConstructor;
@@ -21,14 +20,19 @@ import java.util.UUID;
 public class PollingTestController {
     private final PollingRepository pollingRepository;
 
-    @GetMapping("api/test") //test api
-    public String testt(){
-        JSONObject obj = new JSONObject();
-        obj.put("msg","응애응애 폴링테스트에용");
-        String id = UUID.randomUUID().toString();
-        obj.put("랜덤이에용",id);
-        System.out.println("uuid test"+id);
-        return obj.toString();
+    @GetMapping("api/test/{textId}") //test api
+    public String testt(@PathVariable Long textId){
+
+        PollingTest pollingTest = pollingRepository.findById(textId).orElseThrow(
+                ()->new IllegalArgumentException("get error")
+        );
+//        JSONObject obj = new JSONObject(pollingTest);
+//        obj.put("msg","응애응애 폴링테스트에용");
+//        String id = UUID.randomUUID().toString();
+//        obj.put("랜덤이에용",id);
+//        obj.put("textinfo",pollingTest);
+//        System.out.println("uuid test"+id);
+        return pollingTest.getText();
     }
 
     @GetMapping("api/test/showall")
@@ -63,8 +67,8 @@ public class PollingTestController {
                 ()->new IllegalArgumentException("edit error")
         );
         pollingTest.update(dto);
-        JSONObject obj = new JSONObject(pollingTest.getText());
-        obj.put("textinfo",obj);
-        return obj.toString();
+//        JSONObject obj = new JSONObject(pollingTest.getText());
+//        obj.put("textinfo",obj);
+        return pollingTest.getText();
     }
 }
