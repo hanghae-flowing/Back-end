@@ -7,5 +7,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class InviteRequestDto {
 
-    private String email;
+    private Long projectId;
+    private String senderEmail;
+    private String receiverEmail;
 }
