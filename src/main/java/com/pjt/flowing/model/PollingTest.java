@@ -17,7 +17,7 @@ import javax.persistence.*;
 public class PollingTest {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="project_id")
+    @Column(name="text_id")
     private Long id;
 
     @Column(length=10000)

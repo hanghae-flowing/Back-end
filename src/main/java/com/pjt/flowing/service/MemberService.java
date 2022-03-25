@@ -150,6 +150,7 @@ public class MemberService {
             profileImageURL = jsonNode.get("properties").get("profile_image").asText();
         } catch (NullPointerException e) {
             System.out.println("null profile Image URL");
+            profileImageURL = "not exist";
         }
         System.out.println("카카오 api호출 response" + response);
         return new KakaoUserInfoDto(id, nickname, email, profileImageURL);
