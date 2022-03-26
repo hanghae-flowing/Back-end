@@ -37,19 +37,20 @@ public class DocumentLine {
     private Document document;
 
     @Builder
-    public DocumentLine(String text, int weight, int fontSize, String color, Document document, int indexNum) {
+    public DocumentLine(String text, int weight, int fontSize, String color, Document document, int indexNum, Long id) {
         this.text = text;
         this.weight = weight;
         this.fontSize = fontSize;
         this.color = color;
         this.document = document;
         this.indexNum = indexNum;
+        this.id=id;
     }
 
     public void update(DocumentLineEditRequestDto dto){
         this.text=dto.getText();
         this.weight=dto.getWeight();
-        this.fontSize=dto.getFontsize();
+        this.fontSize=dto.getFontSize();
         this.color=dto.getColor();
         this.indexNum=dto.getIndexNum();
 

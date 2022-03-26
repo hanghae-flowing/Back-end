@@ -27,15 +27,29 @@ public class DocumentService {
     private final DocumentLineRepository documentLineRepository;
     private final ProjectRepository projectRepository;
 
+//    @Transactional  //기획서 생성
+//    public String documentCreate(DocumentCreateRequestDto dto){
+//        JSONObject obj = new JSONObject();
+//        Project project = projectRepository.findById(dto.getProjectId()).orElseThrow(
+//                ()-> new IllegalArgumentException("project Id error")
+//        );
+//        Document document = new Document(project);
+//        documentRepository.save(document);
+//        obj.put("documentId",document.getId());
+//        return obj.toString();
+//    }
+
     @Transactional  //기획서 생성
-    public String documentCreate(DocumentCreateRequestDto dto){
+    public String documentCreate(Long id){
         JSONObject obj = new JSONObject();
-        Project project = projectRepository.findById(dto.getProjectId()).orElseThrow(
+        Project project = projectRepository.findById(id).orElseThrow(
                 ()-> new IllegalArgumentException("project Id error")
         );
         Document document = new Document(project);
         documentRepository.save(document);
         obj.put("documentId",document.getId());
+        System.out.println("다큐먼트 만들어줘"+document.getId());
+        System.out.println("프로젝트 아이디"+project.getId());
         return obj.toString();
     }
 
@@ -49,7 +63,7 @@ public class DocumentService {
                 .document(document)
                 .color(dto.getColor())
                 .text(dto.getText())
-                .fontSize(dto.getFontsize())
+                .fontSize(dto.getFontSize())
                 .weight(dto.getWeight())
                 .indexNum(dto.getIndexNum())
                 .build();
@@ -66,7 +80,15 @@ public class DocumentService {
                 ()->new IllegalArgumentException("not exist Line Id")
         );
         documentLine.update(dto);
-        JSONObject obj = new JSONObject();
+        DocumentLineResponseDto documentLineResponseDto = DocumentLineResponseDto.builder()
+                .lineId(documentLine.getId())
+                .indexNum(documentLine.getIndexNum())
+                .weight(documentLine.getWeight())
+                .text(documentLine.getText())
+                .fontSize(documentLine.getFontSize())
+                .color(documentLine.getColor())
+                .build();
+        JSONObject obj = new JSONObject(documentLineResponseDto);
         return obj.toString();
     }
 
@@ -80,6 +102,7 @@ public class DocumentService {
                     .text(documentLine.getText())
                     .weight(documentLine.getWeight())
                     .indexNum(documentLine.getIndexNum())
+                    .lineId(documentLine.getId())
                     .build();
             documentLineResponseDtoList.add(documentLineResponseDto);
         }

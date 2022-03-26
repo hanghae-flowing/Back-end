@@ -14,9 +14,13 @@ import org.springframework.web.bind.annotation.*;
 public class DocumentController {
     private final DocumentService documentService;
 
-    @PostMapping("/document")   //기획서 생성
-    public String documentCreate(@RequestBody DocumentCreateRequestDto dto){
-        return documentService.documentCreate(dto);
+//    @PostMapping("/document")   //기획서 생성
+//    public String documentCreate(@RequestBody DocumentCreateRequestDto dto){
+//        return documentService.documentCreate(dto);
+//    }
+    @PostMapping("/document/{projectId}")   //기획서 생성
+    public String documentCreate(@PathVariable Long projectId){
+        return documentService.documentCreate(projectId);
     }
 
     @PostMapping("/documentLines")  //기획서 줄 추가하기
