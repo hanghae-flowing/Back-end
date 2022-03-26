@@ -1,4 +1,4 @@
-package com.pjt.flowing.dto.request;
+package com.pjt.flowing.dto.response;
 
 import com.pjt.flowing.model.Bookmark;
 import com.pjt.flowing.model.Project;

@@ -32,12 +32,12 @@ public class NodeController {
         return nodeService.nodeEdit(id,nodeEditRequestDto);
     }
 
-    @GetMapping("/node/{projectId}") // 노드 전체보기
+    @GetMapping("/node/all/{projectId}") // 노드 전체보기
     public String getAll(@PathVariable Long projectId){
         return nodeService.showAll(projectId);
     }
 
-    @GetMapping("/node/{nodeId}")
+    @GetMapping("/node/{nodeId}")   //노드 하나 보기
     public String getOne(@PathVariable Long nodeId) {return nodeService.showOne(nodeId);}
 
 }
