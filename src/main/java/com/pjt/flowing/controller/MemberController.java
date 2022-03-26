@@ -22,13 +22,13 @@ public class MemberController {
         return memberService.kakaoLogin(code);
     }
 
-    @PostMapping("/api/logout")
+    @PostMapping("/logout")
     public String kakaoLogout(@RequestBody String accessToken) throws JsonProcessingException{
         System.out.println("엑세스 토큰"+accessToken);
         return memberService.kakaoLogout(accessToken);
     }
 
-    @PostMapping("/api/mypage")
+    @PostMapping("/mypage")
     public KakaoUserInfoDto myInfo(@RequestBody AuthorizationDto dto) throws JsonProcessingException {
         return memberService.getKakaoUserInfo(dto.getAccessToken());
     }

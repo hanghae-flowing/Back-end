@@ -104,6 +104,7 @@ public class MemberService {
         MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
         body.add("grant_type", "authorization_code");
         body.add("client_id", kakao_api);
+//
 //        body.add("redirect_uri", "http://localhost:8080/member/kakao/callback");
         body.add("redirect_uri", "http://localhost:3000/member/kakao/callback");
 //        body.add("redirect_uri", "http://hanghae-final5.s3-website.ap-northeast-2.amazonaws.com/member/kakao/callback");
@@ -150,6 +151,7 @@ public class MemberService {
             profileImageURL = jsonNode.get("properties").get("profile_image").asText();
         } catch (NullPointerException e) {
             System.out.println("null profile Image URL");
+            profileImageURL = "not exist";
         }
         System.out.println("카카오 api호출 response" + response);
         return new KakaoUserInfoDto(id, nickname, email, profileImageURL);
