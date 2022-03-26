@@ -12,32 +12,32 @@ import org.springframework.web.bind.annotation.*;
 public class NodeController {
     private final NodeService nodeService;
 
-    @PostMapping("api/node/create")     //노드 생성
+    @PostMapping("/node")     //노드 생성
     public String nodeCreate(@RequestBody NodeCreateRequestDto nodeCreateRequestDto){
         return nodeService.nodeCreate(nodeCreateRequestDto);
     }
 
-    @PostMapping("api/node/pin")        //노드 하이라이트
+    @PostMapping("/node/pin")        //노드 하이라이트
     public String pin(@RequestBody NodePinRequestDto nodePinRequestDto){
         return nodeService.pin(nodePinRequestDto);
     }
 
-    @DeleteMapping("api/node/delete/{id}")      //노드 삭제
+    @DeleteMapping("/node/{id}")      //노드 삭제
     public String nodeDelete(@PathVariable Long id){
         return nodeService.nodeDelete(id);
     }
 
-    @PutMapping("api/node/edit/{id}")       //노드 수정
+    @PutMapping("/node/{id}")       //노드 수정
     public String nodeEdit(@PathVariable Long id,@RequestBody NodeEditRequestDto nodeEditRequestDto){
         return nodeService.nodeEdit(id,nodeEditRequestDto);
     }
 
-    @GetMapping("api/node/showall/{projectId}") // 노드 전체보기
-    public String getall(@PathVariable Long projectId){
-        return nodeService.showall(projectId);
+    @GetMapping("/node/{projectId}") // 노드 전체보기
+    public String getAll(@PathVariable Long projectId){
+        return nodeService.showAll(projectId);
     }
 
-    @GetMapping("api/node/showone/{nodeId}")
-    public String getone(@PathVariable Long nodeId) {return nodeService.showone(nodeId);}
+    @GetMapping("/node/{nodeId}")
+    public String getOne(@PathVariable Long nodeId) {return nodeService.showOne(nodeId);}
 
 }

@@ -2,11 +2,10 @@ package com.pjt.flowing.dto.request;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Getter
 @NoArgsConstructor
-public class PjCreateRequestDto {
+public class ProjectCreateRequestDto {
     private String projectName;
     private int thumbNailNum;
     private Long objectId;

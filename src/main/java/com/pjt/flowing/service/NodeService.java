@@ -71,11 +71,11 @@ public class NodeService {
 
         if(node.getIsChecked()==0){
             node.setIsChecked(1);
-            obj.put("msg","체크 완료");
+            obj.put("msg","check");
         }
         else{
             node.setIsChecked(0);
-            obj.put("msg","체크 해제");
+            obj.put("msg","cancel");
         }
         return obj.toString();
     }
@@ -99,7 +99,7 @@ public class NodeService {
         return obj.toString();
     }
 
-    public String showall(Long projectId){
+    public String showAll(Long projectId){
 
         List<Node> nodeList = nodeRepository.findAllByProject_Id(projectId);
         List<NodeResponseDto> nodeResponseDtoList = new ArrayList<>();
@@ -121,7 +121,7 @@ public class NodeService {
         return jsonArray.toString();
     }
 
-    public String showone(Long nodeId){
+    public String showOne(Long nodeId){
         Node node = nodeRepository.findById(nodeId).orElseThrow(
                 ()->new IllegalArgumentException("node showone error")
         );
