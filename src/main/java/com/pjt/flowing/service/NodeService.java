@@ -28,7 +28,7 @@ public class NodeService {
     public String nodeCreate(NodeCreateRequestDto nodeCreateRequestDto){
         JSONObject obj = new JSONObject();
         Project project = projectRepository.findById(nodeCreateRequestDto.getProjectId()).orElseThrow(
-                ()->new IllegalArgumentException("node Create error")
+                ()->new IllegalArgumentException("project Id error")
         );
 
         Node node = Node.builder()

@@ -18,4 +18,8 @@ public class Document {
     @JoinColumn(name = "project_id")
     private Project project;
 
+    public Document(Project project){
+        this.project=project;
+    }
+
 }
