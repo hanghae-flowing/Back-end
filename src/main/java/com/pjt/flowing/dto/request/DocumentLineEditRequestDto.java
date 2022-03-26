@@ -5,7 +5,7 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class DocumentLineEditDto {
+public class DocumentLineEditRequestDto {
     private String text;
     private int weight;
     private int fontsize;

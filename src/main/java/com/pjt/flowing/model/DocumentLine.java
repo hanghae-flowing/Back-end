@@ -1,6 +1,6 @@
 package com.pjt.flowing.model;
 
-import com.pjt.flowing.dto.request.DocumentLineEditDto;
+import com.pjt.flowing.dto.request.DocumentLineEditRequestDto;
 import lombok.*;
 
 import javax.persistence.*;
@@ -46,7 +46,7 @@ public class DocumentLine {
         this.indexNum = indexNum;
     }
 
-    public void update(DocumentLineEditDto dto){
+    public void update(DocumentLineEditRequestDto dto){
         this.text=dto.getText();
         this.weight=dto.getWeight();
         this.fontSize=dto.getFontsize();

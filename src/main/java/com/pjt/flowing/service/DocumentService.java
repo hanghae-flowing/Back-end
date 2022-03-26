@@ -1,7 +1,7 @@
 package com.pjt.flowing.service;
 
 import com.pjt.flowing.dto.request.DocumentCreateRequestDto;
-import com.pjt.flowing.dto.request.DocumentLineEditDto;
+import com.pjt.flowing.dto.request.DocumentLineEditRequestDto;
 import com.pjt.flowing.dto.request.DocumentLineRequestDto;
 import com.pjt.flowing.dto.response.DocumentLineResponseDto;
 import com.pjt.flowing.model.Document;
@@ -61,7 +61,7 @@ public class DocumentService {
     }
 
     @Transactional  //기획서 라인 수정하기
-    public String lineEdit(Long documentLineId,DocumentLineEditDto dto){
+    public String lineEdit(Long documentLineId, DocumentLineEditRequestDto dto){
         DocumentLine documentLine = documentLineRepository.findById(documentLineId).orElseThrow(
                 ()->new IllegalArgumentException("not exist Line Id")
         );

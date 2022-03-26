@@ -2,7 +2,7 @@ package com.pjt.flowing.controller;
 
 
 import com.pjt.flowing.dto.request.DocumentCreateRequestDto;
-import com.pjt.flowing.dto.request.DocumentLineEditDto;
+import com.pjt.flowing.dto.request.DocumentLineEditRequestDto;
 import com.pjt.flowing.dto.request.DocumentLineRequestDto;
 import com.pjt.flowing.service.DocumentService;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +25,7 @@ public class DocumentController {
     }
 
     @PutMapping("/documentLines/{documentLineId}")  //기획서 줄 수정하기
-    public String lineEdit(@PathVariable Long documentLineId, @RequestBody DocumentLineEditDto dto){
+    public String lineEdit(@PathVariable Long documentLineId, @RequestBody DocumentLineEditRequestDto dto){
         return documentService.lineEdit(documentLineId,dto);
     }
 

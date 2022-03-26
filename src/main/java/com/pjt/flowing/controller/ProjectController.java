@@ -5,7 +5,7 @@ import com.pjt.flowing.dto.*;
 import com.pjt.flowing.dto.request.AcceptRequestDto;
 import com.pjt.flowing.dto.request.ProjectCreateRequestDto;
 import com.pjt.flowing.dto.request.ProjectEditRequestDto;
-import com.pjt.flowing.dto.request.ProjectResponseDto;
+import com.pjt.flowing.dto.response.ProjectResponseDto;
 import com.pjt.flowing.dto.response.MsgResponseDto;
 import com.pjt.flowing.model.*;
 import com.pjt.flowing.repository.*;
