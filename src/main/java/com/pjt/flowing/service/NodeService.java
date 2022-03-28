@@ -25,6 +25,7 @@ public class NodeService {
 
     private final NodeRepository nodeRepository;
     private final NodeTableRepository nodeTableRepository;
+    private final ProjectRepository projectRepository;
 
     @Transactional
     public String nodeCreate(NodeCreateRequestDto nodeCreateRequestDto){
@@ -138,6 +139,19 @@ public class NodeService {
                 .nodeId(node.getId())
                 .build();
         JSONObject obj = new JSONObject(nodeResponseDto);
+        return obj.toString();
+    }
+
+    @Transactional  //여기에 template default 값 넣어줘야함
+    public String nodeTableCreate(Long projectId){
+        Project project = projectRepository.findById(projectId).orElseThrow(
+                ()-> new IllegalArgumentException("project Id error")
+        );
+
+        NodeTable nodeTable = new NodeTable(project);
+        nodeTableRepository.save(nodeTable);
+        JSONObject obj = new JSONObject();
+        obj.put("nodeTableId",nodeTable.getId());
         return obj.toString();
     }
 

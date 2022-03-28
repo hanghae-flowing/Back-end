@@ -30,10 +30,10 @@ public class DocumentService {
     private final ProjectRepository projectRepository;
     private final DocumentLineTemplatesRepository documentLineTemplatesRepository;
 
-    @Transactional  //기획서 생성 시키면서 templates 값 넣어주기
-    public String documentCreate(Long id){
+    @Transactional  //기획서 생성 시키면서 default template 값 넣어주기
+    public String documentCreate(Long projectId){
         JSONObject obj = new JSONObject();
-        Project project = projectRepository.findById(id).orElseThrow(
+        Project project = projectRepository.findById(projectId).orElseThrow(
                 ()-> new IllegalArgumentException("project Id error")
         );
         Document document = new Document(project);

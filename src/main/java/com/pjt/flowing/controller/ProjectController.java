@@ -130,4 +130,9 @@ public class ProjectController {
         return projectService.accept(acceptRequestDto);
     }
 
+    @GetMapping("/project/{projectid}/templates")   //모든 템플릿 리스트 불러오기
+    public String showTemplates(@PathVariable Long projectid){
+        return projectService.showTemplates(projectid);
+    }
+
 }

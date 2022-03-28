@@ -12,6 +12,11 @@ import org.springframework.web.bind.annotation.*;
 public class NodeController {
     private final NodeService nodeService;
 
+    @PostMapping("/nodeTable/{projectId}")  //노드 테이블 생성
+    public String nodeTableCreate(@PathVariable Long projectId){
+        return nodeService.nodeTableCreate(projectId);
+    }
+
     @PostMapping("/node")     //노드 생성
     public String nodeCreate(@RequestBody NodeCreateRequestDto nodeCreateRequestDto){
         return nodeService.nodeCreate(nodeCreateRequestDto);

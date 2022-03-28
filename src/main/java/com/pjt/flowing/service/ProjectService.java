@@ -162,4 +162,8 @@ public class ProjectService {
         obj.put("msg","수락 완료");
         return obj.toString();
     }
+
+    public String showTemplates(Long projectid){    //api다 나오면 하좌
+        return "a";
+    }
 }
