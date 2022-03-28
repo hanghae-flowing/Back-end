@@ -139,11 +139,14 @@ public class DocumentService {
     public String Showall(Long projectId){
         List<Document> documentList = documentRepository.findAllByProject_Id(projectId);
         List<DocumentIdResponseDto> documentIdResponseDtoList = new ArrayList<>();
+        JSONObject obj = new JSONObject();
         for(Document document: documentList){
             DocumentIdResponseDto documentIdResponseDto = new DocumentIdResponseDto(document.getProject().getId());
             documentIdResponseDtoList.add(documentIdResponseDto);
+
         }
-        JSONArray array= new JSONArray(documentIdResponseDtoList);
-        return array.toString();
+        obj.put("msg","기획서 리스트 불러오기");
+        obj.put("documentIdList",documentIdResponseDtoList);
+        return obj.toString();
     }
 }
