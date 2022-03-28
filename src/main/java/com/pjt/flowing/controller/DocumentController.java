@@ -23,9 +23,9 @@ public class DocumentController {
         return documentService.lineCreate(dto);
     }
 
-    @PutMapping("/documentLines/{documentLineId}")  //기획서 줄 수정하기
-    public String lineEdit(@PathVariable Long documentLineId, @RequestBody DocumentLineEditRequestDto dto){
-        return documentService.lineEdit(documentLineId,dto);
+    @PutMapping("/documentLines/{lineId}")  //기획서 줄 수정하기
+    public String lineEdit(@PathVariable Long lineId, @RequestBody DocumentLineEditRequestDto dto){
+        return documentService.lineEdit(lineId,dto);
     }
 
     @GetMapping("/documentLines/{documentId}")  //기획서 줄 모두 불러오기
@@ -33,6 +33,10 @@ public class DocumentController {
         return documentService.showAll(documentId);
     }
 
+    @DeleteMapping("/documentLines/{lineId}")   //기획서 줄 삭제하기
+    public String lineDelete(@PathVariable Long lineId){
+        return documentService.lineDelete(lineId);
+    }
 
 }
 

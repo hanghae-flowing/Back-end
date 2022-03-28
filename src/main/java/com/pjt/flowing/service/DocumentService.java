@@ -92,8 +92,8 @@ public class DocumentService {
     }
 
     @Transactional  //기획서 라인 수정하기
-    public String lineEdit(Long documentLineId, DocumentLineEditRequestDto dto){
-        DocumentLine documentLine = documentLineRepository.findById(documentLineId).orElseThrow(
+    public String lineEdit(Long lineId, DocumentLineEditRequestDto dto){
+        DocumentLine documentLine = documentLineRepository.findById(lineId).orElseThrow(
                 ()->new IllegalArgumentException("not exist Line Id")
         );
         documentLine.update(dto);
@@ -125,5 +125,13 @@ public class DocumentService {
         }
         JSONArray jsonArray = new JSONArray(documentLineResponseDtoList);
         return jsonArray.toString();
+    }
+
+    @Transactional
+    public String lineDelete(Long lineId){
+        documentLineRepository.deleteById(lineId);
+        JSONObject obj = new JSONObject();
+        obj.put("msg","기획서 라인 삭제");
+        return obj.toString();
     }
 }
