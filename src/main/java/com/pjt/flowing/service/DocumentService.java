@@ -134,4 +134,13 @@ public class DocumentService {
         obj.put("msg","기획서 라인 삭제");
         return obj.toString();
     }
+
+    public String Showall(Long projectId){
+        List<Document> documentList = documentRepository.findAllByProject_Id(projectId);
+        JSONObject obj = new JSONObject();
+        obj.put("msg","다큐먼트 목록 불러오기 성공");
+        JSONArray array = new JSONArray(documentList);
+        obj.put("ListInfo",array);
+        return obj.toString();
+    }
 }
