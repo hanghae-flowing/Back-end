@@ -25,6 +25,9 @@
   </tr>
 </table>
 
+<h1> API 설계 </h1>
+https://drawsql.app/draw-2/diagrams/girin2/embed
+
 ### 📬커밋 종류
 > 수정한 종류에 따라 커밋 메시지를 선택
 
