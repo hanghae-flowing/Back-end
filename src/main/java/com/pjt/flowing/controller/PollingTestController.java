@@ -67,8 +67,6 @@ public class PollingTestController {
                 ()->new IllegalArgumentException("edit error")
         );
         pollingTest.update(dto);
-//        JSONObject obj = new JSONObject(pollingTest.getText());
-//        obj.put("textinfo",obj);
         return pollingTest.getText();
     }
 }

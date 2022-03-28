@@ -14,12 +14,12 @@ public class NodeResponseDto {
     private String text;
     private String radius;
     private int isChecked;
-    private Long projectId;
+    private Long nodeTableId;
     private Long nodeId;
 
     @Builder
     public NodeResponseDto(String xval, String yval, String width, String height, String text,
-                           String radius, int isChecked, Long projectId, Long nodeId) {
+                           String radius, int isChecked, Long nodeTableId, Long nodeId) {
         this.xval = xval;
         this.yval = yval;
         this.width = width;
@@ -27,7 +27,7 @@ public class NodeResponseDto {
         this.text = text;
         this.radius = radius;
         this.isChecked = isChecked;
-        this.projectId = projectId;
+        this.nodeTableId = nodeTableId;
         this.nodeId=nodeId;
     }
 }

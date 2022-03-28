@@ -5,8 +5,10 @@ import com.pjt.flowing.dto.request.NodeEditRequestDto;
 import com.pjt.flowing.dto.request.NodePinRequestDto;
 import com.pjt.flowing.dto.response.NodeResponseDto;
 import com.pjt.flowing.model.Node;
+import com.pjt.flowing.model.NodeTable;
 import com.pjt.flowing.model.Project;
 import com.pjt.flowing.repository.NodeRepository;
+import com.pjt.flowing.repository.NodeTableRepository;
 import com.pjt.flowing.repository.ProjectRepository;
 import lombok.RequiredArgsConstructor;
 import org.json.JSONArray;
@@ -22,13 +24,14 @@ import java.util.List;
 public class NodeService {
 
     private final NodeRepository nodeRepository;
+    private final NodeTableRepository nodeTableRepository;
     private final ProjectRepository projectRepository;
 
     @Transactional
     public String nodeCreate(NodeCreateRequestDto nodeCreateRequestDto){
         JSONObject obj = new JSONObject();
-        Project project = projectRepository.findById(nodeCreateRequestDto.getProjectId()).orElseThrow(
-                ()->new IllegalArgumentException("project Id error")
+        NodeTable nodeTable = nodeTableRepository.findById(nodeCreateRequestDto.getNodeTableId()).orElseThrow(
+                ()->new IllegalArgumentException("nodeTable Id error")
         );
 
         Node node = Node.builder()
@@ -39,7 +42,7 @@ public class NodeService {
                 .width(nodeCreateRequestDto.getWidth())
                 .xval(nodeCreateRequestDto.getXval())
                 .yval(nodeCreateRequestDto.getYval())
-                .project(project)
+                .nodeTable(nodeTable)
                 .build();
 
         nodeRepository.save(node);
@@ -53,7 +56,7 @@ public class NodeService {
                 .yval(node.getYval())
                 .width(node.getWidth())
                 .nodeId(node.getId())
-                .projectId(project.getId())
+                .nodeTableId(nodeTable.getId())
                 .build();
         JSONObject obj2 = new JSONObject(nodeResponseDto);
         obj.put("msg","노드 생성");
@@ -99,9 +102,9 @@ public class NodeService {
         return obj.toString();
     }
 
-    public String showAll(Long projectId){
+    public String showAll(Long nodeTableId){
 
-        List<Node> nodeList = nodeRepository.findAllByProject_Id(projectId);
+        List<Node> nodeList = nodeRepository.findAllByNodeTable_Id(nodeTableId);
         List<NodeResponseDto> nodeResponseDtoList = new ArrayList<>();
         for(Node node : nodeList){
             NodeResponseDto nodeResponseDto = NodeResponseDto.builder()
@@ -112,7 +115,7 @@ public class NodeService {
                     .xval(node.getXval())
                     .yval(node.getYval())
                     .width(node.getWidth())
-                    .projectId(projectId)
+                    .nodeTableId(nodeTableId)
                     .nodeId(node.getId())
                     .build();
             nodeResponseDtoList.add(nodeResponseDto);
@@ -136,6 +139,19 @@ public class NodeService {
                 .nodeId(node.getId())
                 .build();
         JSONObject obj = new JSONObject(nodeResponseDto);
+        return obj.toString();
+    }
+
+    @Transactional  //여기에 template default 값 넣어줘야함
+    public String nodeTableCreate(Long projectId){
+        Project project = projectRepository.findById(projectId).orElseThrow(
+                ()-> new IllegalArgumentException("project Id error")
+        );
+
+        NodeTable nodeTable = new NodeTable(project);
+        nodeTableRepository.save(nodeTable);
+        JSONObject obj = new JSONObject();
+        obj.put("nodeTableId",nodeTable.getId());
         return obj.toString();
     }
 
