@@ -62,6 +62,7 @@ public class DocumentService {
                     .indexNum(documentLine.getIndexNum())
                     .lineId(documentLine.getId())
                     .build();
+            documentLineRepository.save(documentLine);
             documentLineResponseDtoList.add(documentLineResponseDto);
         }
         JSONArray array = new JSONArray(documentLineResponseDtoList);
