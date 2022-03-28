@@ -36,12 +36,12 @@ public class ProjectController {
         return projectService.getAll(requestDto.getUserId());
     }
 
-    @PostMapping("/project/read") // 홈화면에 북마크된거 4개 아니면 최신순으로 보여주기
-    public List<ProjectResponseDto> getProjectWith4(@RequestBody AuthorizationDto requestDto){
-
-        // Userid로 북마크4개 조회 ->
-        return projectService.get4(requestDto.getUserId());
-    }
+//    @PostMapping("/project/read") // 홈화면에 북마크된거 4개 아니면 최신순으로 보여주기
+//    public List<ProjectResponseDto> getProjectWith4(@RequestBody AuthorizationDto requestDto){
+//
+//        // Userid로 북마크4개 조회 ->
+//        return projectService.get4(requestDto.getUserId());
+//    }
 
     @Transactional
     @PostMapping("/project")    //프로젝트 생성
