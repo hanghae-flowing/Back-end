@@ -11,6 +11,7 @@ import com.pjt.flowing.model.*;
 import com.pjt.flowing.repository.*;
 import com.pjt.flowing.security.Authorization;
 import com.pjt.flowing.service.ProjectService;
+import com.pjt.flowing.validator.AuthorizationValidator;
 import lombok.RequiredArgsConstructor;
 import org.json.JSONObject;
 import org.springframework.web.bind.annotation.*;
@@ -23,16 +24,18 @@ import java.util.List;
 public class ProjectController {
     private final ProjectService projectService;
     private final MemberRepository memberRepository;
-    private final Authorization authorization;
+    private final AuthorizationValidator authorizationValidator;
     private final ProjectRepository projectRepository;
     private final BookmarkRepository bookmarkRepository;
     private final ProjectMemberRepository projectMemberRepository;
 
     @PostMapping("/project/detail") // 더보기페이지
     public List<ProjectResponseDto> getProject(@RequestBody AuthorizationDto requestDto) throws JsonProcessingException {
-        if(authorization.getKakaoId(requestDto)==0){
-            System.out.println("인가x");
-        }
+//        if(authorization.getKakaoId(requestDto)==0){
+//            System.out.println("인가x");
+//        }
+        // 인가 확인
+        authorizationValidator.tokenCheck(requestDto);
         return projectService.getAll(requestDto.getUserId());
     }
 
@@ -48,10 +51,9 @@ public class ProjectController {
     public String createProject(@RequestBody ProjectCreateRequestDto pjCreateRequestDto) throws JsonProcessingException {
         AuthorizationDto authorizationDto = new AuthorizationDto(pjCreateRequestDto.getAccessToken(),pjCreateRequestDto.getKakaoId(),pjCreateRequestDto.getUserId());
         JSONObject obj = new JSONObject();
-        if (authorization.getKakaoId(authorizationDto) == 0){
-            obj.put("msg","false");
-            return obj.toString();
-        }
+        // 인가 확인
+        authorizationValidator.tokenCheck(authorizationDto);
+
         Member member = memberRepository.findById(pjCreateRequestDto.getUserId()).orElseThrow(
                 () -> new IllegalArgumentException("no Id")
         );
@@ -75,8 +77,10 @@ public class ProjectController {
 
     @Transactional
     @PostMapping("/bookmark/{projectId}")   //북마크 생성
-    public MsgResponseDto CheckBookmark(@PathVariable Long projectId , @RequestBody AuthorizationDto authorizationDto) {
+    public MsgResponseDto CheckBookmark(@PathVariable Long projectId , @RequestBody AuthorizationDto authorizationDto) throws JsonProcessingException {
         System.out.println(projectId);
+        authorizationValidator.tokenCheck(authorizationDto);
+
         boolean check = bookmarkRepository.existsByMember_IdAndProject_Id(authorizationDto.getUserId(), projectId);
 
         Project project = projectRepository.findById(projectId).orElseThrow(
