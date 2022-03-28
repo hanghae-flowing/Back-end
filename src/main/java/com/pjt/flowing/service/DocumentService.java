@@ -2,6 +2,7 @@ package com.pjt.flowing.service;
 
 import com.pjt.flowing.dto.request.DocumentLineEditRequestDto;
 import com.pjt.flowing.dto.request.DocumentLineRequestDto;
+import com.pjt.flowing.dto.response.DocumentIdResponseDto;
 import com.pjt.flowing.dto.response.DocumentLineResponseDto;
 import com.pjt.flowing.model.Document;
 import com.pjt.flowing.model.DocumentLine;
@@ -92,8 +93,8 @@ public class DocumentService {
     }
 
     @Transactional  //기획서 라인 수정하기
-    public String lineEdit(Long documentLineId, DocumentLineEditRequestDto dto){
-        DocumentLine documentLine = documentLineRepository.findById(documentLineId).orElseThrow(
+    public String lineEdit(Long lineId, DocumentLineEditRequestDto dto){
+        DocumentLine documentLine = documentLineRepository.findById(lineId).orElseThrow(
                 ()->new IllegalArgumentException("not exist Line Id")
         );
         documentLine.update(dto);
@@ -125,5 +126,27 @@ public class DocumentService {
         }
         JSONArray jsonArray = new JSONArray(documentLineResponseDtoList);
         return jsonArray.toString();
+    }
+
+    @Transactional
+    public String lineDelete(Long lineId){
+        documentLineRepository.deleteById(lineId);
+        JSONObject obj = new JSONObject();
+        obj.put("msg","기획서 라인 삭제");
+        return obj.toString();
+    }
+
+    public String Showall(Long projectId){
+        List<Document> documentList = documentRepository.findAllByProject_Id(projectId);
+        List<DocumentIdResponseDto> documentIdResponseDtoList = new ArrayList<>();
+        JSONObject obj = new JSONObject();
+        for(Document document: documentList){
+            DocumentIdResponseDto documentIdResponseDto = new DocumentIdResponseDto(document.getProject().getId());
+            documentIdResponseDtoList.add(documentIdResponseDto);
+
+        }
+        obj.put("msg","기획서 리스트 불러오기");
+        obj.put("documentIdList",documentIdResponseDtoList);
+        return obj.toString();
     }
 }
