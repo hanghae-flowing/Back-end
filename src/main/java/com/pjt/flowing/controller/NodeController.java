@@ -22,19 +22,19 @@ public class NodeController {
         return nodeService.pin(nodePinRequestDto);
     }
 
-    @DeleteMapping("/node/{id}")      //노드 삭제
-    public String nodeDelete(@PathVariable Long id){
-        return nodeService.nodeDelete(id);
+    @DeleteMapping("/node/{nodeId}")      //개별 노드 삭제
+    public String nodeDelete(@PathVariable Long nodeId){
+        return nodeService.nodeDelete(nodeId);
     }
 
-    @PutMapping("/node/{id}")       //노드 수정
-    public String nodeEdit(@PathVariable Long id,@RequestBody NodeEditRequestDto nodeEditRequestDto){
-        return nodeService.nodeEdit(id,nodeEditRequestDto);
+    @PutMapping("/node/{nodeId}")       //개별 노드 수정
+    public String nodeEdit(@PathVariable Long nodeId,@RequestBody NodeEditRequestDto nodeEditRequestDto){
+        return nodeService.nodeEdit(nodeId,nodeEditRequestDto);
     }
 
-    @GetMapping("/node/all/{projectId}") // 노드 전체보기
-    public String getAll(@PathVariable Long projectId){
-        return nodeService.showAll(projectId);
+    @GetMapping("/node/all/{nodeTableId}") // 노드 템플릿 한개의 노드 전체보기
+    public String getAll(@PathVariable Long nodeTableId){
+        return nodeService.showAll(nodeTableId);
     }
 
     @GetMapping("/node/{nodeId}")   //노드 하나 보기

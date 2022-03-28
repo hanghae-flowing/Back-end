@@ -14,6 +14,6 @@ public class NodeCreateRequestDto {
     private String text;
     private String radius;
     private int isChecked;
-    private Long projectId;
+    private Long nodeTableId;
 
 }

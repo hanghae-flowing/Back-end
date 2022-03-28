@@ -39,7 +39,7 @@ public class Project extends Timestamped{
     private List<ProjectMember> ProjectMemberList = new ArrayList<>();
 
     @OneToMany(mappedBy = "project",fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
-    private List<Node> NodeList = new ArrayList<>();    //node와 단방향 매핑
+    private List<NodeTable> NodeTableList = new ArrayList<>();    //nodetable와 단방향 매핑
 
     @OneToMany(mappedBy = "project",fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<Document> DocumentList = new ArrayList<>();    //document와 단방향 매핑
