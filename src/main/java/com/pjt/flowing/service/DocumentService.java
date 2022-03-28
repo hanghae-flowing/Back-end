@@ -2,6 +2,7 @@ package com.pjt.flowing.service;
 
 import com.pjt.flowing.dto.request.DocumentLineEditRequestDto;
 import com.pjt.flowing.dto.request.DocumentLineRequestDto;
+import com.pjt.flowing.dto.response.DocumentIdResponseDto;
 import com.pjt.flowing.dto.response.DocumentLineResponseDto;
 import com.pjt.flowing.model.Document;
 import com.pjt.flowing.model.DocumentLine;
@@ -137,10 +138,12 @@ public class DocumentService {
 
     public String Showall(Long projectId){
         List<Document> documentList = documentRepository.findAllByProject_Id(projectId);
-        JSONObject obj = new JSONObject();
-        obj.put("msg","다큐먼트 목록 불러오기 성공");
-        JSONArray array = new JSONArray(documentList);
-        obj.put("ListInfo",array);
-        return obj.toString();
+        List<DocumentIdResponseDto> documentIdResponseDtoList = new ArrayList<>();
+        for(Document document: documentList){
+            DocumentIdResponseDto documentIdResponseDto = new DocumentIdResponseDto(document.getProject().getId());
+            documentIdResponseDtoList.add(documentIdResponseDto);
+        }
+        JSONArray array= new JSONArray(documentIdResponseDtoList);
+        return array.toString();
     }
 }
