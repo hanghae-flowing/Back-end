@@ -33,7 +33,7 @@ public class SWOTService {
         );
         SWOT swot = new SWOT(project);
         swotRepository.save(swot);
-        obj.put("swotId",swot.getId());
+        obj.put("swotId",swot.getId()); //responseDto로 보내주세용
 
         List<SWOTResponseDto> strengthList = new ArrayList<>();
         List<SWOTResponseDto> weaknessList = new ArrayList<>();
@@ -48,15 +48,18 @@ public class SWOTService {
             OpportunityTable opportunityTable = new OpportunityTable(s, swot);
             ThreatTable threatTable = new ThreatTable(s, swot);
 
+            strengthRepository.save(strengthTable);
+            weaknessRepository.save(weaknessTable);
+            opportunityRepository.save(opportunityTable);
+            threatRepository.save(threatTable);
+
+
             SWOTResponseDto strengthDto = new SWOTResponseDto(strengthTable.getId(), strengthTable.getText());
             SWOTResponseDto weaknessDto = new SWOTResponseDto(weaknessTable.getId(), weaknessTable.getText());
             SWOTResponseDto opportunityDto = new SWOTResponseDto(opportunityTable.getId(), opportunityTable.getText());
             SWOTResponseDto threatDto = new SWOTResponseDto(threatTable.getId(), threatTable.getText());
 
-            strengthRepository.save(strengthTable);
-            weaknessRepository.save(weaknessTable);
-            opportunityRepository.save(opportunityTable);
-            threatRepository.save(threatTable);
+
 
             strengthList.add(strengthDto);
             weaknessList.add(weaknessDto);
