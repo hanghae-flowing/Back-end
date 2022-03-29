@@ -2,6 +2,8 @@ package com.pjt.flowing.model;
 
 import com.pjt.flowing.dto.request.NodeEditRequestDto;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 
@@ -42,6 +44,7 @@ public class Node {
 
     @ManyToOne
     @JoinColumn(name="nodeTable_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private NodeTable nodeTable;
 
     @Builder
