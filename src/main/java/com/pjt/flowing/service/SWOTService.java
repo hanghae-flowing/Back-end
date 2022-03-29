@@ -163,4 +163,12 @@ public class SWOTService {
 
         return obj.toString();
     }
+
+    @Transactional
+    public String swotDelete(Long swotId){
+        swotRepository.deleteById(swotId);
+        JSONObject obj = new JSONObject();
+        obj.put("msg","스왓 페이지 삭제");
+        return obj.toString();
+    }
 }

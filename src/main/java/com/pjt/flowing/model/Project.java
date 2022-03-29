@@ -39,13 +39,13 @@ public class Project extends Timestamped{
     private List<ProjectMember> ProjectMemberList = new ArrayList<>();
 
     @OneToMany(mappedBy = "project",fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
-    private List<NodeTable> NodeTableList = new ArrayList<>();    //nodetable와 단방향 매핑
+    private List<NodeTable> NodeTableList = new ArrayList<>();
 
     @OneToMany(mappedBy = "project",fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
-    private List<GapTable> GapTableList = new ArrayList<>();    //gaptable와 단방향 매핑
+    private List<GapTable> GapTableList = new ArrayList<>();
 
     @OneToMany(mappedBy = "project",fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
-    private List<Document> DocumentList = new ArrayList<>();    //document와 단방향 매핑
+    private List<Document> DocumentList = new ArrayList<>();
 
     public Project(String projectName, Long objectId, Member member, int thumbNailNum) {
         this.projectName = projectName;

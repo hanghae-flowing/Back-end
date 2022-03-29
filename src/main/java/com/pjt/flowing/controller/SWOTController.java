@@ -16,6 +16,11 @@ public class SWOTController {
         return swotService.swotCreate(projectId);
     }
 
+    @DeleteMapping("/swot/{swotId}")    //스왓 페이지 정보 삭제
+    public String swotDelete(@PathVariable Long swotId){
+        return swotService.swotDelete(swotId);
+    }
+
     @GetMapping("/swot/{swotId}")
     public String ShowAll(@PathVariable Long swotId) {
         return swotService.showAll(swotId);

@@ -4,6 +4,8 @@ import com.pjt.flowing.dto.request.SWOTRequestDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 
@@ -23,6 +25,7 @@ public class ThreatTable {
 
     @ManyToOne
     @JoinColumn(name="swot_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private SWOT swot;
 
     public ThreatTable(String text, SWOT swot) {
