@@ -2,8 +2,12 @@ package com.pjt.flowing.model;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @NoArgsConstructor
 @Getter
@@ -16,7 +20,11 @@ public class GapTable {
 
     @ManyToOne
     @JoinColumn(name="project_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Project project;
+
+    @OneToMany(mappedBy = "gapTable",fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
+    private List<GapNode> gapNodeList = new ArrayList<>();
 
     public GapTable(Project project) {
         this.project = project;

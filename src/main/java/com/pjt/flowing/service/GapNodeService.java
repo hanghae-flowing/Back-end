@@ -106,4 +106,12 @@ public class GapNodeService {
         JSONArray jsonArray = new JSONArray(gapNodeResponseDtoList);
         return jsonArray.toString();
     }
+
+    @Transactional
+    public String gapTableDelete(Long gapTableId){
+        gapTableRepository.deleteById(gapTableId);
+        JSONObject obj = new JSONObject();
+        obj.put("msg","갭분석 테이블 삭제");
+        return obj.toString();
+    }
 }
