@@ -155,4 +155,11 @@ public class NodeService {
         return obj.toString();
     }
 
+    @Transactional
+    public String nodeTableDelete(Long nodeTableId){
+        nodeTableRepository.deleteById(nodeTableId);
+        JSONObject obj = new JSONObject();
+        obj.put("msg","노드 테이블 삭제");
+        return obj.toString();
+    }
 }

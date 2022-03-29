@@ -17,6 +17,11 @@ public class NodeController {
         return nodeService.nodeTableCreate(projectId);
     }
 
+    @DeleteMapping("/nodeTable/{nodeTableId}")  //노드 테이블 삭제
+    public String nodeTableDelete(@PathVariable Long nodeTableId){
+        return nodeService.nodeTableDelete(nodeTableId);
+    }
+
     @PostMapping("/node")     //노드 생성
     public String nodeCreate(@RequestBody NodeCreateRequestDto nodeCreateRequestDto){
         return nodeService.nodeCreate(nodeCreateRequestDto);

@@ -100,7 +100,7 @@ public class ProjectController {
     }
 
     @DeleteMapping("/project/{projectId}")    //프로젝트 삭제
-    public String deleteProject(@PathVariable Long projectId,AuthorizationDto dto){
+    public String deleteProject(@PathVariable Long projectId,@RequestBody AuthorizationDto dto){
         return projectService.deleteproject(projectId, dto);
     }
 
