@@ -2,6 +2,8 @@ package com.pjt.flowing.model;
 
 import com.pjt.flowing.dto.request.GapNodeEditRequestDto;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 
@@ -27,6 +29,7 @@ public class GapNode {
 
     @ManyToOne
     @JoinColumn(name="gapTable_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private GapTable gapTable;
 
     @Builder
