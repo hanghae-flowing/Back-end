@@ -3,12 +3,12 @@ package com.pjt.flowing.service;
 
 import com.pjt.flowing.dto.request.AcceptRequestDto;
 import com.pjt.flowing.dto.AuthorizationDto;
-import com.pjt.flowing.dto.response.DocumentIdResponseDto;
-import com.pjt.flowing.dto.response.NodeTableIdResponseDto;
-import com.pjt.flowing.dto.response.ProjectResponseDto;
+import com.pjt.flowing.dto.response.*;
 import com.pjt.flowing.dto.request.ProjectEditRequestDto;
 import com.pjt.flowing.model.*;
+import com.pjt.flowing.model.swot.SWOT;
 import com.pjt.flowing.repository.*;
+import com.pjt.flowing.repository.swot.SWOTRepository;
 import lombok.RequiredArgsConstructor;
 import org.json.JSONObject;
 import org.springframework.stereotype.Service;
@@ -30,6 +30,8 @@ public class ProjectService {
     private final MemberRepository memberRepository;
     private final DocumentRepository documentRepository;
     private final NodeTableRepository nodeTableRepository;
+    private final GapTableRepository gapTableRepository;
+    private final SWOTRepository swotRepository;
 
     public List<ProjectResponseDto> getAll(Long userId){
         List<Project> myCreateProjects = projectRepository.findAllByMember_IdOrderByModifiedAtDesc(userId); // 자기가 만든 프로젝트 리스트
@@ -168,24 +170,37 @@ public class ProjectService {
     public String showTemplates(Long projectid){
         List<Document> documentList = documentRepository.findAllByProject_Id(projectid);
         List<NodeTable> nodeTableList = nodeTableRepository.findAllByProject_Id(projectid);
-        List<DocumentIdResponseDto> documentIdResponseDtoList = new ArrayList<>();
+        List<GapTable> gapTableList = gapTableRepository.findAllByProject_Id(projectid);
+        List<SWOT> swotList = swotRepository.findAllByProject_Id(projectid);
 
+        List<DocumentIdResponseDto> documentIdResponseDtoList = new ArrayList<>();
         for(Document document: documentList){
             DocumentIdResponseDto documentIdResponseDto = new DocumentIdResponseDto(document.getId());
             documentIdResponseDtoList.add(documentIdResponseDto);
-
         }
         List<NodeTableIdResponseDto> nodeTableIdResponseDtoList = new ArrayList<>();
         for(NodeTable nodeTable: nodeTableList){
             NodeTableIdResponseDto nodeTableIdResponseDto = new NodeTableIdResponseDto(nodeTable.getId());
             nodeTableIdResponseDtoList.add(nodeTableIdResponseDto);
-
+        }
+        List<GapTableIdResponseDto> gapTableIdResponseDtoList = new ArrayList<>();
+        for(GapTable gapTable: gapTableList){
+            GapTableIdResponseDto gapTableIdResponseDto = new GapTableIdResponseDto(gapTable.getId());
+            gapTableIdResponseDtoList.add(gapTableIdResponseDto);
+        }
+        List<SwotIdResponseDto> swotIdResponseDtoList = new ArrayList<>();
+        for(SWOT swot: swotList){
+            SwotIdResponseDto swotIdResponseDto = new SwotIdResponseDto(swot.getId());
+            swotIdResponseDtoList.add(swotIdResponseDto);
         }
 
         JSONObject obj = new JSONObject();
         obj.put("msg","템플릿 리스트 불러오기");
         obj.put("documentIdList",documentIdResponseDtoList);
         obj.put("nodeTableIdList",nodeTableIdResponseDtoList);
+        obj.put("gapTableIdList",gapTableIdResponseDtoList);
+        obj.put("swotIdList",swotIdResponseDtoList);
+
 
         return obj.toString();
 
