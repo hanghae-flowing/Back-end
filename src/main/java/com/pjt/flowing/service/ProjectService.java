@@ -3,16 +3,12 @@ package com.pjt.flowing.service;
 
 import com.pjt.flowing.dto.request.AcceptRequestDto;
 import com.pjt.flowing.dto.AuthorizationDto;
+import com.pjt.flowing.dto.response.DocumentIdResponseDto;
+import com.pjt.flowing.dto.response.NodeTableIdResponseDto;
 import com.pjt.flowing.dto.response.ProjectResponseDto;
 import com.pjt.flowing.dto.request.ProjectEditRequestDto;
-import com.pjt.flowing.model.Bookmark;
-import com.pjt.flowing.model.Member;
-import com.pjt.flowing.model.Project;
-import com.pjt.flowing.model.ProjectMember;
-import com.pjt.flowing.repository.BookmarkRepository;
-import com.pjt.flowing.repository.MemberRepository;
-import com.pjt.flowing.repository.ProjectMemberRepository;
-import com.pjt.flowing.repository.ProjectRepository;
+import com.pjt.flowing.model.*;
+import com.pjt.flowing.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.json.JSONObject;
 import org.springframework.stereotype.Service;
@@ -32,6 +28,8 @@ public class ProjectService {
     private final BookmarkRepository bookmarkRepository;
     private final ProjectMemberRepository projectMemberRepository;
     private final MemberRepository memberRepository;
+    private final DocumentRepository documentRepository;
+    private final NodeTableRepository nodeTableRepository;
 
     public List<ProjectResponseDto> getAll(Long userId){
         List<Project> myCreateProjects = projectRepository.findAllByMember_IdOrderByModifiedAtDesc(userId); // 자기가 만든 프로젝트 리스트
@@ -163,7 +161,29 @@ public class ProjectService {
         return obj.toString();
     }
 
-    public String showTemplates(Long projectid){    //api다 나오면 하좌
-        return "a";
+    public String showTemplates(Long projectid){
+        List<Document> documentList = documentRepository.findAllByProject_Id(projectid);
+        List<NodeTable> nodeTableList = nodeTableRepository.findAllByProject_Id(projectid);
+        List<DocumentIdResponseDto> documentIdResponseDtoList = new ArrayList<>();
+
+        for(Document document: documentList){
+            DocumentIdResponseDto documentIdResponseDto = new DocumentIdResponseDto(document.getId());
+            documentIdResponseDtoList.add(documentIdResponseDto);
+
+        }
+        List<NodeTableIdResponseDto> nodeTableIdResponseDtoList = new ArrayList<>();
+        for(NodeTable nodeTable: nodeTableList){
+            NodeTableIdResponseDto nodeTableIdResponseDto = new NodeTableIdResponseDto(nodeTable.getId());
+            nodeTableIdResponseDtoList.add(nodeTableIdResponseDto);
+
+        }
+
+        JSONObject obj = new JSONObject();
+        obj.put("msg","템플릿 리스트 불러오기");
+        obj.put("documentIdList",documentIdResponseDtoList);
+        obj.put("nodeTableIdList",nodeTableIdResponseDtoList);
+
+        return obj.toString();
+
     }
 }
