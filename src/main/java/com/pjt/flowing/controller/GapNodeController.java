@@ -10,12 +10,13 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class GapNodeController {
     private final GapNodeService gapNodeService;
-    // 생성
+    // 갭노드 테이블 생성
     @PostMapping("/gapTable/{projectId}")
     public String gapTableCreate(@PathVariable Long projectId){
         return gapNodeService.gapTableCreate(projectId);
     }
 
+    // 갭노드 생성
     @PostMapping("/gapNode")
     public String gapNodeCreate(@RequestBody GapNodeCreateRequestDto gapNodeCreateRequestDto){
         return gapNodeService.gapNodeCreate(gapNodeCreateRequestDto);
