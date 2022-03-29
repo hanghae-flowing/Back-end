@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @NoArgsConstructor
@@ -28,6 +30,9 @@ public class Member extends Timestamped {
 
     @Column
     private String profileImageURL;
+
+    @OneToMany(mappedBy = "member",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Project> projectList = new ArrayList<>();
 
     public Member(Long kakaoId,String email, String nickname, String profileImageURL) {
         this.kakaoId = kakaoId;

@@ -81,8 +81,12 @@ public class ProjectService {
     @Transactional
     public String deleteproject(Long projectId, AuthorizationDto dto){
         JSONObject obj = new JSONObject();
-        Optional<Project> project = projectRepository.findById(projectId);
-        if(Objects.equals(dto.getUserId(), project.get().getMember().getId())){
+        Project project = projectRepository.findById(projectId).orElseThrow(
+                ()->new IllegalArgumentException("no project Id error")
+        );
+        System.out.println(dto.getUserId()+"dto.getuserid");
+        System.out.println(project.getMember().getId()+"project");
+        if(dto.getUserId() == project.getMember().getId()){
             projectRepository.deleteById(projectId);
             obj.put("msg","삭제완료");
         }
