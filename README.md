@@ -63,20 +63,20 @@ https://drawsql.app/draw-2/diagrams/girin2/embed
 
 ### Branch
 
-- `master` 브랜치에서는 문서 작업 외에는 작업하지 않는다.
+- `main` 브랜치에서는 버젼 배포 외에는 작업하지 않는다.
 - 브랜치 이름은 `feature-1` 이런 식으로 이슈의 번호를 명시해서 생성한다.
+- `devlop` 브랜치에는 이슈단위로 기능이 구현한후에 코드리뷰후 PR한다.
 - 테스트 브랜치나 더이상 안쓰는 브랜치는 삭제한다.
 
 ### Pull Request
 
-- `master` 브랜치에만 merge한다.
+- `develop` 브랜치에만 merge한다.
 - 자신이 계획한 기능이 완료됐을 경우에만 PR 작성
 - 팀원과 협의 후 PR을 작성하며 독자적으로 PR 생성 후 merge하지 않는다. 
 
 ### Issue
 
 - 앞으로 할 일이나 버그 등을 기록한다.
-- 이슈에 맞는 라벨을 알맞게 선택한다.
 - 필요한 라벨이 있다면 공동 계정(hanghae-flowing)의 `Settings` -> `Repository Defaults` 에서 추가한다.
 
 <br>
