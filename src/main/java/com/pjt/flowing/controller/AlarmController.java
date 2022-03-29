@@ -37,16 +37,16 @@ public class AlarmController {
             System.out.println(memberRepository.existsByEmail(requestDto.getReceiverEmail()));
             return inviteResponseDto;
         }
-        if (Objects.equals(requestDto.getSenderEmail(), requestDto.getReceiverEmail())) {
-            inviteResponseDto.setMsg("자기자신은 초대할 수 없습니다.");
-            return inviteResponseDto;
-        }
+//        if (Objects.equals(requestDto.getSenderEmail(), requestDto.getReceiverEmail())) {
+//            inviteResponseDto.setMsg("자기자신은 초대할 수 없습니다.");
+//            return inviteResponseDto;
+//        }
         // 초대하려는 이메일이 존재할 때 !!
         Member receiver = memberRepository.findByEmail(requestDto.getReceiverEmail());
-        if (projectMemberRepository.existsByMember_IdAndProject_Id(receiver.getId(), requestDto.getProjectId())) {
-            inviteResponseDto.setMsg("이미 초대되어 있는 회원입니다.");
-            return inviteResponseDto;
-        }
+//        if (projectMemberRepository.existsByMember_IdAndProject_Id(receiver.getId(), requestDto.getProjectId())) {
+//            inviteResponseDto.setMsg("이미 초대되어 있는 회원입니다.");
+//            return inviteResponseDto;
+//        }
         // 프론트에게 전해줄 보내는 자의 Id와 보내고 싶은 사용자 Id를 담아서 전해준다.
         inviteResponseDto.setMsg("초대완료");
         inviteResponseDto.setSenderEmail(requestDto.getSenderEmail());

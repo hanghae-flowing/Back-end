@@ -26,7 +26,7 @@ public class Member extends Timestamped {
     @Column(nullable = false) // 카카오 닉네임은 중복 될 수 있다.
     private String nickname;
 
-    @Column()
+    @Column
     private String profileImageURL;
 
     public Member(Long kakaoId,String email, String nickname, String profileImageURL) {

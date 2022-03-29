@@ -2,11 +2,11 @@ package com.pjt.flowing.dto;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-@Setter
 @Getter
 @NoArgsConstructor
-public class MsgResponseDto {
-    private String msg;
+public class PollingEditDto {
+//    private Long textId;
+    private String text;
+
 }

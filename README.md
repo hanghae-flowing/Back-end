@@ -1,7 +1,7 @@
 # Backend
 항해5기 D반 5조 실전프로젝트 flowing
 
- <image src="https://img.shields.io/website?down_message=DOWN&up_message=UP&label=server&url=http://3.39.10.246:8888/health"/>  
+ <image src="https://img.shields.io/website?down_message=DOWN&up_message=UP&label=server&url=http://52.79.220.93:8888/health"/>  
  <image src="https://img.shields.io/website?down_message=DOWN&up_message=UP&label=testServer&url=http://13.209.41.157"/>
 <br>
 
@@ -61,7 +61,7 @@
 ### Branch
 
 - `master` 브랜치에서는 문서 작업 외에는 작업하지 않는다.
-- 브랜치 이름은 `jeonbar2_test` 이런 식으로 자신의 닉네임을 명시해서 생성한다.
+- 브랜치 이름은 `feature-1` 이런 식으로 이슈의 번호를 명시해서 생성한다.
 - 테스트 브랜치나 더이상 안쓰는 브랜치는 삭제한다.
 
 ### Pull Request

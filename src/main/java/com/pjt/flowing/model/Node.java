@@ -1,5 +1,6 @@
 package com.pjt.flowing.model;
 
+import com.pjt.flowing.dto.request.NodeEditRequestDto;
 import lombok.*;
 
 import javax.persistence.*;
@@ -54,6 +55,16 @@ public class Node {
         this.radius=radius;
         this.isChecked=isChecked;
         this.project=project;
+
+    }
+
+    public void update(NodeEditRequestDto dto){
+        this.xval=dto.getXval();
+        this.yval=dto.getYval();
+        this.radius=dto.getRadius();
+        this.width=dto.getWidth();
+        this.height=dto.getHeight();
+        this.text=dto.getText();
     }
 
 }

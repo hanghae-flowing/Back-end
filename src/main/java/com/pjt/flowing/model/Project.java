@@ -1,6 +1,6 @@
 package com.pjt.flowing.model;
 
-import com.pjt.flowing.dto.ProjectEditRequestDto;
+import com.pjt.flowing.dto.request.ProjectEditRequestDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -40,6 +40,9 @@ public class Project extends Timestamped{
 
     @OneToMany(mappedBy = "project",fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<Node> NodeList = new ArrayList<>();    //node와 단방향 매핑
+
+    @OneToMany(mappedBy = "project",fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    private List<Document> DocumentList = new ArrayList<>();    //document와 단방향 매핑
 
     public Project(String projectName, Long objectId, Member member, int thumbNailNum) {
         this.projectName = projectName;

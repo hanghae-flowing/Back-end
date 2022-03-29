@@ -2,10 +2,12 @@ package com.pjt.flowing.dto;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
+@Setter
 @NoArgsConstructor
-public class NodePinRequestDto {
-    private Long projectId;
-    private Long nodeId;
+public class PollingTestDto {
+    private String text;
 }
+

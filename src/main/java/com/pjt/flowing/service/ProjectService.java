@@ -1,10 +1,10 @@
 package com.pjt.flowing.service;
 
 
-import com.pjt.flowing.dto.AcceptRequestDto;
+import com.pjt.flowing.dto.request.AcceptRequestDto;
 import com.pjt.flowing.dto.AuthorizationDto;
-import com.pjt.flowing.dto.ProjectResponseDto;
-import com.pjt.flowing.dto.ProjectEditRequestDto;
+import com.pjt.flowing.dto.response.ProjectResponseDto;
+import com.pjt.flowing.dto.request.ProjectEditRequestDto;
 import com.pjt.flowing.model.Bookmark;
 import com.pjt.flowing.model.Member;
 import com.pjt.flowing.model.Project;
@@ -150,14 +150,16 @@ public class ProjectService {
         Long userId = acceptRequestDto.getUserId();
 
         Project project = projectRepository.findById(projectId).orElseThrow(
-                () -> new IllegalArgumentException("몰라")
+                () -> new IllegalArgumentException("accept (project) error")
         );
         Member member = memberRepository.findById(userId).orElseThrow(
-                ()-> new IllegalArgumentException("몰라")
-        );      //리팩토링 할 부분
+                ()-> new IllegalArgumentException("accept (member) error")
+        );
 
         ProjectMember projectMember = new ProjectMember(project,member);
         projectMemberRepository.save(projectMember);
-        return "수락 완료";
+        JSONObject obj = new JSONObject();
+        obj.put("msg","수락 완료");
+        return obj.toString();
     }
 }

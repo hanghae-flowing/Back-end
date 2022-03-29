@@ -1,16 +1,12 @@
-package com.pjt.flowing.dto;
+package com.pjt.flowing.dto.request;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Getter
 @NoArgsConstructor
-public class PjCreateRequestDto {
+public class ProjectEditRequestDto {
     private String projectName;
     private int thumbNailNum;
-    private Long objectId;
     private Long userId;
-    private Long kakaoId;
-    private String accessToken;
 }
