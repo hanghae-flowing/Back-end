@@ -16,6 +16,12 @@ public class GapNodeController {
         return gapNodeService.gapTableCreate(projectId);
     }
 
+    // 갭 노드 테이블 삭제
+    @DeleteMapping("/gapTable/{gapTableId}")
+    public String gapTableDelete(@PathVariable Long gapTableId){
+        return gapNodeService.gapTableDelete(gapTableId);
+    }
+
     // 갭노드 생성
     @PostMapping("/gapNode")
     public String gapNodeCreate(@RequestBody GapNodeCreateRequestDto gapNodeCreateRequestDto){
@@ -23,19 +29,19 @@ public class GapNodeController {
     }
 
     // 변경
-    @PutMapping("/gapNode/{gapNodeId}")
+    @PutMapping("/gapNode/{gapNodeId}") // 갭 노드 변경
     public String gapNodeEdit(@PathVariable Long gapNodeId,@RequestBody GapNodeEditRequestDto gapNodeEditRequestDto){
         return gapNodeService.gapNodeEdit(gapNodeId,gapNodeEditRequestDto);
     }
 
     // 삭제
-    @DeleteMapping("/gapNode/{gapNodeId}")
+    @DeleteMapping("/gapNode/{gapNodeId}") //갭 노드 삭제
     public String gapNodeDelete(@PathVariable Long gapNodeId){
         return gapNodeService.gapNodeDelete(gapNodeId);
     }
 
     // 조회
-    @GetMapping("/gapNode/all/{gapTableId}")
+    @GetMapping("/gapNode/all/{gapTableId}") // 갭 노드전부 조회
     public String getAll(@PathVariable Long gapTableId){
         return gapNodeService.showAll(gapTableId);
     }
