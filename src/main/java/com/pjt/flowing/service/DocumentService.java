@@ -54,7 +54,7 @@ public class DocumentService {
                     .color(templates.getColor())
                     .document(document)
                     .build();
-
+            documentLineRepository.save(documentLine);
             DocumentLineResponseDto documentLineResponseDto = DocumentLineResponseDto.builder()
                     .color(documentLine.getColor())
                     .fontSize(documentLine.getFontSize())
@@ -63,7 +63,6 @@ public class DocumentService {
                     .indexNum(documentLine.getIndexNum())
                     .lineId(documentLine.getId())
                     .build();
-            documentLineRepository.save(documentLine);
             documentLineResponseDtoList.add(documentLineResponseDto);
         }
         JSONArray array = new JSONArray(documentLineResponseDtoList);
