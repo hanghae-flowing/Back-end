@@ -1,7 +1,12 @@
 package com.pjt.flowing.dto.response;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
+@Getter
+@NoArgsConstructor
 public class GapNodeResponseDto {
     private String subject;
     private String text;
