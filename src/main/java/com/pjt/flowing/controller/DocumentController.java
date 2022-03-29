@@ -13,17 +13,17 @@ import org.springframework.web.bind.annotation.*;
 public class DocumentController {
     private final DocumentService documentService;
 
-    @GetMapping("/document/{projectId}")    //프로젝트아이디에있는 다큐먼트 전부 찾기
+    @GetMapping("/document/{projectId}")    // 프로젝트아이디에있는 다큐먼트 전부 찾기 (기획서열기)
     public String documentShowall(@PathVariable Long projectId){
         return documentService.Showall(projectId);
     }
 
-    @PostMapping("/document/{projectId}")   //기획서 생성
+    @PostMapping("/document/{projectId}")   // 기획서 생성
     public String documentCreate(@PathVariable Long projectId){
         return documentService.documentCreate(projectId);
     }
 
-    @PostMapping("/documentLines")  //기획서 줄 추가하기
+    @PostMapping("/documentLines")  // 기획서 줄 추가하기
     public String lineCreate(@RequestBody DocumentLineRequestDto dto){
         return documentService.lineCreate(dto);
     }

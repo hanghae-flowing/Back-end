@@ -141,7 +141,7 @@ public class DocumentService {
         List<DocumentIdResponseDto> documentIdResponseDtoList = new ArrayList<>();
         JSONObject obj = new JSONObject();
         for(Document document: documentList){
-            DocumentIdResponseDto documentIdResponseDto = new DocumentIdResponseDto(document.getProject().getId());
+            DocumentIdResponseDto documentIdResponseDto = new DocumentIdResponseDto(document.getId());
             documentIdResponseDtoList.add(documentIdResponseDto);
 
         }
