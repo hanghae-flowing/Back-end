@@ -1,5 +1,6 @@
 package com.pjt.flowing.model.swot;
 
+import com.pjt.flowing.dto.request.SWOTRequestDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,5 +28,9 @@ public class OpportunityTable {
     public OpportunityTable(String text, SWOT swot) {
         this.text = text;
         this.swot = swot;
+    }
+
+    public void opportunityUpdate(SWOTRequestDto requestDto) {
+        this.text = requestDto.getText();
     }
 }

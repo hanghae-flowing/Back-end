@@ -1,5 +1,6 @@
 package com.pjt.flowing.model.swot;
 
+import com.pjt.flowing.dto.request.SWOTRequestDto;
 import com.pjt.flowing.model.Document;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -28,5 +29,9 @@ public class StrengthTable {
     public StrengthTable(String text, SWOT swot) {
         this.text = text;
         this.swot = swot;
+    }
+
+    public void strengthUpdate(SWOTRequestDto requestDto) {
+        this.text = requestDto.getText();
     }
 }
