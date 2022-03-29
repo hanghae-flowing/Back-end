@@ -25,8 +25,8 @@
   </tr>
 </table>
 
-<h1> API 설계 </h1>
-https://drawsql.app/draw-2/diagrams/girin2/embed
+### 🖥️ERD
+<img src = "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FtRIpr%2FbtrxVlqwqN6%2FajWGfiCVtochV8PU4nyWRk%2Fimg.png" />
 
 ### 📬커밋 종류
 > 수정한 종류에 따라 커밋 메시지를 선택
