@@ -7,6 +7,7 @@ import java.util.List;
 
 public interface ProjectMemberRepository extends JpaRepository<ProjectMember,Long> {
    List<ProjectMember> findAllByMember_Id(Long userId);
+   boolean existsByMember_IdAndProject_Id(Long userId,Long projectId);
 
 
 }
