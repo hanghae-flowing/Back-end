@@ -1,4 +1,4 @@
-package com.pjt.flowing.repository;
+package com.pjt.flowing.model.repository;
 
 import com.pjt.flowing.model.Node;
 import org.springframework.data.jpa.repository.JpaRepository;

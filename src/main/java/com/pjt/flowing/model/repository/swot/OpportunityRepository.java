@@ -1,4 +1,4 @@
-package com.pjt.flowing.repository.swot;
+package com.pjt.flowing.model.repository.swot;
 
 import com.pjt.flowing.model.swot.OpportunityTable;
 import com.pjt.flowing.model.swot.StrengthTable;

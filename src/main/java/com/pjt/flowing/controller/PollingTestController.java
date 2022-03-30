@@ -4,7 +4,7 @@ import com.pjt.flowing.dto.PollingEditDto;
 import com.pjt.flowing.dto.response.PollingResponseDto;
 import com.pjt.flowing.dto.PollingTestDto;
 import com.pjt.flowing.model.PollingTest;
-import com.pjt.flowing.repository.PollingRepository;
+import com.pjt.flowing.model.repository.PollingRepository;
 import lombok.RequiredArgsConstructor;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 @RequiredArgsConstructor
 @RestController
