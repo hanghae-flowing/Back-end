@@ -11,8 +11,10 @@ import org.springframework.web.bind.annotation.*;
 public class GapNodeController {
     private final GapNodeService gapNodeService;
     // 갭노드 테이블 생성
+    //levelDown 나중에 다시 바꿔야함
     @PostMapping("/gapTable/{projectId}")
-    public String gapTableCreate(@PathVariable Long projectId){
+//    public String gapTableCreate(@PathVariable Long projectId){
+    public Long gapTableCreate(@PathVariable Long projectId){
         return gapNodeService.gapTableCreate(projectId);
     }
 

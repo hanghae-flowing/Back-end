@@ -1,14 +1,17 @@
 package com.pjt.flowing.service;
 
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.pjt.flowing.dto.request.AcceptRequestDto;
 import com.pjt.flowing.dto.AuthorizationDto;
+import com.pjt.flowing.dto.request.ProjectCreateRequestDto;
 import com.pjt.flowing.dto.response.*;
 import com.pjt.flowing.dto.request.ProjectEditRequestDto;
 import com.pjt.flowing.model.*;
 import com.pjt.flowing.model.swot.SWOT;
 import com.pjt.flowing.repository.*;
 import com.pjt.flowing.repository.swot.SWOTRepository;
+import com.pjt.flowing.security.Authorization;
 import lombok.RequiredArgsConstructor;
 import org.json.JSONObject;
 import org.springframework.stereotype.Service;
@@ -32,6 +35,10 @@ public class ProjectService {
     private final NodeTableRepository nodeTableRepository;
     private final GapTableRepository gapTableRepository;
     private final SWOTRepository swotRepository;
+    private final Authorization authorization;
+    private final NodeService nodeService;
+    private final DocumentService documentService;
+    private final GapNodeService gapNodeService;
 
     public static <T> Predicate<T> distinctByKey(Function<? super T, ?> keyExtractor) {
         Set<Object> seen = ConcurrentHashMap.newKeySet();
@@ -200,8 +207,38 @@ public class ProjectService {
         obj.put("gapTableIdList",gapTableIdResponseDtoList);
         obj.put("swotIdList",swotIdResponseDtoList);
 
-
         return obj.toString();
+    }
 
+    public String createProject(ProjectCreateRequestDto projectCreateRequestDto) throws JsonProcessingException {
+        AuthorizationDto authorizationDto = new AuthorizationDto(projectCreateRequestDto.getAccessToken(),projectCreateRequestDto.getKakaoId(),projectCreateRequestDto.getUserId());
+        JSONObject obj = new JSONObject();
+        if (authorization.getKakaoId(authorizationDto) == 0){
+            obj.put("msg","false");
+            return obj.toString();
+        }
+        Member member = memberRepository.findById(projectCreateRequestDto.getUserId()).orElseThrow(
+                () -> new IllegalArgumentException("no Id")
+        );
+        Project project = new Project(
+                projectCreateRequestDto.getProjectName(),
+                projectCreateRequestDto.getObjectId(),
+                member,
+                projectCreateRequestDto.getThumbNailNum()
+        );
+        projectRepository.save(project);
+
+        obj.put("msg","true");
+        obj.put("projectId",project.getId());
+
+        ProjectMember projectMember = new ProjectMember(project, member);
+        projectMemberRepository.save(projectMember);
+
+        //여기부터 임시로 만든곳임 나중에 지우면됨 levelDown
+        obj.put("nodeTableId",nodeService.nodeTableCreate(project.getId()));
+        obj.put("gapTableId",gapNodeService.gapTableCreate(project.getId()));
+        obj.put("documentId",documentService.documentCreate(project.getId()));
+        System.out.println("멤버 저장 완료");
+        return obj.toString();
     }
 }

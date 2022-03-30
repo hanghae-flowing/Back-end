@@ -11,7 +11,7 @@ public class SWOTController {
 
     private final SWOTService swotService;
 
-    @PostMapping("/swot/{projectId}")
+    @PostMapping("/swot/{projectId}")   //swot테이블 만들기
     public String CreateSWOT(@PathVariable Long projectId) {
         return swotService.swotCreate(projectId);
     }
