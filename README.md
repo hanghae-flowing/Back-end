@@ -26,7 +26,7 @@
 </table>
 
 ### 🖥️ERD
-<img src = "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FtRIpr%2FbtrxVlqwqN6%2FajWGfiCVtochV8PU4nyWRk%2Fimg.png" />
+<img  width="1000" src = "https://user-images.githubusercontent.com/76610357/160750192-9845e9f7-ac26-4bd3-8c22-6b650680b9d4.PNG" />
 
 
 ### ⚙️ 아키텍쳐
