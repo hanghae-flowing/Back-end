@@ -45,7 +45,7 @@ public class InviteService {
         );
 
         InviteTable inviteTable = new InviteTable(project,invitingMember,invitedMember);
-        if(projectMemberRepository.existsByMember_IdAndProject_Id(inviteRequestDto.getUserId(),inviteRequestDto.getProjectId())){
+        if(projectMemberRepository.existsByMember_EmailAndProject_Id(inviteRequestDto.getEmail(),inviteRequestDto.getProjectId())){
             obj.put("msg","이미초대되어있음");
         }
         else{
