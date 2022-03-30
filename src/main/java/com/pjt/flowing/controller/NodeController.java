@@ -12,10 +12,11 @@ import org.springframework.web.bind.annotation.*;
 public class NodeController {
     private final NodeService nodeService;
 
-    @PostMapping("/nodeTable/{projectId}")  //노드 테이블 생성
-    public String nodeTableCreate(@PathVariable Long projectId){
-        return nodeService.nodeTableCreate(projectId);
-    }
+//    나중에 템플릿 맘대로 추가할때 다시 넣어주기
+//    @PostMapping("/nodeTable/{projectId}")  //노드 테이블 생성
+//    public String nodeTableCreate(@PathVariable Long projectId){
+//        return nodeService.nodeTableCreate(projectId);
+//    }
 
     @DeleteMapping("/nodeTable/{nodeTableId}")  //노드 테이블 삭제
     public String nodeTableDelete(@PathVariable Long nodeTableId){

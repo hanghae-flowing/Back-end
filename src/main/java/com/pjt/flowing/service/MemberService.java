@@ -106,8 +106,8 @@ public class MemberService {
         body.add("client_id", kakao_api);
 //
 //        body.add("redirect_uri", "http://localhost:8080/member/kakao/callback");
-//        body.add("redirect_uri", "http://localhost:3000/member/kakao/callback");
-        body.add("redirect_uri", "http://hanghae-final5.s3-website.ap-northeast-2.amazonaws.com/member/kakao/callback");
+        body.add("redirect_uri", "http://localhost:3000/member/kakao/callback");
+//        body.add("redirect_uri", "http://hanghae-final5.s3-website.ap-northeast-2.amazonaws.com/member/kakao/callback");
         body.add("code", code);
 
         // HTTP 요청 보내기

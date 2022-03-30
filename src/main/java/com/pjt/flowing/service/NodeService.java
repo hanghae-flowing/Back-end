@@ -143,16 +143,19 @@ public class NodeService {
     }
 
     @Transactional  //여기에 template default 값 넣어줘야함
-    public String nodeTableCreate(Long projectId){
+    // levelDown 나중에 다시 string으로 보낼 경우가 생길것임
+//    public String nodeTableCreate(Long projectId){
+    public Long nodeTableCreate(Long projectId){
         Project project = projectRepository.findById(projectId).orElseThrow(
                 ()-> new IllegalArgumentException("project Id error")
         );
 
         NodeTable nodeTable = new NodeTable(project);
         nodeTableRepository.save(nodeTable);
+
         JSONObject obj = new JSONObject();
         obj.put("nodeTableId",nodeTable.getId());
-        return obj.toString();
+        return nodeTable.getId();
     }
 
     @Transactional
