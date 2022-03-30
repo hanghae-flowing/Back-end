@@ -33,27 +33,26 @@ public class ProjectService {
     private final GapTableRepository gapTableRepository;
     private final SWOTRepository swotRepository;
 
-    public List<ProjectResponseDto> getAll(Long userId){
-        List<Project> myCreateProjects = projectRepository.findAllByMember_IdOrderByModifiedAtDesc(userId); // 자기가 만든 프로젝트 리스트
-        List<ProjectResponseDto> CreateDto = myCreateProjects.stream()
-                .map(ProjectResponseDto::from)
-                .collect(Collectors.toList());
-
-        List<ProjectMember> myIncludedProjects = projectMemberRepository.findAllByMember_Id(userId); // 자기가 포함된 프로젝트 리스트
-        List<ProjectResponseDto> includedDto = myIncludedProjects.stream()
-                .map(ProjectResponseDto::includedProject)
-                .collect(Collectors.toList());
-
-        List<ProjectResponseDto> dto = new ArrayList<>();//만든거랑 멤버로 포함된거랑 더해서 수정날짜로 정렬.
-        dto.addAll(CreateDto);
-        dto.addAll(includedDto);
-        dto.stream().sorted(Comparator.comparing(ProjectResponseDto::getModifiedAt));
-        return dto;
-    }
     public static <T> Predicate<T> distinctByKey(Function<? super T, ?> keyExtractor) {
         Set<Object> seen = ConcurrentHashMap.newKeySet();
         return t -> seen.add(keyExtractor.apply(t));
     }
+    public List<ProjectResponseDto> getAll(Long userId){
+//        List<Project> myCreateProjects = projectRepository.findAllByMember_IdOrderByModifiedAtDesc(userId); // 자기가 만든 프로젝트 리스트
+//        List<ProjectResponseDto> CreateDto = myCreateProjects.stream()
+//                .map(ProjectResponseDto::from)
+//                .collect(Collectors.toList());
+
+        List<ProjectMember> myIncludedProjects = projectMemberRepository.findAllByMember_Id(userId); // 자기가 포함된 프로젝트 리스트
+        List<ProjectResponseDto> includedDto = myIncludedProjects.stream()
+                .map(ProjectResponseDto::includedProject)
+                .sorted(Comparator.comparing(ProjectResponseDto::getModifiedAt))
+                .collect(Collectors.toList());
+
+
+        return includedDto;
+    }
+
 
     public List<ProjectResponseDto> get4(Long userId){
         List<Project> all = projectRepository.findFirst4ByMember_IdOrderByModifiedAtDesc(userId);
