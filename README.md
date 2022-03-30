@@ -28,6 +28,10 @@
 ### 🖥️ERD
 <img src = "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FtRIpr%2FbtrxVlqwqN6%2FajWGfiCVtochV8PU4nyWRk%2Fimg.png" />
 
+
+### ⚙️ 아케텍쳐
+<image width="800" src="https://user-images.githubusercontent.com/76610357/160749647-ba24cedc-c447-4628-9c6a-a7f92b87971b.png"/>
+
 ### 📬커밋 종류
 > 수정한 종류에 따라 커밋 메시지를 선택
 
