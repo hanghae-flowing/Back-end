@@ -241,7 +241,7 @@ public class ProjectService {
         //여기부터 임시로 만든곳임 나중에 지우면됨 levelDown
         obj.put("nodeTableId",nodeService.nodeTableCreate(project.getId()));
         obj.put("gapTableId",gapNodeService.gapTableCreate(project.getId()));
-        obj.put("documentId",documentService.documentCreate(project.getId()));
+        obj.put("documentInfo",documentService.documentCreate(project.getId()));
         return obj.toString();
     }
 

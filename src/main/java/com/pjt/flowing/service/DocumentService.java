@@ -56,6 +56,7 @@ public class DocumentService {
                     .document(document)
                     .build();
             documentLineRepository.save(documentLine);
+
             DocumentLineResponseDto documentLineResponseDto = DocumentLineResponseDto.builder()
                     .color(documentLine.getColor())
                     .fontSize(documentLine.getFontSize())
@@ -63,6 +64,7 @@ public class DocumentService {
                     .weight(documentLine.getWeight())
                     .indexNum(documentLine.getIndexNum())
                     .lineId(documentLine.getId())
+                    .documentId(document.getId())   //이부분 나중에 지워야함 dto 클래스에서도 levelDown
                     .build();
             documentLineResponseDtoList.add(documentLineResponseDto);
         }
@@ -71,6 +73,7 @@ public class DocumentService {
         //levelDown 여기 나중에 바꿔야함
 //        return obj.toString();
         return documentLineResponseDtoList;
+
     }
 
 
