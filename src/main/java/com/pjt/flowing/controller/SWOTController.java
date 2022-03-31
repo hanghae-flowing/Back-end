@@ -12,7 +12,7 @@ public class SWOTController {
     private final SWOTService swotService;
 
     @PostMapping("/swot/{projectId}")   //swot테이블 만들기
-    public String CreateSWOT(@PathVariable Long projectId) {
+    public String createSWOT(@PathVariable Long projectId) {
         return swotService.swotCreate(projectId);
     }
 
@@ -22,25 +22,25 @@ public class SWOTController {
     }
 
     @GetMapping("/swot/{swotId}")
-    public String ShowAll(@PathVariable Long swotId) {
+    public String showAll(@PathVariable Long swotId) {
         return swotService.showAll(swotId);
     }
 
     @PutMapping("/swot/strength/{strengthId}")
     public String strengthEdit(@PathVariable Long strengthId, @RequestBody SWOTRequestDto requestDto) {
-        return swotService.StrengthEdit(strengthId, requestDto);
+        return swotService.strengthEdit(strengthId, requestDto);
     }
 
     @PutMapping("/swot/weakness/{weaknessId}")
     public String weaknessEdit(@PathVariable Long weaknessId, @RequestBody SWOTRequestDto requestDto) {
-        return swotService.WeaknessEdit(weaknessId, requestDto);
+        return swotService.weaknessEdit(weaknessId, requestDto);
     }
     @PutMapping("/swot/opportunity/{opportunityId}")
     public String opportunityEdit(@PathVariable Long opportunityId, @RequestBody SWOTRequestDto requestDto) {
-        return swotService.OpportunityEdit(opportunityId, requestDto);
+        return swotService.opportunityEdit(opportunityId, requestDto);
     }
     @PutMapping("/swot/threat/{threatId}")
     public String threatEdit(@PathVariable Long threatId, @RequestBody SWOTRequestDto requestDto) {
-        return swotService.ThreatEdit(threatId, requestDto);
+        return swotService.threatEdit(threatId, requestDto);
     }
 }

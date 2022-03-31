@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface GapTableRepository extends JpaRepository<GapTable,Long> {
     List<GapTable> findAllByProject_Id(Long projectId);
+    GapTable findByProject_Id(Long projectId);
 }

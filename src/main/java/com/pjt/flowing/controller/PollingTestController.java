@@ -5,6 +5,7 @@ import com.pjt.flowing.dto.response.PollingResponseDto;
 import com.pjt.flowing.dto.PollingTestDto;
 import com.pjt.flowing.model.PollingTest;
 import com.pjt.flowing.repository.PollingRepository;
+import com.pjt.flowing.util.ToJsonHelper;
 import lombok.RequiredArgsConstructor;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -50,13 +51,18 @@ public class PollingTestController {
     @Transactional
     @PostMapping("api/test/text")   //맨처음 생성시, 풀링 x
     public String textt(@RequestBody PollingTestDto dto){
-        JSONObject obj = new JSONObject();
-        obj.put("msg","폴링 생성 테스트");
         PollingTest pollingTest = new PollingTest(dto.getText());
         pollingRepository.save(pollingTest);
+
+        ToJsonHelper helper = new ToJsonHelper();
+        helper.PutKeyObject("클래스설정테스트","응애에요");
+        helper.PutKeyObject("클래스설정테스트2",dto.getText());
+
+        JSONObject obj = new JSONObject();
+        obj.put("msg","폴링 생성 테스트");
         obj.put("text",dto.getText());
         obj.put("textId",pollingTest.getId());
-        return obj.toString();
+        return helper.Result();
     }
 
     @Transactional

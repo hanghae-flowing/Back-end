@@ -1,6 +1,5 @@
 package com.pjt.flowing.dto.response;
 
-import com.pjt.flowing.service.InviteService;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -10,7 +9,6 @@ public class InviteResponseDto {
 
     private Long invitingId;
     private String inviting;
-
     private String projectName;
 
     public InviteResponseDto(Long invitingId, String inviting, String projectName){

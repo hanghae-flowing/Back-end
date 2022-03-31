@@ -117,7 +117,7 @@ public class SWOTService {
     }
 
     @Transactional
-    public String StrengthEdit (Long strengthId, SWOTRequestDto requestDto) {
+    public String strengthEdit (Long strengthId, SWOTRequestDto requestDto) {
         StrengthTable strengthTable = strengthRepository.findById(strengthId).orElseThrow(
                 () -> new IllegalArgumentException("not found strengthId")
         );
@@ -129,7 +129,7 @@ public class SWOTService {
     }
 
     @Transactional
-    public String WeaknessEdit(Long weaknessId, SWOTRequestDto requestDto) {
+    public String weaknessEdit(Long weaknessId, SWOTRequestDto requestDto) {
         WeaknessTable weaknessTable = weaknessRepository.findById(weaknessId).orElseThrow(
                 () -> new IllegalArgumentException("not found weaknessId")
         );
@@ -141,7 +141,7 @@ public class SWOTService {
     }
 
     @Transactional
-    public String OpportunityEdit(Long opportunityId, SWOTRequestDto requestDto) {
+    public String opportunityEdit(Long opportunityId, SWOTRequestDto requestDto) {
         OpportunityTable opportunityTable = opportunityRepository.findById(opportunityId).orElseThrow(
                 () -> new IllegalArgumentException("not found opportunityId")
         );
@@ -153,7 +153,7 @@ public class SWOTService {
     }
 
     @Transactional
-    public String ThreatEdit(Long threatId, SWOTRequestDto requestDto) {
+    public String threatEdit(Long threatId, SWOTRequestDto requestDto) {
         ThreatTable threatTable = threatRepository.findById(threatId).orElseThrow(
                 () -> new IllegalArgumentException("not found threatId")
         );

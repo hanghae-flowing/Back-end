@@ -43,8 +43,7 @@ public class DocumentService {
         obj.put("documentId",document.getId());
 
         List<DocumentLineResponseDto> documentLineResponseDtoList = new ArrayList<>();
-        for(long i = 1L; i<18L; i++){
-            System.out.println("i값 찍어봐용"+i);
+        for(long i = 1L; i<20L; i++){
             DocumentLineTemplates templates = documentLineTemplatesRepository.findById(i).orElseThrow(
                     ()->new IllegalArgumentException("templates download error")
             );
@@ -57,6 +56,7 @@ public class DocumentService {
                     .document(document)
                     .build();
             documentLineRepository.save(documentLine);
+
             DocumentLineResponseDto documentLineResponseDto = DocumentLineResponseDto.builder()
                     .color(documentLine.getColor())
                     .fontSize(documentLine.getFontSize())
@@ -64,6 +64,7 @@ public class DocumentService {
                     .weight(documentLine.getWeight())
                     .indexNum(documentLine.getIndexNum())
                     .lineId(documentLine.getId())
+                    .documentId(document.getId())   //이부분 나중에 지워야함 dto 클래스에서도 levelDown
                     .build();
             documentLineResponseDtoList.add(documentLineResponseDto);
         }
@@ -72,10 +73,8 @@ public class DocumentService {
         //levelDown 여기 나중에 바꿔야함
 //        return obj.toString();
         return documentLineResponseDtoList;
+
     }
-
-
-
 
 
     @Transactional  //기획서 라인 생성 첫 요청시
@@ -117,7 +116,7 @@ public class DocumentService {
         return obj.toString();
     }
 
-    public String showAll(Long documentId){ //기획서 라인 전부 불러오기
+    public String showAllLine(Long documentId){ //기획서 라인 전부 불러오기
         List<DocumentLine> documentLineList = documentLineRepository.findAllByDocument_IdOrderByIndexNum(documentId);
         List<DocumentLineResponseDto> documentLineResponseDtoList = new ArrayList<>();
         for(DocumentLine documentLine: documentLineList){
@@ -143,7 +142,7 @@ public class DocumentService {
         return obj.toString();
     }
 
-    public String Showall(Long projectId){
+    public String showAll(Long projectId){
         List<Document> documentList = documentRepository.findAllByProject_Id(projectId);
         List<DocumentIdResponseDto> documentIdResponseDtoList = new ArrayList<>();
         JSONObject obj = new JSONObject();

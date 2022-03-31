@@ -15,14 +15,14 @@ import java.util.List;
 public class Member extends Timestamped {
 
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Id //pk값으로 쓰겠다
+    @Id
     @Column(name="user_id")
     private Long id;
 
     @Column(name="kakao_id",nullable = false)
     private Long kakaoId;
 
-    @Column(unique = true)  //선택사항 이기때문에 nullable=true(default)
+    @Column(unique = true)
     private String email;
 
     @Column(nullable = false) // 카카오 닉네임은 중복 될 수 있다.

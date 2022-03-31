@@ -37,29 +37,23 @@ public class MemberService {
 
         // 1. "인가 코드"로 "액세스 토큰" 요청
         String accessToken = getAccessToken(code);
-        System.out.println("getaccessToken 실행후");
 
         // 2. 토큰으로 카카오 API 호출
         KakaoUserInfoDto kakaoUserInfoDto = getKakaoUserInfo(accessToken);
-        System.out.println(("kakaouserinfodto 실행후"));
 
         // DB 에 중복된 Kakao Id 가 있는지 확인
         Long kakaoId = kakaoUserInfoDto.getId();
         String nickname = kakaoUserInfoDto.getNickname();
         String email = kakaoUserInfoDto.getEmail();
         String profileImageURL=kakaoUserInfoDto.getProfileImageURL();
-        System.out.println(kakaoId);
-        System.out.println("엑세스 토큰"+accessToken);
+//        System.out.println(kakaoId);
+//        System.out.println("엑세스 토큰"+accessToken);
         JSONObject obj = new JSONObject();
 
         // 회원가입
         if (!memberRepository.findByKakaoId(kakaoId).isPresent()) {
             Member member = new Member(kakaoId,email,nickname,profileImageURL);
             memberRepository.save(member);
-            System.out.println("이프문에 걸리니?");
-        }
-        else{
-            System.out.println("엘스문에 걸리니?");
         }
         Optional<Member> member = memberRepository.findByKakaoId(kakaoId);
 
@@ -85,12 +79,10 @@ public class MemberService {
 
         RestTemplate rt = new RestTemplate();
         ResponseEntity<String> response = rt.exchange("https://kapi.kakao.com/v1/user/logout", HttpMethod.POST, kakaoLogoutRequest, String.class);
-        String responseBody = response.getBody();
-        ObjectMapper objectMapper = new ObjectMapper();
-        JsonNode jsonNode = objectMapper.readTree(responseBody);
-        Long id = jsonNode.get("id").asLong();
-        System.out.println("로그아웃 id"+id);
-
+//        String responseBody = response.getBody();
+//        ObjectMapper objectMapper = new ObjectMapper();
+//        JsonNode jsonNode = objectMapper.readTree(responseBody);
+//        Long id = jsonNode.get("id").asLong();
         JSONObject obj = new JSONObject();
         obj.put("msg","logout");
         return obj.toString();
@@ -104,7 +96,6 @@ public class MemberService {
         MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
         body.add("grant_type", "authorization_code");
         body.add("client_id", kakao_api);
-//
 //        body.add("redirect_uri", "http://localhost:8080/member/kakao/callback");
 //        body.add("redirect_uri", "http://localhost:3000/member/kakao/callback");
         body.add("redirect_uri", "http://hanghae-final5.s3-website.ap-northeast-2.amazonaws.com/member/kakao/callback");
@@ -116,8 +107,6 @@ public class MemberService {
         ResponseEntity<String> response = rt.exchange("https://kauth.kakao.com/oauth/token",
                 HttpMethod.POST, kakaoTokenRequest, String.class);
 
-        System.out.println("토큰정보"+response);
-
         // HTTP 응답 (JSON) -> 액세스 토큰 파싱
         String responseBody = response.getBody();
         ObjectMapper objectMapper = new ObjectMapper();
@@ -128,7 +117,6 @@ public class MemberService {
 //    private KakaoUserInfoDto getKakaoUserInfo(String accessToken) throws JsonProcessingException {
     public KakaoUserInfoDto getKakaoUserInfo(String accessToken) throws JsonProcessingException {
 
-        //모든 요청에 이걸 넣어야 되나?를 고민 해봐야 할듯. write only?
         // HTTP Header 생성
         HttpHeaders headers = new HttpHeaders();
         headers.add("Authorization", "Bearer " + accessToken); //카카오에서 공식적으로 해달라고 했다
@@ -150,10 +138,8 @@ public class MemberService {
         try {
             profileImageURL = jsonNode.get("properties").get("profile_image").asText();
         } catch (NullPointerException e) {
-            System.out.println("null profile Image URL");
             profileImageURL = "not exist";
         }
-        System.out.println("카카오 api호출 response" + response);
         return new KakaoUserInfoDto(id, nickname, email, profileImageURL);
     }
 }

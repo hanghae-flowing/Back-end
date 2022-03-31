@@ -15,15 +15,17 @@ public class DocumentLineResponseDto {
     private int fontSize;
     private String color;
     private int indexNum;
+    private Long documentId;
 
     @Builder
     public DocumentLineResponseDto(Long lineId, String text, int weight,
-                                   int fontSize, String color,int indexNum) {
+                                   int fontSize, String color,int indexNum,Long documentId) {
         this.lineId = lineId;
         this.text = text;
         this.weight = weight;
         this.fontSize = fontSize;
         this.color = color;
         this.indexNum = indexNum;
+        this.documentId = documentId;
     }
 }

@@ -17,7 +17,6 @@ public class ProjectResponseDto {
     private String projectName;
     private LocalDateTime modifiedAt;
     private List<String> memberList;
-    //private boolean bookmark;
     private int thumbnailNum;
 
     public static ProjectResponseDto from(Project project){
@@ -31,7 +30,6 @@ public class ProjectResponseDto {
                 .projectName(project.getProjectName())
                 .modifiedAt(project.getModifiedAt())
                 .memberList(nicknames)
-                //.bookmark(project.getBookmarkList())
                 .thumbnailNum(project.getThumbNailNum())
                 .build();
     }
@@ -46,7 +44,6 @@ public class ProjectResponseDto {
                 .projectName(bookmark.getProject().getProjectName())
                 .modifiedAt(bookmark.getProject().getModifiedAt())
                 .memberList(nicknames)
-                //.bookmark(project.getBookmarkList())
                 .thumbnailNum(bookmark.getProject().getThumbNailNum())
                 .build();
     }
@@ -61,7 +58,6 @@ public class ProjectResponseDto {
                 .projectName(projectMember.getProject().getProjectName())
                 .modifiedAt(projectMember.getProject().getModifiedAt())
                 .memberList(nicknames)
-                //.bookmark(project.getBookmarkList())
                 .thumbnailNum(projectMember.getProject().getThumbNailNum())
                 .build();
     }

@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class GapTableIdResponseDto {
     private Long gapTableId;
-
     public GapTableIdResponseDto(Long gapTableId) {
         this.gapTableId = gapTableId;
     }

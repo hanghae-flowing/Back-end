@@ -20,7 +20,6 @@ public class InviteTable {
     @JoinColumn(name="invited_user_id") // 초대받는사람
     private Member invitedmember;
 
-
     @ManyToOne
     @JoinColumn(name="project_id")  //초대하는 프로젝트
     private Project project;

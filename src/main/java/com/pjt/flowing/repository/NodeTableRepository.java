@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface NodeTableRepository extends JpaRepository<NodeTable,Long> {
     List<NodeTable> findAllByProject_Id(Long projectId);
+    NodeTable findByProject_Id(Long projectId);
 }

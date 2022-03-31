@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class SwotIdResponseDto {
     private Long swotId;
-
     public SwotIdResponseDto(Long swotId) {
         this.swotId = swotId;
     }
