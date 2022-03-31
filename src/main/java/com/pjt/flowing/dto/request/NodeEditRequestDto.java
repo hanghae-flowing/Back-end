@@ -6,8 +6,8 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class NodeEditRequestDto {
-    private String xval;
-    private String yval;
+    private int xval;
+    private int yval;
     private String width;
     private String height;
     private String text;

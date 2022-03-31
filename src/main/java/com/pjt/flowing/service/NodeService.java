@@ -10,10 +10,10 @@ import com.pjt.flowing.model.Node;
 import com.pjt.flowing.model.NodePath;
 import com.pjt.flowing.model.NodeTable;
 import com.pjt.flowing.model.Project;
-import com.pjt.flowing.model.repository.NodePathRepository;
-import com.pjt.flowing.model.repository.NodeRepository;
-import com.pjt.flowing.model.repository.NodeTableRepository;
-import com.pjt.flowing.model.repository.ProjectRepository;
+import com.pjt.flowing.repository.NodePathRepository;
+import com.pjt.flowing.repository.NodeRepository;
+import com.pjt.flowing.repository.NodeTableRepository;
+import com.pjt.flowing.repository.ProjectRepository;
 import lombok.RequiredArgsConstructor;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -91,6 +91,8 @@ public class NodeService {
     @Transactional
     public String nodeDelete(Long id){
         nodeRepository.deleteById(id);
+        nodePathRepository.deleteAllByChildNode(id);
+        nodePathRepository.deleteAllByParentNode(id);
         JSONObject obj = new JSONObject();
         obj.put("msg","노드 삭제");
         return obj.toString();
@@ -148,16 +150,19 @@ public class NodeService {
     }
 
     @Transactional  //여기에 template default 값 넣어줘야함
-    public String nodeTableCreate(Long projectId){
+    // levelDown 나중에 다시 string으로 보낼 경우가 생길것임
+//    public String nodeTableCreate(Long projectId){
+    public Long nodeTableCreate(Long projectId){
         Project project = projectRepository.findById(projectId).orElseThrow(
                 ()-> new IllegalArgumentException("project Id error")
         );
 
         NodeTable nodeTable = new NodeTable(project);
         nodeTableRepository.save(nodeTable);
+
         JSONObject obj = new JSONObject();
         obj.put("nodeTableId",nodeTable.getId());
-        return obj.toString();
+        return nodeTable.getId();
     }
 
     @Transactional

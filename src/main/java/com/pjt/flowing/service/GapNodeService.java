@@ -6,9 +6,9 @@ import com.pjt.flowing.dto.response.GapNodeResponseDto;
 import com.pjt.flowing.model.GapNode;
 import com.pjt.flowing.model.GapTable;
 import com.pjt.flowing.model.Project;
-import com.pjt.flowing.model.repository.GapNodeRepository;
-import com.pjt.flowing.model.repository.GapTableRepository;
-import com.pjt.flowing.model.repository.ProjectRepository;
+import com.pjt.flowing.repository.GapNodeRepository;
+import com.pjt.flowing.repository.GapTableRepository;
+import com.pjt.flowing.repository.ProjectRepository;
 import lombok.RequiredArgsConstructor;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -58,16 +58,19 @@ public class GapNodeService {
     }
     
     @Transactional
-    public String gapTableCreate(Long projectId){
+    //levelDown 나중에 이부분다시 바꿔야함
+//    public String gapTableCreate(Long projectId){
+    public Long gapTableCreate(Long projectId){
         Project project = projectRepository.findById(projectId).orElseThrow(
                 ()-> new IllegalArgumentException("project Id error")
         );
 
         GapTable gapTable = new GapTable(project);
         gapTableRepository.save(gapTable);
-        JSONObject obj = new JSONObject();
-        obj.put("gapTableId",gapTable.getId());
-        return obj.toString();
+        //levelDown
+//        JSONObject obj = new JSONObject();
+//        obj.put("gapTableId",gapTable.getId());
+        return gapTable.getId();
 
     }
 

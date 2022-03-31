@@ -8,14 +8,13 @@ import com.pjt.flowing.dto.request.ProjectEditRequestDto;
 import com.pjt.flowing.dto.response.ProjectResponseDto;
 import com.pjt.flowing.dto.response.MsgResponseDto;
 import com.pjt.flowing.model.*;
-import com.pjt.flowing.model.repository.BookmarkRepository;
-import com.pjt.flowing.model.repository.MemberRepository;
-import com.pjt.flowing.model.repository.ProjectMemberRepository;
-import com.pjt.flowing.model.repository.ProjectRepository;
+import com.pjt.flowing.repository.BookmarkRepository;
+import com.pjt.flowing.repository.MemberRepository;
+import com.pjt.flowing.repository.ProjectMemberRepository;
+import com.pjt.flowing.repository.ProjectRepository;
 import com.pjt.flowing.security.Authorization;
 import com.pjt.flowing.service.ProjectService;
 import lombok.RequiredArgsConstructor;
-import org.json.JSONObject;
 import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
@@ -39,41 +38,10 @@ public class ProjectController {
         return projectService.getAll(requestDto.getUserId());
     }
 
-//    @PostMapping("/project/read") // 홈화면에 북마크된거 4개 아니면 최신순으로 보여주기
-//    public List<ProjectResponseDto> getProjectWith4(@RequestBody AuthorizationDto requestDto){
-//
-//        // Userid로 북마크4개 조회 ->
-//        return projectService.get4(requestDto.getUserId());
-//    }
-
     @Transactional
     @PostMapping("/project")    //프로젝트 생성
-    public String createProject(@RequestBody ProjectCreateRequestDto pjCreateRequestDto) throws JsonProcessingException {
-        AuthorizationDto authorizationDto = new AuthorizationDto(pjCreateRequestDto.getAccessToken(),pjCreateRequestDto.getKakaoId(),pjCreateRequestDto.getUserId());
-        JSONObject obj = new JSONObject();
-        if (authorization.getKakaoId(authorizationDto) == 0){
-            obj.put("msg","false");
-            return obj.toString();
-        }
-        Member member = memberRepository.findById(pjCreateRequestDto.getUserId()).orElseThrow(
-                () -> new IllegalArgumentException("no Id")
-        );
-        Project project = new Project(
-                pjCreateRequestDto.getProjectName(),
-                pjCreateRequestDto.getObjectId(),
-                member,
-                pjCreateRequestDto.getThumbNailNum()
-        );
-        projectRepository.save(project);
-
-        obj.put("msg","true");
-        obj.put("projectId",project.getId());
-
-        //projectmember 넣어주기 초대 api를 이거로 하면 될듯함
-        ProjectMember projectMember = new ProjectMember(project, member);
-        projectMemberRepository.save(projectMember);
-        System.out.println("파티장 멤버로 저장 완료");
-        return obj.toString();
+    public String createProject(@RequestBody ProjectCreateRequestDto projectCreateRequestDto) throws JsonProcessingException {
+        return projectService.createProject(projectCreateRequestDto);
     }
 
     @Transactional

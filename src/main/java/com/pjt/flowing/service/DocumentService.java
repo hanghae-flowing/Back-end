@@ -8,10 +8,10 @@ import com.pjt.flowing.model.Document;
 import com.pjt.flowing.model.DocumentLine;
 import com.pjt.flowing.model.DocumentLineTemplates;
 import com.pjt.flowing.model.Project;
-import com.pjt.flowing.model.repository.DocumentLineRepository;
-import com.pjt.flowing.model.repository.DocumentLineTemplatesRepository;
-import com.pjt.flowing.model.repository.DocumentRepository;
-import com.pjt.flowing.model.repository.ProjectRepository;
+import com.pjt.flowing.repository.DocumentLineRepository;
+import com.pjt.flowing.repository.DocumentLineTemplatesRepository;
+import com.pjt.flowing.repository.DocumentRepository;
+import com.pjt.flowing.repository.ProjectRepository;
 import lombok.RequiredArgsConstructor;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -31,7 +31,9 @@ public class DocumentService {
     private final DocumentLineTemplatesRepository documentLineTemplatesRepository;
 
     @Transactional  //기획서 생성 시키면서 default template 값 넣어주기
-    public String documentCreate(Long projectId){
+    //levelDown 이거 나중에 없애기
+//    public String documentCreate(Long projectId){
+    public List<DocumentLineResponseDto> documentCreate(Long projectId){
         JSONObject obj = new JSONObject();
         Project project = projectRepository.findById(projectId).orElseThrow(
                 ()-> new IllegalArgumentException("project Id error")
@@ -67,8 +69,14 @@ public class DocumentService {
         }
         JSONArray array = new JSONArray(documentLineResponseDtoList);
         obj.append("templatesInfo",array);
-        return obj.toString();
+        //levelDown 여기 나중에 바꿔야함
+//        return obj.toString();
+        return documentLineResponseDtoList;
     }
+
+
+
+
 
     @Transactional  //기획서 라인 생성 첫 요청시
     public String lineCreate(DocumentLineRequestDto dto){

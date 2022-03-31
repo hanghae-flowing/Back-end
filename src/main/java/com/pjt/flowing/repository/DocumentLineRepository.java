@@ -1,4 +1,4 @@
-package com.pjt.flowing.model.repository;
+package com.pjt.flowing.repository;
 
 import com.pjt.flowing.model.DocumentLine;
 import org.springframework.data.jpa.repository.JpaRepository;

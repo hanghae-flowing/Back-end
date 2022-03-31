@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pjt.flowing.dto.KakaoUserInfoDto;
 import com.pjt.flowing.model.Member;
-import com.pjt.flowing.model.repository.MemberRepository;
+import com.pjt.flowing.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
