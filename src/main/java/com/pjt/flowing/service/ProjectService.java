@@ -232,16 +232,30 @@ public class ProjectService {
         );
         projectRepository.save(project);
 
-        obj.put("msg","true");
-        obj.put("projectId",project.getId());
-
         ProjectMember projectMember = new ProjectMember(project, member);
         projectMemberRepository.save(projectMember);
 
-        //여기부터 임시로 만든곳임 나중에 지우면됨 levelDown
-        obj.put("nodeTableId",nodeService.nodeTableCreate(project.getId()));
-        obj.put("gapTableId",gapNodeService.gapTableCreate(project.getId()));
-        obj.put("documentInfo",documentService.documentCreate(project.getId()));
+        //levelDown
+        nodeService.nodeTableCreate(project.getId());
+        gapNodeService.gapTableCreate(project.getId());
+        documentService.documentCreate(project.getId());
+
+        Document document = documentRepository.findByProject_Id(project.getId());
+        GapTable gapTable = gapTableRepository.findByProject_Id(project.getId());
+        NodeTable nodeTable = nodeTableRepository.findByProject_Id(project.getId());
+
+        ProjectResponseDto dto = ProjectResponseDto.builder()
+                .projectId(project.getId())
+                .projectName(project.getProjectName())
+                .modifiedAt(project.getModifiedAt())
+                .thumbnailNum(project.getThumbNailNum())
+                .build();
+        obj.put("msg","생성하고 불러오기");
+        JSONObject DTO = new JSONObject(dto);
+        obj.put("projectInfo",DTO);
+        obj.put("documentId",document.getId());
+        obj.put("gapTableId",gapTable.getId());
+        obj.put("nodeTable",nodeTable.getId());
         return obj.toString();
     }
 
