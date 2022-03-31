@@ -2,6 +2,7 @@ package com.pjt.flowing.controller;
 
 import com.pjt.flowing.dto.request.NodeCreateRequestDto;
 import com.pjt.flowing.dto.request.NodeEditRequestDto;
+import com.pjt.flowing.dto.request.NodePathRequestDto;
 import com.pjt.flowing.dto.request.NodePinRequestDto;
 import com.pjt.flowing.service.NodeService;
 import lombok.RequiredArgsConstructor;
@@ -50,5 +51,17 @@ public class NodeController {
 
     @GetMapping("/node/{nodeId}")   //노드 하나 보기
     public String getOne(@PathVariable Long nodeId) {return nodeService.showOne(nodeId);}
+
+    //////////////////////////////////////////////
+
+    @PostMapping("/node/path") // 노드 연결 시키기
+    public String nodePathCreate(@RequestBody NodePathRequestDto nodePathRequestDto) {
+        return nodeService.nodeConnect(nodePathRequestDto);
+    }
+
+    @GetMapping("/node/path/{nodeTableId}") // nodePathList 로 불러오기
+    public String nodePathFindAll(@PathVariable Long nodeTableId) {
+        return nodeService.NodePathFindAll(nodeTableId);
+    }
 
 }

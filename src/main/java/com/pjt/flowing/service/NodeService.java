@@ -2,11 +2,15 @@ package com.pjt.flowing.service;
 
 import com.pjt.flowing.dto.request.NodeCreateRequestDto;
 import com.pjt.flowing.dto.request.NodeEditRequestDto;
+import com.pjt.flowing.dto.request.NodePathRequestDto;
 import com.pjt.flowing.dto.request.NodePinRequestDto;
+import com.pjt.flowing.dto.response.NodePathResponseDto;
 import com.pjt.flowing.dto.response.NodeResponseDto;
 import com.pjt.flowing.model.Node;
+import com.pjt.flowing.model.NodePath;
 import com.pjt.flowing.model.NodeTable;
 import com.pjt.flowing.model.Project;
+import com.pjt.flowing.repository.NodePathRepository;
 import com.pjt.flowing.repository.NodeRepository;
 import com.pjt.flowing.repository.NodeTableRepository;
 import com.pjt.flowing.repository.ProjectRepository;
@@ -26,6 +30,7 @@ public class NodeService {
     private final NodeRepository nodeRepository;
     private final NodeTableRepository nodeTableRepository;
     private final ProjectRepository projectRepository;
+    private final NodePathRepository nodePathRepository;
 
     @Transactional
     public String nodeCreate(NodeCreateRequestDto nodeCreateRequestDto){
@@ -86,6 +91,8 @@ public class NodeService {
     @Transactional
     public String nodeDelete(Long id){
         nodeRepository.deleteById(id);
+        nodePathRepository.deleteAllByChildNode(id);
+        nodePathRepository.deleteAllByParentNode(id);
         JSONObject obj = new JSONObject();
         obj.put("msg","노드 삭제");
         return obj.toString();
@@ -164,5 +171,43 @@ public class NodeService {
         JSONObject obj = new JSONObject();
         obj.put("msg","노드 테이블 삭제");
         return obj.toString();
+    }
+
+    @Transactional
+    public String nodeConnect(NodePathRequestDto nodePathRequestDto) {
+        System.out.println("cNodeId : " + nodePathRequestDto.getChildNode());
+        System.out.println("pNodeId : " + nodePathRequestDto.getParentNode());
+        NodeTable nodeTable = nodeTableRepository.findById(nodePathRequestDto.getNodeTableId()).orElseThrow(
+                () -> new IllegalArgumentException("Not exist nodeTableId")
+        );
+        System.out.println("nodeTableId : " + nodePathRequestDto.getNodeTableId());
+
+        NodePath nodePath = new NodePath(
+                nodePathRequestDto.getParentNode(),
+                nodePathRequestDto.getChildNode(),
+                nodeTable
+        );
+        nodePathRepository.save(nodePath);
+        JSONObject obj = new JSONObject();
+        obj.put("parentNode", nodePathRequestDto.getParentNode());
+        obj.put("childNode", nodePathRequestDto.getChildNode());
+
+        return obj.toString();
+    }
+
+    @Transactional
+    public String NodePathFindAll(Long nodeTableId) {
+        List<NodePath> nodePathList = nodePathRepository.findAllByNodeTable_Id(nodeTableId);
+        List<NodePathResponseDto> nodePathResponseDtoList = new ArrayList<>();
+
+        for (NodePath nodePath : nodePathList) {
+            NodePathResponseDto nodePathResponseDto = new NodePathResponseDto(
+                    nodePath.getParentNode(),
+                    nodePath.getChildNode()
+            );
+            nodePathResponseDtoList.add(nodePathResponseDto);
+        }
+        JSONArray array = new JSONArray(nodePathResponseDtoList);
+        return array.toString();
     }
 }

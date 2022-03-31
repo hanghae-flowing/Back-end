@@ -7,8 +7,8 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class NodeResponseDto {
-    private String xval;
-    private String yval;
+    private int xval;
+    private int yval;
     private String width;
     private String height;
     private String text;
@@ -18,7 +18,7 @@ public class NodeResponseDto {
     private Long nodeId;
 
     @Builder
-    public NodeResponseDto(String xval, String yval, String width, String height, String text,
+    public NodeResponseDto(int xval, int yval, String width, String height, String text,
                            String radius, int isChecked, Long nodeTableId, Long nodeId) {
         this.xval = xval;
         this.yval = yval;

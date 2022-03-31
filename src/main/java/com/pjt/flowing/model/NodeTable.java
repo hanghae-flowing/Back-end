@@ -27,6 +27,9 @@ public class NodeTable{
     @OneToMany(mappedBy = "nodeTable",fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
     private List<Node> nodeList = new ArrayList<>();
 
+    @OneToMany(mappedBy = "nodeTable",fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
+    private List<NodePath> nodePathList = new ArrayList<>();
+
 
     public NodeTable(Project project) {
         this.project = project;
