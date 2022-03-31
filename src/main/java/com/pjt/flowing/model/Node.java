@@ -22,10 +22,10 @@ public class Node {
     private Long id;
 
     @Column(nullable = false)
-    private String xval;
+    private int xval;
 
     @Column(nullable = false)
-    private String yval;
+    private int yval;
 
     @Column(nullable = false)
     private String width;
@@ -48,7 +48,7 @@ public class Node {
     private NodeTable nodeTable;
 
     @Builder
-    public Node(String xval,String yval,String width,
+    public Node(int xval,int yval,String width,
                 String height,String text,String radius,int isChecked,NodeTable nodeTable){
         this.xval=xval;
         this.yval=yval;

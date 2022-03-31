@@ -7,18 +7,18 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor
 @Entity
-public class Bookmark extends Timestamped{
+    public class Bookmark extends Timestamped{
 
-    @Id @GeneratedValue
-    private Long id;
+        @Id @GeneratedValue
+        private Long id;
 
-    @ManyToOne
-    @JoinColumn(name="project_id")
-    private Project project;
+        @ManyToOne
+        @JoinColumn(name="project_id")
+        private Project project;
 
-    @ManyToOne
-    @JoinColumn(name="user_id")
-    private Member member;
+        @ManyToOne
+        @JoinColumn(name="user_id")
+        private Member member;
 
     public Bookmark(Project project, Member member) {
         this.project = project;
