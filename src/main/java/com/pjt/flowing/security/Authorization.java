@@ -32,7 +32,6 @@ public class Authorization {
         JsonNode jsonNode = objectMapper.readTree(responseBody);
 
         Long kakaoId = jsonNode.get("id").asLong();
-        System.out.println("카카오 Authorization");
 
         int flag;
         if(kakaoId.equals(autorizationDto.getKakaoId()))

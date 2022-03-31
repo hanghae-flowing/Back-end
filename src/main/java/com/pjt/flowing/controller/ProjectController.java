@@ -6,9 +6,6 @@ import com.pjt.flowing.dto.request.AcceptRequestDto;
 import com.pjt.flowing.dto.request.ProjectCreateRequestDto;
 import com.pjt.flowing.dto.request.ProjectEditRequestDto;
 import com.pjt.flowing.dto.response.ProjectResponseDto;
-import com.pjt.flowing.dto.response.MsgResponseDto;
-import com.pjt.flowing.model.*;
-import com.pjt.flowing.repository.*;
 import com.pjt.flowing.service.ProjectService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -20,9 +17,6 @@ import java.util.List;
 @RestController
 public class ProjectController {
     private final ProjectService projectService;
-    private final MemberRepository memberRepository;
-    private final ProjectRepository projectRepository;
-    private final BookmarkRepository bookmarkRepository;
 
     @PostMapping("/project/detail") // 더보기페이지
     public List<ProjectResponseDto> getProject(@RequestBody AuthorizationDto requestDto) throws JsonProcessingException {
@@ -37,36 +31,18 @@ public class ProjectController {
 
     @Transactional
     @PostMapping("/bookmark/{projectId}")   //북마크 생성
-    public MsgResponseDto checkBookmark(@PathVariable Long projectId , @RequestBody AuthorizationDto authorizationDto) {
-        boolean check = bookmarkRepository.existsByMember_IdAndProject_Id(authorizationDto.getUserId(), projectId);
-        Project project = projectRepository.findById(projectId).orElseThrow(
-                () -> new IllegalArgumentException("no Project")
-        );
-        Member member = memberRepository.findById(authorizationDto.getUserId()).orElseThrow(
-                () -> new IllegalArgumentException("no Id")
-        );
-        MsgResponseDto msgResponseDto = new MsgResponseDto();
-        if (!check) {
-            Bookmark bookmark = new Bookmark(project, member);
-            bookmarkRepository.save(bookmark);
-            msgResponseDto.setMsg("check");
-            return msgResponseDto;
-        }
-        else {
-            bookmarkRepository.deleteByMember_IdAndProject_Id(authorizationDto.getUserId(), projectId);
-            msgResponseDto.setMsg("cancel");
-            return msgResponseDto;
-        }
+    public String checkBookmark(@PathVariable Long projectId , @RequestBody AuthorizationDto authorizationDto) {
+        return projectService.checkBookmark(projectId,authorizationDto);
     }
 
     @DeleteMapping("/project/{projectId}")    //프로젝트 삭제
     public String deleteProject(@PathVariable Long projectId,@RequestBody AuthorizationDto dto){
-        return projectService.deleteproject(projectId, dto);
+        return projectService.deleteProject(projectId, dto);
     }
 
     @PutMapping("/project/{projectId}")     //프로젝트 수정(파티장만 가능하게 해달랬음)
     public String editProject(@PathVariable Long projectId, ProjectEditRequestDto dto) {
-        return projectService.editproject(projectId, dto);
+        return projectService.editProject(projectId, dto);
     }
 
     @GetMapping("/project/{projectId}")   //프로젝트 상세페이지 정보 보내주기

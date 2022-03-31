@@ -16,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -61,39 +62,37 @@ public class ProjectService {
     }
 
 
-    public List<ProjectResponseDto> get4(Long userId){
-        List<Project> all = projectRepository.findFirst4ByMember_IdOrderByModifiedAtDesc(userId);
-        List<Bookmark> bookmarked = bookmarkRepository.findAllByMember_IdOrderByModifiedAtDesc(userId); //userId가 누른 북마크
-
-        List <ProjectResponseDto> re = bookmarked.stream()
-                .map(ProjectResponseDto::from2)
-                .collect(Collectors.toList());
-
-
-        List<ProjectResponseDto> dto = all.stream()
-                .map(ProjectResponseDto::from)
-                .collect(Collectors.toList());
-
-        List<ProjectResponseDto> joined = new ArrayList<>();
-        joined.addAll(re);
-        joined.addAll(dto);
-
-        List<ProjectResponseDto> response =joined.stream()
-                .filter(distinctByKey(ProjectResponseDto::getProjectId))
-                .limit(4)
-                .collect(Collectors.toList());
-
-        return response;
-    }
+//    public List<ProjectResponseDto> get4(Long userId){
+//        List<Project> all = projectRepository.findFirst4ByMember_IdOrderByModifiedAtDesc(userId);
+//        List<Bookmark> bookmarked = bookmarkRepository.findAllByMember_IdOrderByModifiedAtDesc(userId); //userId가 누른 북마크
+//
+//        List <ProjectResponseDto> re = bookmarked.stream()
+//                .map(ProjectResponseDto::from2)
+//                .collect(Collectors.toList());
+//
+//
+//        List<ProjectResponseDto> dto = all.stream()
+//                .map(ProjectResponseDto::from)
+//                .collect(Collectors.toList());
+//
+//        List<ProjectResponseDto> joined = new ArrayList<>();
+//        joined.addAll(re);
+//        joined.addAll(dto);
+//
+//        List<ProjectResponseDto> response =joined.stream()
+//                .filter(distinctByKey(ProjectResponseDto::getProjectId))
+//                .limit(4)
+//                .collect(Collectors.toList());
+//
+//        return response;
+//    }
 
     @Transactional
-    public String deleteproject(Long projectId, AuthorizationDto dto){
+    public String deleteProject(Long projectId, AuthorizationDto dto){
         JSONObject obj = new JSONObject();
         Project project = projectRepository.findById(projectId).orElseThrow(
                 ()->new IllegalArgumentException("no project Id error")
         );
-        System.out.println(dto.getUserId()+"dto.getuserid");
-        System.out.println(project.getMember().getId()+"project");
         if(dto.getUserId() == project.getMember().getId()){
             projectRepository.deleteById(projectId);
             obj.put("msg","삭제완료");
@@ -105,7 +104,7 @@ public class ProjectService {
     }
 
     @Transactional
-    public String editproject(Long projectId, ProjectEditRequestDto dto){
+    public String editProject(Long projectId, ProjectEditRequestDto dto){
         JSONObject obj = new JSONObject();
         Optional<Project> project = projectRepository.findById(projectId);
         if(Objects.equals(dto.getUserId(), project.get().getMember().getId())){
@@ -120,16 +119,14 @@ public class ProjectService {
 
     public String detail(Long projectId){
         JSONObject obj = new JSONObject();
-        Optional<Project> project = projectRepository.findById(projectId);
-
-        //나중에 멤버리스트 추가되면  멤버 리스트일 경우만 불러올 수 있게 수정해야함.
-        //어차피 멤버만 볼 수 있으니까 일단은 그냥 보여줬음.
-
+        Project project = projectRepository.findById(projectId).orElseThrow(
+                ()->new IllegalArgumentException("projectId error")
+        );
         ProjectResponseDto dto = ProjectResponseDto.builder()
-                .projectId(project.get().getId())
-                .projectName(project.get().getProjectName())
-                .modifiedAt(project.get().getModifiedAt())
-                .thumbnailNum(project.get().getThumbNailNum())
+                .projectId(project.getId())
+                .projectName(project.getProjectName())
+                .modifiedAt(project.getModifiedAt())
+                .thumbnailNum(project.getThumbNailNum())
                 .build();
         obj.put("msg","불러오기");
         JSONObject DTO = new JSONObject(dto);
@@ -140,18 +137,16 @@ public class ProjectService {
     public List<ProjectResponseDto> getAllBookmarked(Long userId){
         List<Bookmark> bookmarked = bookmarkRepository.findAllByMember_IdOrderByModifiedAtDesc(userId); //userId가 누른 북마크
 
-        List <ProjectResponseDto> dto = bookmarked.stream()
+        return bookmarked.stream()
                 .map(ProjectResponseDto::from2)
                 .collect(Collectors.toList());
-        return dto;
     }
 
     public List<ProjectResponseDto> getAllCreate(Long userId){
         List<Project> myCreateProjects = projectRepository.findAllByMember_IdOrderByModifiedAtDesc(userId); // 자기가 만든 프로젝트 리스트
-        List<ProjectResponseDto> createDto = myCreateProjects.stream()
+        return myCreateProjects.stream()
                 .map(ProjectResponseDto::from)
                 .collect(Collectors.toList());
-        return createDto;
     }
     
     @Transactional
@@ -210,6 +205,7 @@ public class ProjectService {
         return obj.toString();
     }
 
+    //프로젝트 생성하기
     public String createProject(ProjectCreateRequestDto projectCreateRequestDto) throws JsonProcessingException {
         AuthorizationDto authorizationDto = new AuthorizationDto(projectCreateRequestDto.getAccessToken(),projectCreateRequestDto.getKakaoId(),projectCreateRequestDto.getUserId());
         JSONObject obj = new JSONObject();
@@ -238,7 +234,28 @@ public class ProjectService {
         obj.put("nodeTableId",nodeService.nodeTableCreate(project.getId()));
         obj.put("gapTableId",gapNodeService.gapTableCreate(project.getId()));
         obj.put("documentId",documentService.documentCreate(project.getId()));
-        System.out.println("멤버 저장 완료");
+        return obj.toString();
+    }
+
+    //북마크 생성하기
+    public String checkBookmark(Long projectId ,AuthorizationDto authorizationDto){
+        boolean check = bookmarkRepository.existsByMember_IdAndProject_Id(authorizationDto.getUserId(), projectId);
+        Project project = projectRepository.findById(projectId).orElseThrow(
+                () -> new IllegalArgumentException("no Project")
+        );
+        Member member = memberRepository.findById(authorizationDto.getUserId()).orElseThrow(
+                () -> new IllegalArgumentException("no Id")
+        );
+        JSONObject obj = new JSONObject();
+        if (!check) {
+            Bookmark bookmark = new Bookmark(project, member);
+            bookmarkRepository.save(bookmark);
+            obj.put("msg","check");
+        }
+        else {
+            bookmarkRepository.deleteByMember_IdAndProject_Id(authorizationDto.getUserId(), projectId);
+            obj.put("msg","cancel");
+        }
         return obj.toString();
     }
 }

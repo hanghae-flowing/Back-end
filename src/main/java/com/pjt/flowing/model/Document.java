@@ -11,7 +11,6 @@ import javax.persistence.*;
 @Entity
 public class Document {
 
-    // 빈껍데기에용
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "document_id")
