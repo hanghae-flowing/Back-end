@@ -122,6 +122,11 @@ public class ProjectService {
         Project project = projectRepository.findById(projectId).orElseThrow(
                 ()->new IllegalArgumentException("projectId error")
         );
+        //한개만있음
+        Document document = documentRepository.findByProject_Id(projectId);
+        GapTable gapTable = gapTableRepository.findByProject_Id(projectId);
+        NodeTable nodeTable = nodeTableRepository.findByProject_Id(projectId);
+
         ProjectResponseDto dto = ProjectResponseDto.builder()
                 .projectId(project.getId())
                 .projectName(project.getProjectName())
@@ -130,7 +135,10 @@ public class ProjectService {
                 .build();
         obj.put("msg","불러오기");
         JSONObject DTO = new JSONObject(dto);
-        obj.put("info",DTO);
+        obj.put("projectInfo",DTO);
+        obj.put("documentId",document.getId());
+        obj.put("gapTableId",gapTable.getId());
+        obj.put("nodeTable",nodeTable.getId());
         return obj.toString();
     }
 

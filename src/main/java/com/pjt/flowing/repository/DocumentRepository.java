@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface DocumentRepository extends JpaRepository<Document,Long> {
     List<Document> findAllByProject_Id(Long projectId);
+    Document findByProject_Id(Long projectId);
 }
