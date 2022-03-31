@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class NodeTableIdResponseDto {
     private Long nodeTableId;
-
     public NodeTableIdResponseDto(Long nodeTableId) {
         this.nodeTableId = nodeTableId;
     }

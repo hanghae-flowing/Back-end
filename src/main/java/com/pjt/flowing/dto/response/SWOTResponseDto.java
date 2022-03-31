@@ -10,8 +10,6 @@ import lombok.Setter;
 @Setter
 @Getter
 public class SWOTResponseDto {
-
     private Long lineId;
-
     private String text;
 }

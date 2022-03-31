@@ -15,20 +15,17 @@ public class MemberController {
 
     private final MemberService memberService;
 
-    @GetMapping("/member/kakao/callback")
+    @GetMapping("/member/kakao/callback")   //카카오 로그인
     public String kakaoLogin(@RequestParam String code) throws JsonProcessingException {
-        // authorizedCode: 카카오 서버로부터 받은 인가 코드
-        System.out.println("인가 코드"+code);
         return memberService.kakaoLogin(code);
     }
 
-    @PostMapping("/logout")
+    @PostMapping("/logout") //카카오 로그아웃
     public String kakaoLogout(@RequestBody String accessToken) throws JsonProcessingException{
-        System.out.println("엑세스 토큰"+accessToken);
         return memberService.kakaoLogout(accessToken);
     }
 
-    @PostMapping("/mypage")
+    @PostMapping("/mypage") //마이페이지 정보 보내주기
     public KakaoUserInfoDto myInfo(@RequestBody AuthorizationDto dto) throws JsonProcessingException {
         return memberService.getKakaoUserInfo(dto.getAccessToken());
     }

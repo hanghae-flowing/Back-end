@@ -14,8 +14,8 @@ public class DocumentController {
     private final DocumentService documentService;
 
     @GetMapping("/document/{projectId}")    // 프로젝트아이디에있는 다큐먼트 전부 찾기 (기획서열기)
-    public String documentShowall(@PathVariable Long projectId){
-        return documentService.Showall(projectId);
+    public String documentShowAll(@PathVariable Long projectId){
+        return documentService.showAll(projectId);
     }
 
     //levelDown 나중에 여기 주석처리 해제해
@@ -34,9 +34,9 @@ public class DocumentController {
         return documentService.lineEdit(lineId,dto);
     }
 
-    @GetMapping("/documentLines/{documentId}")  //기획서 줄 모두 불러오기
+    @GetMapping("/documentLines/{documentId}")  //기획서 라인 모두 불러오기
     public String showAll(@PathVariable Long documentId){
-        return documentService.showAll(documentId);
+        return documentService.showAllLine(documentId);
     }
 
     @DeleteMapping("/documentLines/{lineId}")   //기획서 줄 삭제하기

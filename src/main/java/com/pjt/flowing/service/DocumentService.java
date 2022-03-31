@@ -44,7 +44,6 @@ public class DocumentService {
 
         List<DocumentLineResponseDto> documentLineResponseDtoList = new ArrayList<>();
         for(long i = 1L; i<18L; i++){
-            System.out.println("i값 찍어봐용"+i);
             DocumentLineTemplates templates = documentLineTemplatesRepository.findById(i).orElseThrow(
                     ()->new IllegalArgumentException("templates download error")
             );
@@ -73,9 +72,6 @@ public class DocumentService {
 //        return obj.toString();
         return documentLineResponseDtoList;
     }
-
-
-
 
 
     @Transactional  //기획서 라인 생성 첫 요청시
@@ -117,7 +113,7 @@ public class DocumentService {
         return obj.toString();
     }
 
-    public String showAll(Long documentId){ //기획서 라인 전부 불러오기
+    public String showAllLine(Long documentId){ //기획서 라인 전부 불러오기
         List<DocumentLine> documentLineList = documentLineRepository.findAllByDocument_IdOrderByIndexNum(documentId);
         List<DocumentLineResponseDto> documentLineResponseDtoList = new ArrayList<>();
         for(DocumentLine documentLine: documentLineList){
@@ -143,7 +139,7 @@ public class DocumentService {
         return obj.toString();
     }
 
-    public String Showall(Long projectId){
+    public String showAll(Long projectId){
         List<Document> documentList = documentRepository.findAllByProject_Id(projectId);
         List<DocumentIdResponseDto> documentIdResponseDtoList = new ArrayList<>();
         JSONObject obj = new JSONObject();

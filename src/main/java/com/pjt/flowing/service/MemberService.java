@@ -104,7 +104,6 @@ public class MemberService {
         MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
         body.add("grant_type", "authorization_code");
         body.add("client_id", kakao_api);
-//
 //        body.add("redirect_uri", "http://localhost:8080/member/kakao/callback");
 //        body.add("redirect_uri", "http://localhost:3000/member/kakao/callback");
         body.add("redirect_uri", "http://hanghae-final5.s3-website.ap-northeast-2.amazonaws.com/member/kakao/callback");
@@ -128,7 +127,6 @@ public class MemberService {
 //    private KakaoUserInfoDto getKakaoUserInfo(String accessToken) throws JsonProcessingException {
     public KakaoUserInfoDto getKakaoUserInfo(String accessToken) throws JsonProcessingException {
 
-        //모든 요청에 이걸 넣어야 되나?를 고민 해봐야 할듯. write only?
         // HTTP Header 생성
         HttpHeaders headers = new HttpHeaders();
         headers.add("Authorization", "Bearer " + accessToken); //카카오에서 공식적으로 해달라고 했다

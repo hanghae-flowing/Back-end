@@ -9,7 +9,6 @@ import com.pjt.flowing.dto.response.ProjectResponseDto;
 import com.pjt.flowing.dto.response.MsgResponseDto;
 import com.pjt.flowing.model.*;
 import com.pjt.flowing.repository.*;
-import com.pjt.flowing.security.Authorization;
 import com.pjt.flowing.service.ProjectService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -22,16 +21,11 @@ import java.util.List;
 public class ProjectController {
     private final ProjectService projectService;
     private final MemberRepository memberRepository;
-    private final Authorization authorization;
     private final ProjectRepository projectRepository;
     private final BookmarkRepository bookmarkRepository;
-    private final ProjectMemberRepository projectMemberRepository;
 
     @PostMapping("/project/detail") // 더보기페이지
     public List<ProjectResponseDto> getProject(@RequestBody AuthorizationDto requestDto) throws JsonProcessingException {
-        if(authorization.getKakaoId(requestDto)==0){
-            System.out.println("인가x");
-        }
         return projectService.getAll(requestDto.getUserId());
     }
 
@@ -43,10 +37,8 @@ public class ProjectController {
 
     @Transactional
     @PostMapping("/bookmark/{projectId}")   //북마크 생성
-    public MsgResponseDto CheckBookmark(@PathVariable Long projectId , @RequestBody AuthorizationDto authorizationDto) {
-        System.out.println(projectId);
+    public MsgResponseDto checkBookmark(@PathVariable Long projectId , @RequestBody AuthorizationDto authorizationDto) {
         boolean check = bookmarkRepository.existsByMember_IdAndProject_Id(authorizationDto.getUserId(), projectId);
-
         Project project = projectRepository.findById(projectId).orElseThrow(
                 () -> new IllegalArgumentException("no Project")
         );

@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class DocumentIdResponseDto {
     private Long documentId;
-
     public DocumentIdResponseDto(Long documentId) {
         this.documentId = documentId;
     }
