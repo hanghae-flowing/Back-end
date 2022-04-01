@@ -18,10 +18,10 @@ public class NodePath {
     @Column(name="node_path_id")
     private Long id;
 
-    @Column
+    @Column(nullable = false)
     private Long parentNode;
 
-    @Column
+    @Column(nullable = false)
     private Long childNode;
 
     @ManyToOne
