@@ -32,6 +32,9 @@ public class Project extends Timestamped{
     @Column(nullable = false)
     private int thumbNailNum;
 
+    @Column(nullable = false)
+    private boolean trash;
+
     @OneToMany(mappedBy = "project",fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
     private List<Bookmark> BookmarkList = new ArrayList<>();
 
@@ -52,11 +55,16 @@ public class Project extends Timestamped{
         this.objectId = objectId;
         this.member = member;   //여기서의 member는 프로젝트 생성자를 말한다.
         this.thumbNailNum = thumbNailNum;
+        this.trash = false;
     }
 
     public void update(ProjectEditRequestDto dto){
         this.projectName=dto.getProjectName();
         this.thumbNailNum=dto.getThumbNailNum();
+    }
+
+    public void setTrash(boolean trash) {
+        this.trash = trash;
     }
 
 }
