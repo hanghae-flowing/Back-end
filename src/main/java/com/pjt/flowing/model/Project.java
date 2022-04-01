@@ -32,6 +32,9 @@ public class Project extends Timestamped{
     @Column(nullable = false)
     private int thumbNailNum;
 
+    @Column(nullable = false)
+    private boolean trash;
+
     @OneToMany(mappedBy = "project",fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
     private List<Bookmark> BookmarkList = new ArrayList<>();
 
