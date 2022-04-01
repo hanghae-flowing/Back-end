@@ -56,7 +56,6 @@ public class Project extends Timestamped{
         this.member = member;   //여기서의 member는 프로젝트 생성자를 말한다.
         this.thumbNailNum = thumbNailNum;
         this.trash = false;
-
     }
 
     public void update(ProjectEditRequestDto dto){
