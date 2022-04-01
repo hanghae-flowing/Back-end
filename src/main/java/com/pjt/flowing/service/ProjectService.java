@@ -45,20 +45,12 @@ public class ProjectService {
         Set<Object> seen = ConcurrentHashMap.newKeySet();
         return t -> seen.add(keyExtractor.apply(t));
     }
-    public List<ProjectResponseDto> getAll(Long userId){
-//        List<Project> myCreateProjects = projectRepository.findAllByMember_IdOrderByModifiedAtDesc(userId); // 자기가 만든 프로젝트 리스트
-//        List<ProjectResponseDto> CreateDto = myCreateProjects.stream()
-//                .map(ProjectResponseDto::from)
-//                .collect(Collectors.toList());
+    public List<ProjectResponseDto> getAll(Long userId){//휴지통 제외하고 보내주기
+        List<Project> myCreateProjects = projectRepository.findAllByMember_IdAndTrashOrderByModifiedAtDesc(userId,false); // 자기가 만든 프로젝트 리스트
 
-        List<ProjectMember> myIncludedProjects = projectMemberRepository.findAllByMember_Id(userId); // 자기가 포함된 프로젝트 리스트
-        List<ProjectResponseDto> includedDto = myIncludedProjects.stream()
-                .map(ProjectResponseDto::includedProject)
-                .sorted(Comparator.comparing(ProjectResponseDto::getModifiedAt).reversed())
+        return myCreateProjects.stream()
+                .map(ProjectResponseDto::from)
                 .collect(Collectors.toList());
-
-
-        return includedDto;
     }
 
 

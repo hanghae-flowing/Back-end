@@ -18,7 +18,7 @@ import java.util.List;
 public class ProjectController {
     private final ProjectService projectService;
 
-    @PostMapping("/project/detail") // 더보기페이지
+    @PostMapping("/project/detail") //  프로젝트 조회하기 휴지통제외하고
     public List<ProjectResponseDto> getProject(@RequestBody AuthorizationDto requestDto) throws JsonProcessingException {
         return projectService.getAll(requestDto.getUserId());
     }
