@@ -35,7 +35,7 @@ public class ProjectController {
         return projectService.checkBookmark(projectId,authorizationDto);
     }
 
-    @DeleteMapping("/project/{projectId}")    //프로젝트 삭제
+    @PostMapping("/project/delete/{projectId}")    //프로젝트 삭제
     public String deleteProject(@PathVariable Long projectId,@RequestBody AuthorizationDto dto){
         return projectService.deleteProject(projectId, dto);
     }
