@@ -52,7 +52,7 @@ public class ProjectService {
         List<ProjectResponseDto> includedDto = myIncludedProjects.stream()
                 .filter(x -> !x.getProject().isTrash())
                 .map(ProjectResponseDto::includedProject)
-                .sorted(Comparator.comparing(ProjectResponseDto::getModifiedAt))
+                .sorted(Comparator.comparing(ProjectResponseDto::getModifiedAt).reversed())
                 .collect(Collectors.toList());
 
 //        List<Project> myCreateProjects = projectRepository.findAllByMember_IdAndTrashOrderByModifiedAtDesc(userId,false); // 자기가 만든 프로젝트 리스트
