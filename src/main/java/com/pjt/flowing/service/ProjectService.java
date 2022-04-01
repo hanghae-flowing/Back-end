@@ -45,12 +45,22 @@ public class ProjectService {
         Set<Object> seen = ConcurrentHashMap.newKeySet();
         return t -> seen.add(keyExtractor.apply(t));
     }
-    public List<ProjectResponseDto> getAll(Long userId){//휴지통 제외하고 보내주기
-        List<Project> myCreateProjects = projectRepository.findAllByMember_IdAndTrashOrderByModifiedAtDesc(userId,false); // 자기가 만든 프로젝트 리스트
 
-        return myCreateProjects.stream()
-                .map(ProjectResponseDto::from)
+    public List<ProjectResponseDto> getAll(Long userId) {//휴지통 제외하고 보내주기
+
+        List<ProjectMember> myIncludedProjects = projectMemberRepository.findAllByMember_Id(userId); // 자기가 포함된 프로젝트 리스트
+        List<ProjectResponseDto> includedDto = myIncludedProjects.stream()
+                .filter(x -> !x.getProject().isTrash())
+                .map(ProjectResponseDto::includedProject)
+                .sorted(Comparator.comparing(ProjectResponseDto::getModifiedAt))
                 .collect(Collectors.toList());
+
+//        List<Project> myCreateProjects = projectRepository.findAllByMember_IdAndTrashOrderByModifiedAtDesc(userId,false); // 자기가 만든 프로젝트 리스트
+//
+//        return myCreateProjects.stream()
+//                .map(ProjectResponseDto::from)
+//                .collect(Collectors.toList());
+        return includedDto;
     }
 
 
@@ -80,39 +90,37 @@ public class ProjectService {
 //    }
 
     @Transactional
-    public String deleteProject(Long projectId, AuthorizationDto dto){
+    public String deleteProject(Long projectId, AuthorizationDto dto) {
         JSONObject obj = new JSONObject();
         Project project = projectRepository.findById(projectId).orElseThrow(
-                ()->new IllegalArgumentException("no project Id error")
+                () -> new IllegalArgumentException("no project Id error")
         );
-        if(dto.getUserId() == project.getMember().getId()){
+        if (dto.getUserId() == project.getMember().getId()) {
             projectRepository.deleteById(projectId);
-            obj.put("msg","삭제완료");
-        }
-        else{
-            obj.put("msg","프로젝트 장이 아닙니다");
+            obj.put("msg", "삭제완료");
+        } else {
+            obj.put("msg", "프로젝트 장이 아닙니다");
         }
         return obj.toString();
     }
 
     @Transactional
-    public String editProject(Long projectId, ProjectEditRequestDto dto){
+    public String editProject(Long projectId, ProjectEditRequestDto dto) {
         JSONObject obj = new JSONObject();
         Optional<Project> project = projectRepository.findById(projectId);
-        if(Objects.equals(dto.getUserId(), project.get().getMember().getId())){
+        if (Objects.equals(dto.getUserId(), project.get().getMember().getId())) {
             project.get().update(dto);
-            obj.put("msg","수정 완료");
-        }
-        else{
-            obj.put("msg","프로젝트 장이 아닙니다");
+            obj.put("msg", "수정 완료");
+        } else {
+            obj.put("msg", "프로젝트 장이 아닙니다");
         }
         return obj.toString();
     }
 
-    public String detail(Long projectId){
+    public String detail(Long projectId) {
         JSONObject obj = new JSONObject();
         Project project = projectRepository.findById(projectId).orElseThrow(
-                ()->new IllegalArgumentException("projectId error")
+                () -> new IllegalArgumentException("projectId error")
         );
         //한개만있음
         Document document = documentRepository.findByProject_Id(projectId);
@@ -125,16 +133,16 @@ public class ProjectService {
                 .modifiedAt(project.getModifiedAt())
                 .thumbnailNum(project.getThumbNailNum())
                 .build();
-        obj.put("msg","불러오기");
+        obj.put("msg", "불러오기");
         JSONObject DTO = new JSONObject(dto);
-        obj.put("projectInfo",DTO);
-        obj.put("documentId",document.getId());
-        obj.put("gapTableId",gapTable.getId());
-        obj.put("nodeTable",nodeTable.getId());
+        obj.put("projectInfo", DTO);
+        obj.put("documentId", document.getId());
+        obj.put("gapTableId", gapTable.getId());
+        obj.put("nodeTable", nodeTable.getId());
         return obj.toString();
     }
 
-    public List<ProjectResponseDto> getAllBookmarked(Long userId){
+    public List<ProjectResponseDto> getAllBookmarked(Long userId) {
         List<Bookmark> bookmarked = bookmarkRepository.findAllByMember_IdOrderByModifiedAtDesc(userId); //userId가 누른 북마크
 
         return bookmarked.stream()
@@ -142,17 +150,17 @@ public class ProjectService {
                 .collect(Collectors.toList());
     }
 
-    public List<ProjectResponseDto> getAllCreate(Long userId){
+    public List<ProjectResponseDto> getAllCreate(Long userId) {
         //List<Project> myCreateProjects = projectRepository.findAllByMember_IdOrderByModifiedAtDesc(userId); // 자기가 만든 프로젝트 리스트
-        List<Project> myCreateProjects = projectRepository.findAllByMember_IdAndTrashOrderByModifiedAtDesc(userId,false); // 자기가 만든 프로젝트 리스트
+        List<Project> myCreateProjects = projectRepository.findAllByMember_IdAndTrashOrderByModifiedAtDesc(userId, false); // 자기가 만든 프로젝트 리스트
 
         return myCreateProjects.stream()
                 .map(ProjectResponseDto::from)
                 .collect(Collectors.toList());
     }
-    
+
     @Transactional
-    public String accept(AcceptRequestDto acceptRequestDto){
+    public String accept(AcceptRequestDto acceptRequestDto) {
         Long projectId = acceptRequestDto.getProjectId();
         Long userId = acceptRequestDto.getUserId();
 
@@ -160,59 +168,59 @@ public class ProjectService {
                 () -> new IllegalArgumentException("accept (project) error")
         );
         Member member = memberRepository.findById(userId).orElseThrow(
-                ()-> new IllegalArgumentException("accept (member) error")
+                () -> new IllegalArgumentException("accept (member) error")
         );
 
-        ProjectMember projectMember = new ProjectMember(project,member);
+        ProjectMember projectMember = new ProjectMember(project, member);
         projectMemberRepository.save(projectMember);
         JSONObject obj = new JSONObject();
-        obj.put("msg","수락 완료");
+        obj.put("msg", "수락 완료");
         return obj.toString();
     }
 
-    public String showTemplates(Long projectid){
+    public String showTemplates(Long projectid) {
         List<Document> documentList = documentRepository.findAllByProject_Id(projectid);
         List<NodeTable> nodeTableList = nodeTableRepository.findAllByProject_Id(projectid);
         List<GapTable> gapTableList = gapTableRepository.findAllByProject_Id(projectid);
         List<SWOT> swotList = swotRepository.findAllByProject_Id(projectid);
 
         List<DocumentIdResponseDto> documentIdResponseDtoList = new ArrayList<>();
-        for(Document document: documentList){
+        for (Document document : documentList) {
             DocumentIdResponseDto documentIdResponseDto = new DocumentIdResponseDto(document.getId());
             documentIdResponseDtoList.add(documentIdResponseDto);
         }
         List<NodeTableIdResponseDto> nodeTableIdResponseDtoList = new ArrayList<>();
-        for(NodeTable nodeTable: nodeTableList){
+        for (NodeTable nodeTable : nodeTableList) {
             NodeTableIdResponseDto nodeTableIdResponseDto = new NodeTableIdResponseDto(nodeTable.getId());
             nodeTableIdResponseDtoList.add(nodeTableIdResponseDto);
         }
         List<GapTableIdResponseDto> gapTableIdResponseDtoList = new ArrayList<>();
-        for(GapTable gapTable: gapTableList){
+        for (GapTable gapTable : gapTableList) {
             GapTableIdResponseDto gapTableIdResponseDto = new GapTableIdResponseDto(gapTable.getId());
             gapTableIdResponseDtoList.add(gapTableIdResponseDto);
         }
         List<SwotIdResponseDto> swotIdResponseDtoList = new ArrayList<>();
-        for(SWOT swot: swotList){
+        for (SWOT swot : swotList) {
             SwotIdResponseDto swotIdResponseDto = new SwotIdResponseDto(swot.getId());
             swotIdResponseDtoList.add(swotIdResponseDto);
         }
 
         JSONObject obj = new JSONObject();
-        obj.put("msg","템플릿 리스트 불러오기");
-        obj.put("documentIdList",documentIdResponseDtoList);
-        obj.put("nodeTableIdList",nodeTableIdResponseDtoList);
-        obj.put("gapTableIdList",gapTableIdResponseDtoList);
-        obj.put("swotIdList",swotIdResponseDtoList);
+        obj.put("msg", "템플릿 리스트 불러오기");
+        obj.put("documentIdList", documentIdResponseDtoList);
+        obj.put("nodeTableIdList", nodeTableIdResponseDtoList);
+        obj.put("gapTableIdList", gapTableIdResponseDtoList);
+        obj.put("swotIdList", swotIdResponseDtoList);
 
         return obj.toString();
     }
 
     //프로젝트 생성하기
     public String createProject(ProjectCreateRequestDto projectCreateRequestDto) throws JsonProcessingException {
-        AuthorizationDto authorizationDto = new AuthorizationDto(projectCreateRequestDto.getAccessToken(),projectCreateRequestDto.getKakaoId(),projectCreateRequestDto.getUserId());
+        AuthorizationDto authorizationDto = new AuthorizationDto(projectCreateRequestDto.getAccessToken(), projectCreateRequestDto.getKakaoId(), projectCreateRequestDto.getUserId());
         JSONObject obj = new JSONObject();
-        if (authorization.getKakaoId(authorizationDto) == 0){
-            obj.put("msg","false");
+        if (authorization.getKakaoId(authorizationDto) == 0) {
+            obj.put("msg", "false");
             return obj.toString();
         }
         Member member = memberRepository.findById(projectCreateRequestDto.getUserId()).orElseThrow(
@@ -244,17 +252,17 @@ public class ProjectService {
                 .modifiedAt(project.getModifiedAt())
                 .thumbnailNum(project.getThumbNailNum())
                 .build();
-        obj.put("msg","생성하고 불러오기");
+        obj.put("msg", "생성하고 불러오기");
         JSONObject DTO = new JSONObject(dto);
-        obj.put("projectInfo",DTO);
-        obj.put("documentId",document.getId());
-        obj.put("gapTableId",gapTable.getId());
-        obj.put("nodeTable",nodeTable.getId());
+        obj.put("projectInfo", DTO);
+        obj.put("documentId", document.getId());
+        obj.put("gapTableId", gapTable.getId());
+        obj.put("nodeTable", nodeTable.getId());
         return obj.toString();
     }
 
     //북마크 생성하기
-    public String checkBookmark(Long projectId ,AuthorizationDto authorizationDto){
+    public String checkBookmark(Long projectId, AuthorizationDto authorizationDto) {
         boolean check = bookmarkRepository.existsByMember_IdAndProject_Id(authorizationDto.getUserId(), projectId);
         Project project = projectRepository.findById(projectId).orElseThrow(
                 () -> new IllegalArgumentException("no Project")
@@ -266,11 +274,10 @@ public class ProjectService {
         if (!check) {
             Bookmark bookmark = new Bookmark(project, member);
             bookmarkRepository.save(bookmark);
-            obj.put("msg","check");
-        }
-        else {
+            obj.put("msg", "check");
+        } else {
             bookmarkRepository.deleteByMember_IdAndProject_Id(authorizationDto.getUserId(), projectId);
-            obj.put("msg","cancel");
+            obj.put("msg", "cancel");
         }
         return obj.toString();
     }

@@ -53,12 +53,15 @@ public class ProjectResponseDto {
         projectMember.getProject().getProjectMemberList().stream()
                 .map(c -> c.getMember().getNickname())
                 .forEach(s->nicknames.add(s));
-        return ProjectResponseDto.builder()
-                .projectId(projectMember.getProject().getId())
-                .projectName(projectMember.getProject().getProjectName())
-                .modifiedAt(projectMember.getProject().getModifiedAt())
-                .memberList(nicknames)
-                .thumbnailNum(projectMember.getProject().getThumbNailNum())
-                .build();
+
+            return ProjectResponseDto.builder()
+                    .projectId(projectMember.getProject().getId())
+                    .projectName(projectMember.getProject().getProjectName())
+                    .modifiedAt(projectMember.getProject().getModifiedAt())
+                    .memberList(nicknames)
+                    .thumbnailNum(projectMember.getProject().getThumbNailNum())
+                    .build();
+
+
     }
 }
