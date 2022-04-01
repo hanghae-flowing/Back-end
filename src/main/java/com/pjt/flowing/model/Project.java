@@ -64,4 +64,8 @@ public class Project extends Timestamped{
         this.thumbNailNum=dto.getThumbNailNum();
     }
 
+    public void setTrash(boolean trash) {
+        this.trash = trash;
+    }
+
 }
