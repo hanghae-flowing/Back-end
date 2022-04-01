@@ -3,6 +3,7 @@ package com.pjt.flowing.service;
 import com.pjt.flowing.dto.request.AcceptRequestDto;
 import com.pjt.flowing.dto.response.ProjectResponseDto;
 import com.pjt.flowing.model.Project;
+import com.pjt.flowing.model.ProjectMember;
 import com.pjt.flowing.repository.ProjectMemberRepository;
 import com.pjt.flowing.repository.ProjectRepository;
 import lombok.RequiredArgsConstructor;
@@ -10,6 +11,7 @@ import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -49,10 +51,14 @@ public class TrashService {
 
     @Transactional
     public List<ProjectResponseDto> showTrash(Long userId) {
-        List<Project> trashProjectList = projectRepository.findAllByMember_IdAndTrashOrderByModifiedAtDesc(userId, true);
 
-        return trashProjectList.stream()
-                .map(ProjectResponseDto::from)
+        List<ProjectMember> myTrashProjects = projectMemberRepository.findAllByMember_Id(userId); // 자기가 포함된 프로젝트 리스트
+        List<ProjectResponseDto> trashDto = myTrashProjects.stream()
+                .filter(x -> x.getProject().isTrash())
+                .map(ProjectResponseDto::includedProject)
+                .sorted(Comparator.comparing(ProjectResponseDto::getModifiedAt).reversed())
                 .collect(Collectors.toList());
+
+        return trashDto;
     }
 }
