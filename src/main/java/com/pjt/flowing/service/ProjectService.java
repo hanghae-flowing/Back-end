@@ -54,7 +54,7 @@ public class ProjectService {
         List<ProjectMember> myIncludedProjects = projectMemberRepository.findAllByMember_Id(userId); // 자기가 포함된 프로젝트 리스트
         List<ProjectResponseDto> includedDto = myIncludedProjects.stream()
                 .map(ProjectResponseDto::includedProject)
-                .sorted(Comparator.comparing(ProjectResponseDto::getModifiedAt))
+                .sorted(Comparator.comparing(ProjectResponseDto::getModifiedAt).reversed())
                 .collect(Collectors.toList());
 
 
@@ -151,7 +151,9 @@ public class ProjectService {
     }
 
     public List<ProjectResponseDto> getAllCreate(Long userId){
-        List<Project> myCreateProjects = projectRepository.findAllByMember_IdOrderByModifiedAtDesc(userId); // 자기가 만든 프로젝트 리스트
+        //List<Project> myCreateProjects = projectRepository.findAllByMember_IdOrderByModifiedAtDesc(userId); // 자기가 만든 프로젝트 리스트
+        List<Project> myCreateProjects = projectRepository.findAllByMember_IdAndTrashOrderByModifiedAtDesc(userId,false); // 자기가 만든 프로젝트 리스트
+
         return myCreateProjects.stream()
                 .map(ProjectResponseDto::from)
                 .collect(Collectors.toList());
