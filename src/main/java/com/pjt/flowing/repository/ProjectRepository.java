@@ -12,5 +12,4 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
     //List<Project> findAllByMember_IdOrderByModifiedAtDesc(Long userId);
     boolean existsByMember_IdAndId(Long userId, Long projectId);
     Project findByMember_IdAndId(Long userId, Long projectId);
-
-}
+    }
