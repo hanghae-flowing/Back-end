@@ -1,8 +1,8 @@
 package com.pjt.flowing.controller;
 
 import com.pjt.flowing.dto.request.AcceptRequestDto;
+import com.pjt.flowing.dto.request.ProjectIdDeleteRequestDto;
 import com.pjt.flowing.dto.response.ProjectResponseDto;
-import com.pjt.flowing.repository.ProjectRepository;
 import com.pjt.flowing.service.TrashService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -25,8 +25,16 @@ public class TrashController {
         return trashService.showTrash(userId);
     }
 
-    @DeleteMapping("project/trash/{userId}")
+    @DeleteMapping("project/trash/{userId}") // 휴지통 비우기
     public String trashDeleteAll(@PathVariable Long userId) {
         return trashService.trashDeleteAll(userId);
+    }
+
+    @DeleteMapping("project/trash") // 휴지통에서 선택해서 삭제하기
+    public String choiceDelete(@RequestBody ProjectIdDeleteRequestDto requestDto) {
+        for (Long ProjectId : requestDto.getProjectIdList()){
+            System.out.println(ProjectId);
+        }
+        return trashService.choiceDelete(requestDto);
     }
 }
