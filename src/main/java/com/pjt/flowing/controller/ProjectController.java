@@ -5,6 +5,7 @@ import com.pjt.flowing.dto.*;
 import com.pjt.flowing.dto.request.AcceptRequestDto;
 import com.pjt.flowing.dto.request.ProjectCreateRequestDto;
 import com.pjt.flowing.dto.request.ProjectEditRequestDto;
+import com.pjt.flowing.dto.request.ProjectSearchDto;
 import com.pjt.flowing.dto.response.ProjectResponseDto;
 import com.pjt.flowing.service.ProjectService;
 import lombok.RequiredArgsConstructor;
@@ -71,4 +72,8 @@ public class ProjectController {
         return projectService.showTemplates(projectid);
     }
 
+    @PostMapping("project/searching")       //검색할 프로젝트명이 포함되어있는 프로젝트불러오기
+    public List<ProjectResponseDto> searchProject(@RequestBody ProjectSearchDto requestDto) throws JsonProcessingException {
+        return projectService.searchAll(requestDto.getUserId(),requestDto.getText());
+    }
 }

@@ -281,4 +281,19 @@ public class ProjectService {
         }
         return obj.toString();
     }
+
+    //프로젝트 검색
+    public List<ProjectResponseDto> searchAll(Long userId,String text) {//휴지통 제외하고 보내주기
+
+        List<ProjectMember> myIncludedProjects = projectMemberRepository.findAllByMember_Id(userId); // 자기가 포함된 프로젝트 리스트
+        List<ProjectResponseDto> includedSearchDto = myIncludedProjects.stream()
+                .filter(x -> !x.getProject().isTrash())                         // 쓰레기통에 안간거 걸러주고
+                .filter(x -> x.getProject().getProjectName().contains(text))    // 검색한 단어가 프로젝트명에 들어가있는것들 뽑아주고
+                .map(ProjectResponseDto::includedProject)
+                .sorted(Comparator.comparing(ProjectResponseDto::getModifiedAt).reversed()) //modifiedAt으로 최신순으로 만들어주고
+                .collect(Collectors.toList());
+
+
+        return includedSearchDto;
+    }
 }
