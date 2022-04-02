@@ -1,6 +1,7 @@
 package com.pjt.flowing.service;
 
 import com.pjt.flowing.dto.request.AcceptRequestDto;
+import com.pjt.flowing.dto.request.ProjectIdDeleteRequestDto;
 import com.pjt.flowing.dto.response.ProjectResponseDto;
 import com.pjt.flowing.model.Project;
 import com.pjt.flowing.model.ProjectMember;
@@ -68,6 +69,15 @@ public class TrashService {
         JSONObject obj = new JSONObject();
         obj.put("msg", "휴지통을 비웁니다.");
 
+        return obj.toString();
+    }
+
+    @Transactional
+    public String choiceDelete(ProjectIdDeleteRequestDto requestDto) {
+        requestDto.getProjectIdList().stream()
+                .forEach(s -> projectRepository.deleteById(s));
+        JSONObject obj = new JSONObject();
+        obj.put("msg", "선택 삭제 완료!");
         return obj.toString();
     }
 }

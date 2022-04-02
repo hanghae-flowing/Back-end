@@ -18,6 +18,7 @@ public class ProjectResponseDto {
     private LocalDateTime modifiedAt;
     private List<String> memberList;
     private int thumbnailNum;
+    private boolean trash;
 
     public static ProjectResponseDto from(Project project){
         List<String> nicknames = new ArrayList<>();
@@ -60,6 +61,7 @@ public class ProjectResponseDto {
                     .modifiedAt(projectMember.getProject().getModifiedAt())
                     .memberList(nicknames)
                     .thumbnailNum(projectMember.getProject().getThumbNailNum())
+                    .trash(projectMember.getProject().isTrash())
                     .build();
 
 
