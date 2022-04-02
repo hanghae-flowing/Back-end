@@ -24,4 +24,9 @@ public class TrashController {
     public List<ProjectResponseDto> showTrash(@PathVariable Long userId) {
         return trashService.showTrash(userId);
     }
+
+    @DeleteMapping("project/trash/{userId}")
+    public String trashDeleteAll(@PathVariable Long userId) {
+        return trashService.trashDeleteAll(userId);
+    }
 }

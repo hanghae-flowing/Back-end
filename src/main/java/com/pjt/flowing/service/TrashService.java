@@ -61,4 +61,13 @@ public class TrashService {
 
         return trashDto;
     }
+
+    @Transactional
+    public String trashDeleteAll(Long userId) {
+        projectRepository.deleteAllByMember_IdAndTrash(userId, true);
+        JSONObject obj = new JSONObject();
+        obj.put("msg", "휴지통을 비웁니다.");
+
+        return obj.toString();
+    }
 }
