@@ -9,7 +9,8 @@ import java.util.List;
 public interface ProjectRepository extends JpaRepository<Project, Long> {
     //List<Project> findAllByMember_IdOrderByModifiedAtDesc(Long userId);
     List<Project> findAllByMember_IdAndTrashOrderByModifiedAtDesc(Long userId, boolean trash);
-    //List<Project> findAllByMember_IdOrderByModifiedAtDesc(Long userId);
+//    List<Project> findAllByMember_IdOrderByModifiedAtDesc(Long userId);
     boolean existsByMember_IdAndId(Long userId, Long projectId);
     Project findByMember_IdAndId(Long userId, Long projectId);
+    void deleteAllByMember_IdAndTrash(Long userId, boolean trash);
     }
