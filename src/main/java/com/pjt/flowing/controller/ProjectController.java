@@ -72,7 +72,7 @@ public class ProjectController {
         return projectService.showTemplates(projectid);
     }
 
-    @PostMapping("project/searching")       //검색할 프로젝트명이 포함되어있는 프로젝트불러오기
+    @PostMapping("/project/searching")       //검색할 프로젝트명이 포함되어있는 프로젝트불러오기
     public List<ProjectResponseDto> searchProject(@RequestBody ProjectSearchDto requestDto) throws JsonProcessingException {
         return projectService.searchAll(requestDto.getUserId(),requestDto.getText());
     }
