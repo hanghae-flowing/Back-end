@@ -80,4 +80,17 @@ public class TrashService {
         obj.put("msg", "선택 삭제 완료!");
         return obj.toString();
     }
+
+    @Transactional
+    public String restoreProject(ProjectIdDeleteRequestDto requestDto) {
+        for (Long projectId : requestDto.getProjectIdList()) {
+            Project project = projectRepository.findById(projectId).orElseThrow(
+                    () -> new IllegalArgumentException("not exist projectId")
+            );
+            project.setTrash(false);
+        }
+        JSONObject obj = new JSONObject();
+        obj.put("msg", "선택한 프로젝트가 복구되었습니다.");
+        return obj.toString();
+    }
 }
