@@ -30,11 +30,16 @@ public class TrashController {
         return trashService.trashDeleteAll(userId);
     }
 
-    @DeleteMapping("project/trash") // 휴지통에서 선택해서 삭제하기
+    @PostMapping("project/trash/selection") // 휴지통에서 선택해서 삭제하기
     public String choiceDelete(@RequestBody ProjectIdDeleteRequestDto requestDto) {
         for (Long ProjectId : requestDto.getProjectIdList()){
             System.out.println(ProjectId);
         }
         return trashService.choiceDelete(requestDto);
+    }
+
+    @PostMapping("project/trash/restore")
+    public String restoreProject(@RequestBody ProjectIdDeleteRequestDto requestDto) {
+        return trashService.restoreProject(requestDto);
     }
 }
