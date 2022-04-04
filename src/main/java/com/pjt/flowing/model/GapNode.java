@@ -6,6 +6,8 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -31,6 +33,9 @@ public class GapNode {
     @JoinColumn(name="gapTable_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private GapTable gapTable;
+
+    @OneToMany(mappedBy = "gapNode",fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
+    private List<GapStone> gapStoneList = new ArrayList<>();
 
     @Builder
     public GapNode(String subject, String text, String targetText,GapTable gapTable){

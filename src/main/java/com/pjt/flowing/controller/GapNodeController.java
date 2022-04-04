@@ -2,6 +2,7 @@ package com.pjt.flowing.controller;
 
 import com.pjt.flowing.dto.request.GapNodeEditRequestDto;
 import com.pjt.flowing.dto.request.GapNodeCreateRequestDto;
+import com.pjt.flowing.dto.request.GapStoneRequestDto;
 import com.pjt.flowing.service.GapNodeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -46,5 +47,25 @@ public class GapNodeController {
     @GetMapping("/gapNode/all/{gapTableId}") // 갭 노드전부 조회
     public String getAll(@PathVariable Long gapTableId){
         return gapNodeService.showAll(gapTableId);
+    }
+
+    @PostMapping("/gapStone") // 갭 스톤 생성
+    public String gapStoneCreate(@RequestBody GapStoneRequestDto requestDto) {
+        return gapNodeService.gapStoneCreate(requestDto);
+    }
+
+    @GetMapping("/gapStone/{gapNodeId}") // 갭노드에 있는 갭스톤 조회
+    public String findAllGapStone(@PathVariable Long gapNodeId) {
+        return gapNodeService.findAllGapStone(gapNodeId);
+    }
+
+    @PutMapping("/gapStone/{gapStoneId}") // 갭스톤 텍스트 수정
+    public String gapStoneEdit(@PathVariable Long gapStoneId, @RequestBody GapStoneRequestDto requestDto) {
+        return gapNodeService.gapStoneEdit(gapStoneId, requestDto);
+    }
+
+    @DeleteMapping("/gapStone/{gapStoneId}")
+    public String gapStoneDelete(@PathVariable Long gapStoneId) {
+        return gapNodeService.gapStoneDelete(gapStoneId);
     }
 }

@@ -2,11 +2,15 @@ package com.pjt.flowing.service;
 
 import com.pjt.flowing.dto.request.GapNodeEditRequestDto;
 import com.pjt.flowing.dto.request.GapNodeCreateRequestDto;
+import com.pjt.flowing.dto.request.GapStoneRequestDto;
 import com.pjt.flowing.dto.response.GapNodeResponseDto;
+import com.pjt.flowing.dto.response.GapStoneResponseDto;
 import com.pjt.flowing.model.GapNode;
+import com.pjt.flowing.model.GapStone;
 import com.pjt.flowing.model.GapTable;
 import com.pjt.flowing.model.Project;
 import com.pjt.flowing.repository.GapNodeRepository;
+import com.pjt.flowing.repository.GapStoneRepository;
 import com.pjt.flowing.repository.GapTableRepository;
 import com.pjt.flowing.repository.ProjectRepository;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +29,7 @@ public class GapNodeService {
     private final GapTableRepository gapTableRepository;
     private final GapNodeRepository gapNodeRepository;
     private final ProjectRepository projectRepository;
+    private final GapStoneRepository gapStoneRepository;
 
     @Transactional
     public String gapNodeCreate(GapNodeCreateRequestDto gapNodeCreateRequestDto){
@@ -115,6 +120,65 @@ public class GapNodeService {
         gapTableRepository.deleteById(gapTableId);
         JSONObject obj = new JSONObject();
         obj.put("msg","갭분석 테이블 삭제");
+        return obj.toString();
+    }
+
+    @Transactional
+    public String gapStoneCreate(GapStoneRequestDto requestDto) {
+        GapNode gapNode = gapNodeRepository.findById(requestDto.getGapNodeId()).orElseThrow(
+                () -> new IllegalArgumentException("not exist gapNodeId")
+        );
+        GapStone gapStone = new GapStone(requestDto.getXval(), requestDto.getText(), gapNode);
+
+        gapStoneRepository.save(gapStone);
+        GapStoneResponseDto gapStoneResponseDto = GapStoneResponseDto.builder()
+                .xval(gapStone.getXval())
+                .text(gapStone.getText())
+                .gapNodeId(gapNode.getId())
+                .gapStoneId(gapStone.getId())
+                .build();
+        JSONObject obj2 = new JSONObject(gapStoneResponseDto);
+        JSONObject obj = new JSONObject();
+
+        obj.put("GapStoneResponseDto", obj2);
+        obj.put("msg", "갭 스톤 생성");
+
+        return obj.toString();
+    }
+
+    @Transactional
+    public String findAllGapStone(Long gapNodeId) {
+        List<GapStone> gapStoneList = gapStoneRepository.findAllByGapNode_Id(gapNodeId);
+        List<GapStoneResponseDto> gapStoneResponseDtoList = new ArrayList<>();
+        for (GapStone gapStone : gapStoneList) {
+            GapStoneResponseDto gapStoneResponseDto = GapStoneResponseDto.builder()
+                    .xval(gapStone.getXval())
+                    .text(gapStone.getText())
+                    .gapStoneId(gapStone.getId())
+                    .gapNodeId(gapStone.getGapNode().getId())
+                    .build();
+            gapStoneResponseDtoList.add(gapStoneResponseDto);
+        }
+        JSONArray array = new JSONArray(gapStoneResponseDtoList);
+        return array.toString();
+    }
+
+    @Transactional
+    public String gapStoneEdit(Long gapStoneId, GapStoneRequestDto requestDto) {
+        GapStone gapStone = gapStoneRepository.findById(gapStoneId).orElseThrow(
+                () -> new IllegalArgumentException("not exist gapStoneId")
+        );
+        gapStone.update(requestDto);
+        JSONObject obj = new JSONObject();
+        obj.put("msg", "갭스톤 수정 완료!");
+        return obj.toString();
+    }
+
+    @Transactional
+    public String gapStoneDelete(Long gapStoneId) {
+        gapStoneRepository.deleteById(gapStoneId);
+        JSONObject obj = new JSONObject();
+        obj.put("msg", "갭스톤 삭제 완료");
         return obj.toString();
     }
 }
