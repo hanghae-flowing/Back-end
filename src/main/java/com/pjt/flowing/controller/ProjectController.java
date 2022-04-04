@@ -80,8 +80,18 @@ public class ProjectController {
         return projectService.searchAll(requestDto.getUserId(),requestDto.getText());
     }
 
+<<<<<<< refs/remotes/origin/develop
     @PostMapping("/kick") // 프로젝트에서 멤버 추방하기
     public String kickMember(@RequestBody KickMemberRequestDto requestDto) {
         return projectService.kickMember(requestDto);
     }
+=======
+    //폴더 생성하기
+    @PostMapping("/folder")
+    public String createFolder(@RequestBody FolderCreateRequestDto folderCreateRequestDto){
+        return projectService.createFolder(folderCreateRequestDto);
+    }
+
+   
+>>>>>>> feat:  폴더 생성하기api추가
 }
