@@ -5,32 +5,38 @@ import com.pjt.flowing.dto.*;
 import com.pjt.flowing.dto.request.*;
 import com.pjt.flowing.dto.response.ProjectResponseDto;
 import com.pjt.flowing.service.ProjectService;
+import com.pjt.flowing.validator.AuthorizationValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import javax.transaction.Transactional;
 import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
 public class ProjectController {
     private final ProjectService projectService;
+    private final AuthorizationValidator authorizationValidator;
 
     @PostMapping("/project/detail") //  프로젝트 조회하기 휴지통제외하고
     public List<ProjectResponseDto> getProject(@RequestBody AuthorizationDto requestDto) throws JsonProcessingException {
+//        if(authorization.getKakaoId(requestDto)==0){
+//            System.out.println("인가x");
+//        }
+        // 인가 확인
+        authorizationValidator.tokenCheck(requestDto);
+
         return projectService.getAll(requestDto.getUserId());
     }
 
-    @Transactional
     @PostMapping("/project")    //프로젝트 생성
     public String createProject(@RequestBody ProjectCreateRequestDto projectCreateRequestDto) throws JsonProcessingException {
         return projectService.createProject(projectCreateRequestDto);
     }
 
-    @Transactional
     @PostMapping("/bookmark/{projectId}")   //북마크 생성
     public String checkBookmark(@PathVariable Long projectId , @RequestBody AuthorizationDto authorizationDto) {
         return projectService.checkBookmark(projectId,authorizationDto);
+
     }
 
     @PostMapping("/project/delete/{projectId}")    //프로젝트 삭제
