@@ -34,20 +34,17 @@ public class TrashService {
             if (!project.isTrash()) {
                 project.setTrash(true);
                 obj.put("휴지통으로 보냅니다. (project trash 상태)", true);
-                return obj.toString();
             }
             else if (project.isTrash()) {
                 project.setTrash(false);
                 obj.put("복구합니다.(project trash 상태)", false);
-                return obj.toString();
             }
         }
-        if ((!projectCheck) && projectMemberCheck) {
+        else {
             projectMemberRepository.deleteByMember_IdAndProject_Id(requestDto.getUserId(), requestDto.getProjectId());
             obj.put("당신은 프로젝트 멤버에서 삭제됩니다.", true);
-            return obj.toString();
         }
-        return "아무일도 일어나지 않았습니다.";
+        return obj.toString();
     }
 
     @Transactional

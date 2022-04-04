@@ -44,7 +44,7 @@ public class FolderController {
     }
 
     //폴더 휴지통 보내기
-    @PostMapping("/folder")
+    @PostMapping("/folder/trash")
     public String trashFolder( @RequestBody FolderRequestDto requestDto) throws JsonProcessingException{
         return folderService.trashFolder(requestDto);
     }

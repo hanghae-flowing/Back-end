@@ -91,12 +91,12 @@ public class FolderService {
         obj.put("msg","폴더 삭제 완료");
         return obj.toString();
     }
-    // 폴더에들어있는 프로젝트 삭제
+    // 폴더에 들어있는 프로젝트 메인으로 보내기
     @Transactional
     public String deleteFolderProject(FolderDeleteProjectRequestDto requestDto){
         folderRepository.deleteByFolderTable_IdAndAndProjectId(requestDto.getFolderTableId(),requestDto.getProjectId());
         JSONObject obj = new JSONObject();
-        obj.put("msg","폴더에 프로젝트 삭제 완료");
+        obj.put("msg","폴더에서 나가");
         return obj.toString();
     }
 
@@ -116,7 +116,6 @@ public class FolderService {
                                         ()->new IllegalArgumentException("프로젝트폴더")
                                 )
                 ));
-
 
         List<ProjectResponseDto> dto = projects.stream()
                 .map(ProjectResponseDto::from)
