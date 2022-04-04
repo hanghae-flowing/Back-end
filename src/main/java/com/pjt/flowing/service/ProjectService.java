@@ -37,8 +37,7 @@ public class ProjectService {
     private final NodeService nodeService;
     private final DocumentService documentService;
     private final GapNodeService gapNodeService;
-    private final FolderTableRepository folderTableRepository;
-    private final FolderRepository folderRepository;
+
     public static <T> Predicate<T> distinctByKey(Function<? super T, ?> keyExtractor) {
         Set<Object> seen = ConcurrentHashMap.newKeySet();
         return t -> seen.add(keyExtractor.apply(t));
@@ -293,30 +292,5 @@ public class ProjectService {
 
 
         return includedSearchDto;
-    }
-
-    // 폴더 생성
-    public String createFolder(FolderCreateRequestDto requestDto){
-
-        Member member = memberRepository.findById(requestDto.getUserId()).orElseThrow(()->new IllegalArgumentException("멤버오류"));
-        FolderTable folderTable = new FolderTable(requestDto.getFolderName(),member);
-        folderTableRepository.save(folderTable);
-
-        JSONObject obj = new JSONObject();
-        obj.put("msg","폴더 생성 완료");
-        return obj.toString();
-    }
-
-    // 폴더에 프로젝트 추가.
-    public String addProjectFolder(FolderAddProjectRequestDto requestDto){
-        FolderTable folderTable = folderTableRepository.findById(requestDto.getFolderTableId()).orElseThrow(
-                ()->new IllegalArgumentException("폴더테이블오류")
-        );
-        Folder folder = new Folder(folderTable,requestDto.getProjectId());
-
-        folderRepository.save(folder);
-        JSONObject obj = new JSONObject();
-        obj.put("msg","폴더에 프로젝트 추가 완료");
-        return obj.toString();
     }
 }

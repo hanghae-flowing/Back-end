@@ -74,16 +74,6 @@ public class ProjectController {
         return projectService.searchAll(requestDto.getUserId(),requestDto.getText());
     }
 
-    //폴더 생성하기
-    @PostMapping("/folder")
-    public String createFolder(@RequestBody FolderCreateRequestDto folderCreateRequestDto){
-        return projectService.createFolder(folderCreateRequestDto);
-    }
 
-    // 폴더에 프로젝트 추가하기
-    @PostMapping("/folder/addProject")
-    public String addFolder(@RequestBody FolderAddProjectRequestDto requestDto){
-        return projectService.addProjectFolder(requestDto);
-    }
 
 }
