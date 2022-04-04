@@ -3,6 +3,7 @@ package com.pjt.flowing.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.pjt.flowing.dto.request.FolderAddProjectRequestDto;
 import com.pjt.flowing.dto.request.FolderCreateRequestDto;
+import com.pjt.flowing.dto.request.FolderDeleteRequestDto;
 import com.pjt.flowing.dto.response.FolderTableResponseDto;
 import com.pjt.flowing.service.FolderService;
 import lombok.RequiredArgsConstructor;
@@ -29,9 +30,15 @@ public class FolderController {
     }
 
     //가지고 있는 폴더 조회하기
-    @PostMapping("/folder/{userId}")
-    public List<FolderTableResponseDto> getProject(@PathVariable Long userId) throws JsonProcessingException {
+    @GetMapping("/folder/{userId}")
+    public List<FolderTableResponseDto> getFolder(@PathVariable Long userId) throws JsonProcessingException {
         return folderService.getFolderAll(userId);
+    }
+
+    // 폴더 삭제하기
+    @DeleteMapping("/folder/{userId}")
+    public String deleteFolder(@PathVariable Long userId, @RequestBody FolderDeleteRequestDto requestDto){
+        return folderService.deleteFolder(requestDto);
     }
 
 }

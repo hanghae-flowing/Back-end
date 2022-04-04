@@ -2,6 +2,7 @@ package com.pjt.flowing.service;
 
 import com.pjt.flowing.dto.request.FolderAddProjectRequestDto;
 import com.pjt.flowing.dto.request.FolderCreateRequestDto;
+import com.pjt.flowing.dto.request.FolderDeleteRequestDto;
 import com.pjt.flowing.dto.response.FolderTableResponseDto;
 import com.pjt.flowing.dto.response.ProjectResponseDto;
 import com.pjt.flowing.model.Folder;
@@ -64,4 +65,14 @@ public class FolderService {
                 .collect(Collectors.toList());
         return folderDto;
     }
+
+    // 폴더 삭제하기
+    public String deleteFolder(FolderDeleteRequestDto requestDto){
+        folderTableRepository.deleteById(requestDto.getFolderTableId());
+        JSONObject obj = new JSONObject();
+        obj.put("msg","폴더 삭제 완료");
+        return obj.toString();
+    }
+
+
 }
