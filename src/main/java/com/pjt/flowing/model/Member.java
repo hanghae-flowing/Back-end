@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @NoArgsConstructor
@@ -13,14 +15,14 @@ import javax.persistence.*;
 public class Member extends Timestamped {
 
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Id //pk값으로 쓰겠다
+    @Id
     @Column(name="user_id")
     private Long id;
 
     @Column(name="kakao_id",nullable = false)
     private Long kakaoId;
 
-    @Column(unique = true)  //선택사항 이기때문에 nullable=true(default)
+    @Column(unique = true)
     private String email;
 
     @Column(nullable = false) // 카카오 닉네임은 중복 될 수 있다.
@@ -28,6 +30,9 @@ public class Member extends Timestamped {
 
     @Column
     private String profileImageURL;
+
+    @OneToMany(mappedBy = "member",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Project> projectList = new ArrayList<>();
 
     public Member(Long kakaoId,String email, String nickname, String profileImageURL) {
         this.kakaoId = kakaoId;

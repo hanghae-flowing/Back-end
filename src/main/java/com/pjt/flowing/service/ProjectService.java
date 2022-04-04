@@ -1,22 +1,23 @@
 package com.pjt.flowing.service;
 
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.pjt.flowing.dto.request.AcceptRequestDto;
 import com.pjt.flowing.dto.AuthorizationDto;
-import com.pjt.flowing.dto.request.ProjectResponseDto;
+import com.pjt.flowing.dto.request.KickMemberRequestDto;
+import com.pjt.flowing.dto.request.ProjectCreateRequestDto;
+import com.pjt.flowing.dto.response.*;
 import com.pjt.flowing.dto.request.ProjectEditRequestDto;
-import com.pjt.flowing.model.Bookmark;
-import com.pjt.flowing.model.Member;
-import com.pjt.flowing.model.Project;
-import com.pjt.flowing.model.ProjectMember;
-import com.pjt.flowing.repository.BookmarkRepository;
-import com.pjt.flowing.repository.MemberRepository;
-import com.pjt.flowing.repository.ProjectMemberRepository;
-import com.pjt.flowing.repository.ProjectRepository;
+import com.pjt.flowing.model.*;
+import com.pjt.flowing.model.swot.SWOT;
+import com.pjt.flowing.repository.*;
+import com.pjt.flowing.repository.swot.SWOTRepository;
+import com.pjt.flowing.security.Authorization;
 import lombok.RequiredArgsConstructor;
 import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -32,120 +33,135 @@ public class ProjectService {
     private final BookmarkRepository bookmarkRepository;
     private final ProjectMemberRepository projectMemberRepository;
     private final MemberRepository memberRepository;
+    private final DocumentRepository documentRepository;
+    private final NodeTableRepository nodeTableRepository;
+    private final GapTableRepository gapTableRepository;
+    private final SWOTRepository swotRepository;
+    private final Authorization authorization;
+    private final NodeService nodeService;
+    private final DocumentService documentService;
+    private final GapNodeService gapNodeService;
 
-    public List<ProjectResponseDto> getAll(Long userId){
-        List<Project> myCreateProjects = projectRepository.findAllByMember_IdOrderByModifiedAtDesc(userId); // 자기가 만든 프로젝트 리스트
-        List<ProjectResponseDto> CreateDto = myCreateProjects.stream()
-                .map(ProjectResponseDto::from)
-                .collect(Collectors.toList());
-
-        List<ProjectMember> myIncludedProjects = projectMemberRepository.findAllByMember_Id(userId); // 자기가 포함된 프로젝트 리스트
-        List<ProjectResponseDto> includedDto = myIncludedProjects.stream()
-                .map(ProjectResponseDto::includedProject)
-                .collect(Collectors.toList());
-
-        List<ProjectResponseDto> dto = new ArrayList<>();//만든거랑 멤버로 포함된거랑 더해서 수정날짜로 정렬.
-        dto.addAll(CreateDto);
-        dto.addAll(includedDto);
-        dto.stream().sorted(Comparator.comparing(ProjectResponseDto::getModifiedAt));
-        return dto;
-    }
     public static <T> Predicate<T> distinctByKey(Function<? super T, ?> keyExtractor) {
         Set<Object> seen = ConcurrentHashMap.newKeySet();
         return t -> seen.add(keyExtractor.apply(t));
     }
 
-    public List<ProjectResponseDto> get4(Long userId){
-        List<Project> all = projectRepository.findFirst4ByMember_IdOrderByModifiedAtDesc(userId);
-        List<Bookmark> bookmarked = bookmarkRepository.findAllByMember_IdOrderByModifiedAtDesc(userId); //userId가 누른 북마크
+    public List<ProjectResponseDto> getAll(Long userId) {//휴지통 제외하고 보내주기
 
-        List <ProjectResponseDto> re = bookmarked.stream()
-                .map(ProjectResponseDto::from2)
+        List<ProjectMember> myIncludedProjects = projectMemberRepository.findAllByMember_Id(userId); // 자기가 포함된 프로젝트 리스트
+        List<ProjectResponseDto> includedDto = myIncludedProjects.stream()
+                .filter(x -> !x.getProject().isTrash())
+                .map(ProjectResponseDto::includedProject)
+                .sorted(Comparator.comparing(ProjectResponseDto::getModifiedAt).reversed())
                 .collect(Collectors.toList());
 
-
-        List<ProjectResponseDto> dto = all.stream()
-                .map(ProjectResponseDto::from)
-                .collect(Collectors.toList());
-
-        List<ProjectResponseDto> joined = new ArrayList<>();
-        joined.addAll(re);
-        joined.addAll(dto);
-
-        List<ProjectResponseDto> response =joined.stream()
-                .filter(distinctByKey(ProjectResponseDto::getProjectId))
-                .limit(4)
-                .collect(Collectors.toList());
-
-        return response;
+//        List<Project> myCreateProjects = projectRepository.findAllByMember_IdAndTrashOrderByModifiedAtDesc(userId,false); // 자기가 만든 프로젝트 리스트
+//
+//        return myCreateProjects.stream()
+//                .map(ProjectResponseDto::from)
+//                .collect(Collectors.toList());
+        return includedDto;
     }
 
+
+//    public List<ProjectResponseDto> get4(Long userId){
+//        List<Project> all = projectRepository.findFirst4ByMember_IdOrderByModifiedAtDesc(userId);
+//        List<Bookmark> bookmarked = bookmarkRepository.findAllByMember_IdOrderByModifiedAtDesc(userId); //userId가 누른 북마크
+//
+//        List <ProjectResponseDto> re = bookmarked.stream()
+//                .map(ProjectResponseDto::from2)
+//                .collect(Collectors.toList());
+//
+//
+//        List<ProjectResponseDto> dto = all.stream()
+//                .map(ProjectResponseDto::from)
+//                .collect(Collectors.toList());
+//
+//        List<ProjectResponseDto> joined = new ArrayList<>();
+//        joined.addAll(re);
+//        joined.addAll(dto);
+//
+//        List<ProjectResponseDto> response =joined.stream()
+//                .filter(distinctByKey(ProjectResponseDto::getProjectId))
+//                .limit(4)
+//                .collect(Collectors.toList());
+//
+//        return response;
+//    }
+
     @Transactional
-    public String deleteproject(Long projectId, AuthorizationDto dto){
+    public String deleteProject(Long projectId, AuthorizationDto dto) {
         JSONObject obj = new JSONObject();
-        Optional<Project> project = projectRepository.findById(projectId);
-        if(Objects.equals(dto.getUserId(), project.get().getMember().getId())){
+        Project project = projectRepository.findById(projectId).orElseThrow(
+                () -> new IllegalArgumentException("no project Id error")
+        );
+        if (dto.getUserId() == project.getMember().getId()) {
             projectRepository.deleteById(projectId);
-            obj.put("msg","삭제완료");
-        }
-        else{
-            obj.put("msg","프로젝트 장이 아닙니다");
+            obj.put("msg", "삭제완료");
+        } else {
+            obj.put("msg", "프로젝트 장이 아닙니다");
         }
         return obj.toString();
     }
 
     @Transactional
-    public String editproject(Long projectId, ProjectEditRequestDto dto){
+    public String editProject(Long projectId, ProjectEditRequestDto dto) {
         JSONObject obj = new JSONObject();
         Optional<Project> project = projectRepository.findById(projectId);
-        if(Objects.equals(dto.getUserId(), project.get().getMember().getId())){
+        if (Objects.equals(dto.getUserId(), project.get().getMember().getId())) {
             project.get().update(dto);
-            obj.put("msg","수정 완료");
-        }
-        else{
-            obj.put("msg","프로젝트 장이 아닙니다");
+            obj.put("msg", "수정 완료");
+        } else {
+            obj.put("msg", "프로젝트 장이 아닙니다");
         }
         return obj.toString();
     }
 
-    public String detail(Long projectId){
+    public String detail(Long projectId) {
         JSONObject obj = new JSONObject();
-        Optional<Project> project = projectRepository.findById(projectId);
-
-        //나중에 멤버리스트 추가되면  멤버 리스트일 경우만 불러올 수 있게 수정해야함.
-        //어차피 멤버만 볼 수 있으니까 일단은 그냥 보여줬음.
+        Project project = projectRepository.findById(projectId).orElseThrow(
+                () -> new IllegalArgumentException("projectId error")
+        );
+        //한개만있음
+        Document document = documentRepository.findByProject_Id(projectId);
+        GapTable gapTable = gapTableRepository.findByProject_Id(projectId);
+        NodeTable nodeTable = nodeTableRepository.findByProject_Id(projectId);
 
         ProjectResponseDto dto = ProjectResponseDto.builder()
-                .projectId(project.get().getId())
-                .projectName(project.get().getProjectName())
-                .modifiedAt(project.get().getModifiedAt())
-                .thumbnailNum(project.get().getThumbNailNum())
+                .projectId(project.getId())
+                .projectName(project.getProjectName())
+                .modifiedAt(project.getModifiedAt())
+                .thumbnailNum(project.getThumbNailNum())
                 .build();
-        obj.put("msg","불러오기");
+        obj.put("msg", "불러오기");
         JSONObject DTO = new JSONObject(dto);
-        obj.put("info",DTO);
+        obj.put("projectInfo", DTO);
+        obj.put("documentId", document.getId());
+        obj.put("gapTableId", gapTable.getId());
+        obj.put("nodeTable", nodeTable.getId());
         return obj.toString();
     }
 
-    public List<ProjectResponseDto> getAllBookmarked(Long userId){
+    public List<ProjectResponseDto> getAllBookmarked(Long userId) {
         List<Bookmark> bookmarked = bookmarkRepository.findAllByMember_IdOrderByModifiedAtDesc(userId); //userId가 누른 북마크
 
-        List <ProjectResponseDto> dto = bookmarked.stream()
+        return bookmarked.stream()
                 .map(ProjectResponseDto::from2)
                 .collect(Collectors.toList());
-        return dto;
     }
 
-    public List<ProjectResponseDto> getAllCreate(Long userId){
-        List<Project> myCreateProjects = projectRepository.findAllByMember_IdOrderByModifiedAtDesc(userId); // 자기가 만든 프로젝트 리스트
-        List<ProjectResponseDto> createDto = myCreateProjects.stream()
+    public List<ProjectResponseDto> getAllCreate(Long userId) {
+        //List<Project> myCreateProjects = projectRepository.findAllByMember_IdOrderByModifiedAtDesc(userId); // 자기가 만든 프로젝트 리스트
+        List<Project> myCreateProjects = projectRepository.findAllByMember_IdAndTrashOrderByModifiedAtDesc(userId, false); // 자기가 만든 프로젝트 리스트
+
+        return myCreateProjects.stream()
                 .map(ProjectResponseDto::from)
                 .collect(Collectors.toList());
-        return createDto;
     }
-    
+
     @Transactional
-    public String accept(AcceptRequestDto acceptRequestDto){
+    public String accept(AcceptRequestDto acceptRequestDto) {
         Long projectId = acceptRequestDto.getProjectId();
         Long userId = acceptRequestDto.getUserId();
 
@@ -153,13 +169,145 @@ public class ProjectService {
                 () -> new IllegalArgumentException("accept (project) error")
         );
         Member member = memberRepository.findById(userId).orElseThrow(
-                ()-> new IllegalArgumentException("accept (member) error")
+                () -> new IllegalArgumentException("accept (member) error")
         );
 
-        ProjectMember projectMember = new ProjectMember(project,member);
+        ProjectMember projectMember = new ProjectMember(project, member);
         projectMemberRepository.save(projectMember);
         JSONObject obj = new JSONObject();
-        obj.put("msg","수락 완료");
+        obj.put("msg", "수락 완료");
+        return obj.toString();
+    }
+
+    public String showTemplates(Long projectid) {
+        List<Document> documentList = documentRepository.findAllByProject_Id(projectid);
+        List<NodeTable> nodeTableList = nodeTableRepository.findAllByProject_Id(projectid);
+        List<GapTable> gapTableList = gapTableRepository.findAllByProject_Id(projectid);
+        List<SWOT> swotList = swotRepository.findAllByProject_Id(projectid);
+
+        List<DocumentIdResponseDto> documentIdResponseDtoList = new ArrayList<>();
+        for (Document document : documentList) {
+            DocumentIdResponseDto documentIdResponseDto = new DocumentIdResponseDto(document.getId());
+            documentIdResponseDtoList.add(documentIdResponseDto);
+        }
+        List<NodeTableIdResponseDto> nodeTableIdResponseDtoList = new ArrayList<>();
+        for (NodeTable nodeTable : nodeTableList) {
+            NodeTableIdResponseDto nodeTableIdResponseDto = new NodeTableIdResponseDto(nodeTable.getId());
+            nodeTableIdResponseDtoList.add(nodeTableIdResponseDto);
+        }
+        List<GapTableIdResponseDto> gapTableIdResponseDtoList = new ArrayList<>();
+        for (GapTable gapTable : gapTableList) {
+            GapTableIdResponseDto gapTableIdResponseDto = new GapTableIdResponseDto(gapTable.getId());
+            gapTableIdResponseDtoList.add(gapTableIdResponseDto);
+        }
+        List<SwotIdResponseDto> swotIdResponseDtoList = new ArrayList<>();
+        for (SWOT swot : swotList) {
+            SwotIdResponseDto swotIdResponseDto = new SwotIdResponseDto(swot.getId());
+            swotIdResponseDtoList.add(swotIdResponseDto);
+        }
+
+        JSONObject obj = new JSONObject();
+        obj.put("msg", "템플릿 리스트 불러오기");
+        obj.put("documentIdList", documentIdResponseDtoList);
+        obj.put("nodeTableIdList", nodeTableIdResponseDtoList);
+        obj.put("gapTableIdList", gapTableIdResponseDtoList);
+        obj.put("swotIdList", swotIdResponseDtoList);
+
+        return obj.toString();
+    }
+
+    //프로젝트 생성하기
+    public String createProject(ProjectCreateRequestDto projectCreateRequestDto) throws JsonProcessingException {
+        AuthorizationDto authorizationDto = new AuthorizationDto(projectCreateRequestDto.getAccessToken(), projectCreateRequestDto.getKakaoId(), projectCreateRequestDto.getUserId());
+        JSONObject obj = new JSONObject();
+        if (authorization.getKakaoId(authorizationDto) == 0) {
+            obj.put("msg", "false");
+            return obj.toString();
+        }
+        Member member = memberRepository.findById(projectCreateRequestDto.getUserId()).orElseThrow(
+                () -> new IllegalArgumentException("no Id")
+        );
+        Project project = new Project(
+                projectCreateRequestDto.getProjectName(),
+                projectCreateRequestDto.getObjectId(),
+                member,
+                projectCreateRequestDto.getThumbNailNum()
+        );
+        projectRepository.save(project);
+
+        ProjectMember projectMember = new ProjectMember(project, member);
+        projectMemberRepository.save(projectMember);
+
+        //levelDown
+        nodeService.nodeTableCreate(project.getId());
+        gapNodeService.gapTableCreate(project.getId());
+        documentService.documentCreate(project.getId());
+
+        Document document = documentRepository.findByProject_Id(project.getId());
+        GapTable gapTable = gapTableRepository.findByProject_Id(project.getId());
+        NodeTable nodeTable = nodeTableRepository.findByProject_Id(project.getId());
+
+        ProjectResponseDto dto = ProjectResponseDto.builder()
+                .projectId(project.getId())
+                .projectName(project.getProjectName())
+                .modifiedAt(project.getModifiedAt())
+                .thumbnailNum(project.getThumbNailNum())
+                .build();
+        obj.put("msg", "생성하고 불러오기");
+        JSONObject DTO = new JSONObject(dto);
+        obj.put("projectInfo", DTO);
+        obj.put("documentId", document.getId());
+        obj.put("gapTableId", gapTable.getId());
+        obj.put("nodeTable", nodeTable.getId());
+        return obj.toString();
+    }
+
+    //북마크 생성하기
+    public String checkBookmark(Long projectId, AuthorizationDto authorizationDto) {
+        boolean check = bookmarkRepository.existsByMember_IdAndProject_Id(authorizationDto.getUserId(), projectId);
+        Project project = projectRepository.findById(projectId).orElseThrow(
+                () -> new IllegalArgumentException("no Project")
+        );
+        Member member = memberRepository.findById(authorizationDto.getUserId()).orElseThrow(
+                () -> new IllegalArgumentException("no Id")
+        );
+        JSONObject obj = new JSONObject();
+        if (!check) {
+            Bookmark bookmark = new Bookmark(project, member);
+            bookmarkRepository.save(bookmark);
+            obj.put("msg", "check");
+        } else {
+            bookmarkRepository.deleteByMember_IdAndProject_Id(authorizationDto.getUserId(), projectId);
+            obj.put("msg", "cancel");
+        }
+        return obj.toString();
+    }
+
+    //프로젝트 검색
+    public List<ProjectResponseDto> searchAll(Long userId,String text) {//휴지통 제외하고 보내주기
+
+        List<ProjectMember> myIncludedProjects = projectMemberRepository.findAllByMember_Id(userId); // 자기가 포함된 프로젝트 리스트
+        List<ProjectResponseDto> includedSearchDto = myIncludedProjects.stream()
+                .filter(x -> !x.getProject().isTrash())                         // 쓰레기통에 안간거 걸러주고
+                .filter(x -> x.getProject().getProjectName().contains(text))    // 검색한 단어가 프로젝트명에 들어가있는것들 뽑아주고
+                .map(ProjectResponseDto::includedProject)
+                .sorted(Comparator.comparing(ProjectResponseDto::getModifiedAt).reversed()) //modifiedAt으로 최신순으로 만들어주고
+                .collect(Collectors.toList());
+
+
+        return includedSearchDto;
+    }
+
+    // 프로젝트에서 멤버 추방하기
+    @Transactional
+    public String kickMember(KickMemberRequestDto requestDto) {
+        JSONObject obj = new JSONObject();
+        if (!projectRepository.existsByMember_IdAndId(requestDto.getUserId(), requestDto.getProjectId())){
+            obj.put("msg", "추방할 권리가 없습니다.");
+            return obj.toString();
+        }
+        projectMemberRepository.deleteByMember_IdAndProject_Id(requestDto.getMemberId(), requestDto.getProjectId());
+        obj.put("msg", "추방 완료");
         return obj.toString();
     }
 }

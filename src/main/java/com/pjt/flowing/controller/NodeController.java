@@ -2,6 +2,7 @@ package com.pjt.flowing.controller;
 
 import com.pjt.flowing.dto.request.NodeCreateRequestDto;
 import com.pjt.flowing.dto.request.NodeEditRequestDto;
+import com.pjt.flowing.dto.request.NodePathRequestDto;
 import com.pjt.flowing.dto.request.NodePinRequestDto;
 import com.pjt.flowing.service.NodeService;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +12,17 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class NodeController {
     private final NodeService nodeService;
+
+//    나중에 템플릿 맘대로 추가할때 다시 넣어주기
+//    @PostMapping("/nodeTable/{projectId}")  //노드 테이블 생성
+//    public String nodeTableCreate(@PathVariable Long projectId){
+//        return nodeService.nodeTableCreate(projectId);
+//    }
+
+    @DeleteMapping("/nodeTable/{nodeTableId}")  //노드 테이블 삭제
+    public String nodeTableDelete(@PathVariable Long nodeTableId){
+        return nodeService.nodeTableDelete(nodeTableId);
+    }
 
     @PostMapping("/node")     //노드 생성
     public String nodeCreate(@RequestBody NodeCreateRequestDto nodeCreateRequestDto){
@@ -22,22 +34,34 @@ public class NodeController {
         return nodeService.pin(nodePinRequestDto);
     }
 
-    @DeleteMapping("/node/{id}")      //노드 삭제
-    public String nodeDelete(@PathVariable Long id){
-        return nodeService.nodeDelete(id);
+    @DeleteMapping("/node/{nodeId}")      //개별 노드 삭제
+    public String nodeDelete(@PathVariable Long nodeId){
+        return nodeService.nodeDelete(nodeId);
     }
 
-    @PutMapping("/node/{id}")       //노드 수정
-    public String nodeEdit(@PathVariable Long id,@RequestBody NodeEditRequestDto nodeEditRequestDto){
-        return nodeService.nodeEdit(id,nodeEditRequestDto);
+    @PutMapping("/node/{nodeId}")       //개별 노드 수정
+    public String nodeEdit(@PathVariable Long nodeId,@RequestBody NodeEditRequestDto nodeEditRequestDto){
+        return nodeService.nodeEdit(nodeId,nodeEditRequestDto);
     }
 
-    @GetMapping("/node/{projectId}") // 노드 전체보기
-    public String getAll(@PathVariable Long projectId){
-        return nodeService.showAll(projectId);
+    @GetMapping("/node/all/{nodeTableId}") // 노드 템플릿 한개의 노드 전체보기
+    public String getAll(@PathVariable Long nodeTableId){
+        return nodeService.showAll(nodeTableId);
     }
 
-    @GetMapping("/node/{nodeId}")
+    @GetMapping("/node/{nodeId}")   //노드 하나 보기
     public String getOne(@PathVariable Long nodeId) {return nodeService.showOne(nodeId);}
+
+    //////////////////////////////////////////////
+
+    @PostMapping("/node/path") // 노드 연결 시키기
+    public String nodePathCreate(@RequestBody NodePathRequestDto nodePathRequestDto) {
+        return nodeService.nodeConnect(nodePathRequestDto);
+    }
+
+    @GetMapping("/node/path/{nodeTableId}") // nodePathList 로 불러오기
+    public String nodePathFindAll(@PathVariable Long nodeTableId) {
+        return nodeService.NodePathFindAll(nodeTableId);
+    }
 
 }

@@ -6,7 +6,5 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class PollingEditDto {
-//    private Long textId;
     private String text;
-
 }

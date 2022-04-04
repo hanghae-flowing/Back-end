@@ -32,25 +32,39 @@ public class Project extends Timestamped{
     @Column(nullable = false)
     private int thumbNailNum;
 
-    @OneToMany(mappedBy = "project",fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @Column(nullable = false)
+    private boolean trash;
+
+    @OneToMany(mappedBy = "project",fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
     private List<Bookmark> BookmarkList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "project",fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "project",fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
     private List<ProjectMember> ProjectMemberList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "project",fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
-    private List<Node> NodeList = new ArrayList<>();    //node와 단방향 매핑
+    @OneToMany(mappedBy = "project",fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
+    private List<NodeTable> NodeTableList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "project",fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
+    private List<GapTable> GapTableList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "project",fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
+    private List<Document> DocumentList = new ArrayList<>();
 
     public Project(String projectName, Long objectId, Member member, int thumbNailNum) {
         this.projectName = projectName;
         this.objectId = objectId;
         this.member = member;   //여기서의 member는 프로젝트 생성자를 말한다.
         this.thumbNailNum = thumbNailNum;
+        this.trash = false;
     }
 
     public void update(ProjectEditRequestDto dto){
         this.projectName=dto.getProjectName();
         this.thumbNailNum=dto.getThumbNailNum();
+    }
+
+    public void setTrash(boolean trash) {
+        this.trash = trash;
     }
 
 }

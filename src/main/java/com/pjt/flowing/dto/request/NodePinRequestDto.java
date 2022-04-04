@@ -6,6 +6,6 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class NodePinRequestDto {
-    private Long projectId;
+    private Long nodeTableId;
     private Long nodeId;
 }

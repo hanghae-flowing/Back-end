@@ -2,6 +2,8 @@ package com.pjt.flowing.model;
 
 import com.pjt.flowing.dto.request.NodeEditRequestDto;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 
@@ -13,17 +15,17 @@ import javax.persistence.*;
 @Entity
 public class Node {
 
-    //x좌표, y좌표, width, height, text, radius, projectId 맵핑
+    //x좌표, y좌표, width, height, text, radius, nodetableId 맵핑
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="node_id")
     private Long id;
 
     @Column(nullable = false)
-    private String xval;
+    private int xval;
 
     @Column(nullable = false)
-    private String yval;
+    private int yval;
 
     @Column(nullable = false)
     private String width;
@@ -38,15 +40,16 @@ public class Node {
     private String radius;
 
     @Column(nullable = false)
-    private int isChecked;  //chap2~3에서 키워드 보여주려면 필요함
+    private int isChecked;
 
     @ManyToOne
-    @JoinColumn(name="project_id")
-    private Project project;
+    @JoinColumn(name="nodeTable_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private NodeTable nodeTable;
 
     @Builder
-    public Node(String xval,String yval,String width,
-                String height,String text,String radius,int isChecked,Project project){
+    public Node(int xval,int yval,String width,
+                String height,String text,String radius,int isChecked,NodeTable nodeTable){
         this.xval=xval;
         this.yval=yval;
         this.width=width;
@@ -54,7 +57,7 @@ public class Node {
         this.text=text;
         this.radius=radius;
         this.isChecked=isChecked;
-        this.project=project;
+        this.nodeTable=nodeTable;
 
     }
 

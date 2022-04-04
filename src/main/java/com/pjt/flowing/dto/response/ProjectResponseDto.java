@@ -1,4 +1,4 @@
-package com.pjt.flowing.dto.request;
+package com.pjt.flowing.dto.response;
 
 import com.pjt.flowing.model.Bookmark;
 import com.pjt.flowing.model.Project;
@@ -17,8 +17,8 @@ public class ProjectResponseDto {
     private String projectName;
     private LocalDateTime modifiedAt;
     private List<String> memberList;
-    //private boolean bookmark;
     private int thumbnailNum;
+    private boolean trash;
 
     public static ProjectResponseDto from(Project project){
         List<String> nicknames = new ArrayList<>();
@@ -31,7 +31,6 @@ public class ProjectResponseDto {
                 .projectName(project.getProjectName())
                 .modifiedAt(project.getModifiedAt())
                 .memberList(nicknames)
-                //.bookmark(project.getBookmarkList())
                 .thumbnailNum(project.getThumbNailNum())
                 .build();
     }
@@ -46,7 +45,6 @@ public class ProjectResponseDto {
                 .projectName(bookmark.getProject().getProjectName())
                 .modifiedAt(bookmark.getProject().getModifiedAt())
                 .memberList(nicknames)
-                //.bookmark(project.getBookmarkList())
                 .thumbnailNum(bookmark.getProject().getThumbNailNum())
                 .build();
     }
@@ -56,13 +54,16 @@ public class ProjectResponseDto {
         projectMember.getProject().getProjectMemberList().stream()
                 .map(c -> c.getMember().getNickname())
                 .forEach(s->nicknames.add(s));
-        return ProjectResponseDto.builder()
-                .projectId(projectMember.getProject().getId())
-                .projectName(projectMember.getProject().getProjectName())
-                .modifiedAt(projectMember.getProject().getModifiedAt())
-                .memberList(nicknames)
-                //.bookmark(project.getBookmarkList())
-                .thumbnailNum(projectMember.getProject().getThumbNailNum())
-                .build();
+
+            return ProjectResponseDto.builder()
+                    .projectId(projectMember.getProject().getId())
+                    .projectName(projectMember.getProject().getProjectName())
+                    .modifiedAt(projectMember.getProject().getModifiedAt())
+                    .memberList(nicknames)
+                    .thumbnailNum(projectMember.getProject().getThumbNailNum())
+                    .trash(projectMember.getProject().isTrash())
+                    .build();
+
+
     }
 }
