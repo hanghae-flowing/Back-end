@@ -2,16 +2,11 @@ package com.pjt.flowing.service;
 
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.pjt.flowing.dto.request.AcceptRequestDto;
+import com.pjt.flowing.dto.request.*;
 import com.pjt.flowing.dto.AuthorizationDto;
-<<<<<<< refs/remotes/origin/develop
 import com.pjt.flowing.dto.request.KickMemberRequestDto;
-=======
-import com.pjt.flowing.dto.request.FolderCreateRequestDto;
->>>>>>> feat:  폴더 생성하기api추가
 import com.pjt.flowing.dto.request.ProjectCreateRequestDto;
 import com.pjt.flowing.dto.response.*;
-import com.pjt.flowing.dto.request.ProjectEditRequestDto;
 import com.pjt.flowing.model.*;
 import com.pjt.flowing.model.swot.SWOT;
 import com.pjt.flowing.repository.*;
@@ -21,7 +16,6 @@ import lombok.RequiredArgsConstructor;
 import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -45,6 +39,7 @@ public class ProjectService {
     private final NodeService nodeService;
     private final DocumentService documentService;
     private final GapNodeService gapNodeService;
+    private final FolderTableRepository folderTableRepository;
     private final FolderRepository folderRepository;
     public static <T> Predicate<T> distinctByKey(Function<? super T, ?> keyExtractor) {
         Set<Object> seen = ConcurrentHashMap.newKeySet();
@@ -304,7 +299,6 @@ public class ProjectService {
         return includedSearchDto;
     }
 
-<<<<<<< refs/remotes/origin/develop
     // 프로젝트에서 멤버 추방하기
     @Transactional
     public String kickMember(KickMemberRequestDto requestDto) {
@@ -315,17 +309,7 @@ public class ProjectService {
         }
         projectMemberRepository.deleteByMember_IdAndProject_Id(requestDto.getMemberId(), requestDto.getProjectId());
         obj.put("msg", "추방 완료");
-=======
-    // 폴더 생성
-    public String createFolder(FolderCreateRequestDto  requestDto){
-
-        Member member = memberRepository.findById(requestDto.getUserId()).orElseThrow(()->new IllegalArgumentException("멤버오류"));
-
-        Folder folder = new Folder(requestDto.getFolderName(),member);
-        folderRepository.save(folder);
-        JSONObject obj = new JSONObject();
-        obj.put("msg","폴더 생성 완료");
->>>>>>> feat:  폴더 생성하기api추가
         return obj.toString();
     }
+
 }

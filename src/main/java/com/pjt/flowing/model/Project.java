@@ -29,11 +29,16 @@ public class Project extends Timestamped{
     @JoinColumn(name="user_id")
     private Member member; // 생성한사람...
 
+    @ManyToOne
+    @JoinColumn(name="folder_id")
+    private FolderTable folder;
+
     @Column(nullable = false)
     private int thumbNailNum;
 
     @Column(nullable = false)
     private boolean trash;
+
 
     @OneToMany(mappedBy = "project",fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
     private List<Bookmark> BookmarkList = new ArrayList<>();

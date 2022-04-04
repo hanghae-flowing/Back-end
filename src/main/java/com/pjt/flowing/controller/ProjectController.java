@@ -92,6 +92,15 @@ public class ProjectController {
         return projectService.createFolder(folderCreateRequestDto);
     }
 
+<<<<<<< refs/remotes/origin/develop
    
 >>>>>>> feat:  폴더 생성하기api추가
+=======
+    // 폴더에 프로젝트 추가하기
+    @PostMapping("/folder/addProject")
+    public String addFolder(@RequestBody FolderAddProjectRequestDto requestDto){
+        return projectService.addProjectFolder(requestDto);
+    }
+
+>>>>>>> feat: 폴더에 프로젝트 추가 api구현
 }
