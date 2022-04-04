@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
@@ -62,6 +63,27 @@ public class ProjectService {
 //                .map(ProjectResponseDto::from)
 //                .collect(Collectors.toList());
         return includedDto;
+    }
+    // getAll 테스트
+    public List<ProjectTestResponseDto> getAll2(Long userId) {
+        List<ProjectMember> myIncludedProjects = projectMemberRepository.findAllByMember_Id(userId);
+        List<ProjectTestResponseDto> includeDto = new ArrayList<>();
+        for (ProjectMember projectMember : myIncludedProjects) {
+            List<String> nicknames = new ArrayList<>();
+            projectMember.getProject().getProjectMemberList().stream()
+                    .map(c -> c.getMember().getNickname())
+                    .forEach(s->nicknames.add(s));
+            boolean bookmarkCheck = bookmarkRepository.existsByMember_IdAndProject_Id(projectMember.getMember().getId(), projectMember.getProject().getId());
+            ProjectTestResponseDto responseDto = new ProjectTestResponseDto(
+                projectMember.getProject().getId(),
+                projectMember.getProject().getProjectName(),
+                projectMember.getProject().getModifiedAt(),
+                nicknames,
+                projectMember.getProject().getThumbNailNum(),
+            private boolean trash;
+            private boolean bookmark;
+            );
+        }
     }
 
 
