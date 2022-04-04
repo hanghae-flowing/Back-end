@@ -8,4 +8,5 @@ import java.util.List;
 public interface FolderRepository extends JpaRepository<Folder,Long> {
     void deleteByFolderTable_IdAndAndProjectId(Long folderTableId,Long projectId);
     List<Folder> findAllByFolderTable_Id(Long folderTableId);
+    boolean existsByFolderTable_idAndProjectId(Long folderTableId,Long projectId);
 }

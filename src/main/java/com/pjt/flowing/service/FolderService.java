@@ -49,14 +49,26 @@ public class FolderService {
     // 폴더에 프로젝트 추가.
     @Transactional
     public String addProjectFolder(FolderAddProjectRequestDto requestDto){
+        JSONObject obj = new JSONObject();
         FolderTable folderTable = folderTableRepository.findById(requestDto.getFolderTableId()).orElseThrow(
                 ()->new IllegalArgumentException("폴더테이블오류")
         );
-        Folder folder = new Folder(folderTable,requestDto.getProjectId());
+        if(projectRepository.existsById(requestDto.getProjectId())) {   //프로젝트가 존재한다면
+            if (!folderRepository.existsByFolderTable_idAndProjectId(folderTable.getId(), requestDto.getProjectId())) { // 폴더에 프로젝트가 이미 존재하지않는다면
 
-        folderRepository.save(folder);
-        JSONObject obj = new JSONObject();
-        obj.put("msg","폴더에 프로젝트 추가 완료");
+                Folder folder = new Folder(folderTable, requestDto.getProjectId());
+
+                folderRepository.save(folder);
+                obj.put("msg", "폴더에 프로젝트 추가 완료");
+
+            } else {
+                obj.put("msg", "이미 폴더에 프로젝트가 있음");
+            }
+        }
+        else{
+            obj.put("msg","프로젝트아이디가 없음");
+        }
+
         return obj.toString();
     }
 
@@ -104,18 +116,12 @@ public class FolderService {
     public List<ProjectResponseDto> getProjectAll(Long folderTableId) {
         List<Folder>projectList = folderRepository.findAllByFolderTable_Id(folderTableId);
         List<Project> projects = new ArrayList<>();
-//        for(Folder folder: projectList){
-//            Project project = projectRepository.findById(folder.getProjectId()).orElseThrow(
-//                    ()->new IllegalArgumentException("프로젝트폴더")
-//            );
-//            projects.add(project);
-//        }
-        // for문을 stream으로 변경
-        projectList.stream()
-                .map(x->projects.add(projectRepository.findById(x.getProjectId()).orElseThrow(
-                                        ()->new IllegalArgumentException("프로젝트폴더")
-                                )
-                ));
+        for(Folder folder: projectList){
+            Project project = projectRepository.findById(folder.getProjectId()).orElseThrow(
+                    ()->new IllegalArgumentException("프로젝트폴더")
+            );
+            projects.add(project);
+        }
 
         List<ProjectResponseDto> dto = projects.stream()
                 .map(ProjectResponseDto::from)
