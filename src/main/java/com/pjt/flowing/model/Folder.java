@@ -1,5 +1,7 @@
 package com.pjt.flowing.model;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -7,6 +9,9 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Getter
+@NoArgsConstructor
+@Entity
 public class Folder {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
