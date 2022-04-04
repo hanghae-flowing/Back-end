@@ -1,8 +1,10 @@
 package com.pjt.flowing.dto.response;
 
 import com.pjt.flowing.model.Bookmark;
+import com.pjt.flowing.model.Folder;
 import com.pjt.flowing.model.Project;
 import com.pjt.flowing.model.ProjectMember;
+import com.pjt.flowing.repository.ProjectRepository;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -19,6 +21,7 @@ public class ProjectResponseDto {
     private List<String> memberList;
     private int thumbnailNum;
     private boolean trash;
+
 
     public static ProjectResponseDto from(Project project){
         List<String> nicknames = new ArrayList<>();
@@ -63,7 +66,7 @@ public class ProjectResponseDto {
                     .thumbnailNum(projectMember.getProject().getThumbNailNum())
                     .trash(projectMember.getProject().isTrash())
                     .build();
-
-
     }
+
+
 }

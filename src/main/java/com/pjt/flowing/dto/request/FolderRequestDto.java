@@ -5,6 +5,6 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class FolderDeleteRequestDto {
+public class FolderRequestDto {
     private Long folderTableId;
 }
