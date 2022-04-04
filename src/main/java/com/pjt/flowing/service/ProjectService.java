@@ -66,13 +66,15 @@ public class ProjectService {
     }
     // getAll 테스트
     public List<ProjectTestResponseDto> getAll2(Long userId) {
+
         List<ProjectMember> myIncludedProjects = projectMemberRepository.findAllByMember_Id(userId);
         List<ProjectTestResponseDto> includeDto = new ArrayList<>();
+
         for (ProjectMember projectMember : myIncludedProjects) {
             List<String> nicknames = new ArrayList<>();
             projectMember.getProject().getProjectMemberList().stream()
                     .map(c -> c.getMember().getNickname())
-                    .forEach(s->nicknames.add(s));
+                    .forEach(s-> nicknames.add(s));
             boolean bookmarkCheck = bookmarkRepository.existsByMember_IdAndProject_Id(projectMember.getMember().getId(), projectMember.getProject().getId());
             ProjectTestResponseDto responseDto = new ProjectTestResponseDto(
                 projectMember.getProject().getId(),
@@ -80,10 +82,14 @@ public class ProjectService {
                 projectMember.getProject().getModifiedAt(),
                 nicknames,
                 projectMember.getProject().getThumbNailNum(),
-            private boolean trash;
-            private boolean bookmark;
+                projectMember.getProject().isTrash(),
+                bookmarkCheck
             );
+            includeDto.add(responseDto);
         }
+        return includeDto.stream()
+                .sorted(Comparator.comparing(ProjectTestResponseDto::getModifiedAt).reversed())
+                .collect(Collectors.toList());
     }
 
 
@@ -239,6 +245,7 @@ public class ProjectService {
     }
 
     //프로젝트 생성하기
+    @Transactional
     public String createProject(ProjectCreateRequestDto projectCreateRequestDto) throws JsonProcessingException {
         AuthorizationDto authorizationDto = new AuthorizationDto(projectCreateRequestDto.getAccessToken(), projectCreateRequestDto.getKakaoId(), projectCreateRequestDto.getUserId());
         JSONObject obj = new JSONObject();
@@ -285,6 +292,7 @@ public class ProjectService {
     }
 
     //북마크 생성하기
+    @Transactional
     public String checkBookmark(Long projectId, AuthorizationDto authorizationDto) {
         boolean check = bookmarkRepository.existsByMember_IdAndProject_Id(authorizationDto.getUserId(), projectId);
         Project project = projectRepository.findById(projectId).orElseThrow(

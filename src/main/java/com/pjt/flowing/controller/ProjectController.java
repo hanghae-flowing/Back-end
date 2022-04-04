@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.pjt.flowing.dto.*;
 import com.pjt.flowing.dto.request.*;
 import com.pjt.flowing.dto.response.ProjectResponseDto;
+import com.pjt.flowing.dto.response.ProjectTestResponseDto;
 import com.pjt.flowing.service.ProjectService;
 import com.pjt.flowing.validator.AuthorizationValidator;
 import lombok.RequiredArgsConstructor;
@@ -18,14 +19,12 @@ public class ProjectController {
     private final AuthorizationValidator authorizationValidator;
 
     @PostMapping("/project/detail") //  프로젝트 조회하기 휴지통제외하고
-    public List<ProjectResponseDto> getProject(@RequestBody AuthorizationDto requestDto) throws JsonProcessingException {
-//        if(authorization.getKakaoId(requestDto)==0){
-//            System.out.println("인가x");
-//        }
+    public List<ProjectTestResponseDto> getProject(@RequestBody AuthorizationDto requestDto) throws JsonProcessingException {
+
         // 인가 확인
         authorizationValidator.tokenCheck(requestDto);
 
-        return projectService.getAll(requestDto.getUserId());
+        return projectService.getAll2(requestDto.getUserId());
     }
 
     @PostMapping("/project")    //프로젝트 생성
