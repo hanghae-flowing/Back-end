@@ -2,6 +2,7 @@ package com.pjt.flowing.service;
 
 import com.pjt.flowing.dto.request.FolderAddProjectRequestDto;
 import com.pjt.flowing.dto.request.FolderCreateRequestDto;
+import com.pjt.flowing.dto.request.FolderDeleteProjectRequestDto;
 import com.pjt.flowing.dto.request.FolderDeleteRequestDto;
 import com.pjt.flowing.dto.response.FolderTableResponseDto;
 import com.pjt.flowing.dto.response.ProjectResponseDto;
@@ -71,6 +72,14 @@ public class FolderService {
         folderTableRepository.deleteById(requestDto.getFolderTableId());
         JSONObject obj = new JSONObject();
         obj.put("msg","폴더 삭제 완료");
+        return obj.toString();
+    }
+
+    // 폴더에들어있는 프로젝트 삭제
+    public String deleteFolderProject(FolderDeleteProjectRequestDto requestDto){
+        folderRepository.deleteByFolderTable_IdAndAndProjectId(requestDto.getFolderTableId(),requestDto.getProjectId());
+        JSONObject obj = new JSONObject();
+        obj.put("msg","폴더에 프로젝트 삭제 완료");
         return obj.toString();
     }
 
