@@ -2,10 +2,7 @@ package com.pjt.flowing.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.pjt.flowing.dto.*;
-import com.pjt.flowing.dto.request.AcceptRequestDto;
-import com.pjt.flowing.dto.request.ProjectCreateRequestDto;
-import com.pjt.flowing.dto.request.ProjectEditRequestDto;
-import com.pjt.flowing.dto.request.ProjectSearchDto;
+import com.pjt.flowing.dto.request.*;
 import com.pjt.flowing.dto.response.ProjectResponseDto;
 import com.pjt.flowing.service.ProjectService;
 import lombok.RequiredArgsConstructor;
@@ -75,5 +72,10 @@ public class ProjectController {
     @PostMapping("/project/searching")       //검색할 프로젝트명이 포함되어있는 프로젝트불러오기
     public List<ProjectResponseDto> searchProject(@RequestBody ProjectSearchDto requestDto) throws JsonProcessingException {
         return projectService.searchAll(requestDto.getUserId(),requestDto.getText());
+    }
+
+    @PostMapping("/kick") // 프로젝트에서 멤버 추방하기
+    public String kickMember(@RequestBody KickMemberRequestDto requestDto) {
+        return projectService.kickMember(requestDto);
     }
 }
