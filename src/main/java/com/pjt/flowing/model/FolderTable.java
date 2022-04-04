@@ -33,5 +33,8 @@ public class FolderTable extends Timestamped {
         this.member = member;   //여기서의 member는 폴더 생성자를 말한다.
         this.trash = false;
     }
+    public void setTrash(boolean trash) {
+        this.trash = trash;
+    }
 
 }

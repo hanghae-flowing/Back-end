@@ -43,6 +43,12 @@ public class FolderController {
         return folderService.deleteFolder(requestDto);
     }
 
+    //폴더 휴지통 보내기
+    @PostMapping("/folder")
+    public String trashFolder( @RequestBody FolderRequestDto requestDto) throws JsonProcessingException{
+        return folderService.trashFolder(requestDto);
+    }
+
     // 폴더에 들어있는 프로젝트 삭제하기
     @DeleteMapping("/folder/project")
     public String deleteFolderProject( @RequestBody FolderDeleteProjectRequestDto requestDto) throws JsonProcessingException{

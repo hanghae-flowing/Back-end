@@ -71,7 +71,19 @@ public class FolderService {
         return folderDto;
     }
 
-    // 폴더 삭제하기
+    // 폴더 휴지통에 보내기
+    @Transactional
+    public String trashFolder(FolderRequestDto requestDto){
+        FolderTable folderTable = folderTableRepository.findById(requestDto.getFolderTableId()).orElseThrow(
+                ()->new IllegalArgumentException("폴더테이블")
+        );
+        folderTable.setTrash(true);
+        JSONObject obj = new JSONObject();
+        obj.put("msg","폴더 휴지통 보내기 완료");
+        return obj.toString();
+    }
+
+    //폴더 삭제하기.
     @Transactional
     public String deleteFolder(FolderRequestDto requestDto){
         folderTableRepository.deleteById(requestDto.getFolderTableId());
@@ -79,7 +91,6 @@ public class FolderService {
         obj.put("msg","폴더 삭제 완료");
         return obj.toString();
     }
-
     // 폴더에들어있는 프로젝트 삭제
     @Transactional
     public String deleteFolderProject(FolderDeleteProjectRequestDto requestDto){
