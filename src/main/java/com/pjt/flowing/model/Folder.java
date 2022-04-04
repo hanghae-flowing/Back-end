@@ -1,32 +1,28 @@
 package com.pjt.flowing.model;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Getter
-@NoArgsConstructor
-@Entity
-public class Folder extends Timestamped {
+public class Folder {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="folder_id")
     private Long id;
 
-    @Column(nullable = false)
-    private String folderName;
-
     @ManyToOne
-    @JoinColumn(name = "user_id")
-    private Member member;
+    @JoinColumn(name="folderTable_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private FolderTable folderTable;
 
-    @OneToMany(mappedBy = "folder",fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
-    private List<Project> ProjectList = new ArrayList<>();
+    @Column
+    private Long projectId;
 
-    public Folder(String folderName, Member member){
-        this.folderName = folderName;
-        this.member = member;
+    public Folder(FolderTable folderTable,Long projectId){
+        this.folderTable=folderTable;
+        this.projectId=projectId;
     }
 }

@@ -80,5 +80,10 @@ public class ProjectController {
         return projectService.createFolder(folderCreateRequestDto);
     }
 
-   
+    // 폴더에 프로젝트 추가하기
+    @PostMapping("/folder/addProject")
+    public String addFolder(@RequestBody FolderAddProjectRequestDto requestDto){
+        return projectService.addProjectFolder(requestDto);
+    }
+
 }

@@ -2,12 +2,9 @@ package com.pjt.flowing.service;
 
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.pjt.flowing.dto.request.AcceptRequestDto;
+import com.pjt.flowing.dto.request.*;
 import com.pjt.flowing.dto.AuthorizationDto;
-import com.pjt.flowing.dto.request.FolderCreateRequestDto;
-import com.pjt.flowing.dto.request.ProjectCreateRequestDto;
 import com.pjt.flowing.dto.response.*;
-import com.pjt.flowing.dto.request.ProjectEditRequestDto;
 import com.pjt.flowing.model.*;
 import com.pjt.flowing.model.swot.SWOT;
 import com.pjt.flowing.repository.*;
@@ -17,7 +14,6 @@ import lombok.RequiredArgsConstructor;
 import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -41,6 +37,7 @@ public class ProjectService {
     private final NodeService nodeService;
     private final DocumentService documentService;
     private final GapNodeService gapNodeService;
+    private final FolderTableRepository folderTableRepository;
     private final FolderRepository folderRepository;
     public static <T> Predicate<T> distinctByKey(Function<? super T, ?> keyExtractor) {
         Set<Object> seen = ConcurrentHashMap.newKeySet();
@@ -299,14 +296,27 @@ public class ProjectService {
     }
 
     // 폴더 생성
-    public String createFolder(FolderCreateRequestDto  requestDto){
+    public String createFolder(FolderCreateRequestDto requestDto){
 
         Member member = memberRepository.findById(requestDto.getUserId()).orElseThrow(()->new IllegalArgumentException("멤버오류"));
+        FolderTable folderTable = new FolderTable(requestDto.getFolderName(),member);
+        folderTableRepository.save(folderTable);
 
-        Folder folder = new Folder(requestDto.getFolderName(),member);
-        folderRepository.save(folder);
         JSONObject obj = new JSONObject();
         obj.put("msg","폴더 생성 완료");
+        return obj.toString();
+    }
+
+    // 폴더에 프로젝트 추가.
+    public String addProjectFolder(FolderAddProjectRequestDto requestDto){
+        FolderTable folderTable = folderTableRepository.findById(requestDto.getFolderTableId()).orElseThrow(
+                ()->new IllegalArgumentException("폴더테이블오류")
+        );
+        Folder folder = new Folder(folderTable,requestDto.getProjectId());
+
+        folderRepository.save(folder);
+        JSONObject obj = new JSONObject();
+        obj.put("msg","폴더에 프로젝트 추가 완료");
         return obj.toString();
     }
 }
