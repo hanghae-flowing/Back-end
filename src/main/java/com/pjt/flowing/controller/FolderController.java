@@ -37,7 +37,7 @@ public class FolderController {
         return folderService.getFolderAll(userId);
     }
 
-    // 폴더 삭제하기
+    // 폴더 삭제하기(휴지통에서 완전삭제)
     @DeleteMapping("/folder")
     public String deleteFolder( @RequestBody FolderRequestDto requestDto) throws JsonProcessingException{
         return folderService.deleteFolder(requestDto);
@@ -48,8 +48,9 @@ public class FolderController {
     public String trashFolder( @RequestBody FolderRequestDto requestDto) throws JsonProcessingException{
         return folderService.trashFolder(requestDto);
     }
+    //폴더 복구하기.
 
-    // 폴더에 들어있는 프로젝트 삭제하기
+    // 폴더에 들어있는 프로젝트 삭제하기  //이부분은 더생각해보기
     @DeleteMapping("/folder/project")
     public String deleteFolderProject( @RequestBody FolderDeleteProjectRequestDto requestDto) throws JsonProcessingException{
         return folderService.deleteFolderProject(requestDto);
