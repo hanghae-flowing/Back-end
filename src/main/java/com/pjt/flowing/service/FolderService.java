@@ -2,6 +2,8 @@ package com.pjt.flowing.service;
 
 import com.pjt.flowing.dto.request.FolderAddProjectRequestDto;
 import com.pjt.flowing.dto.request.FolderCreateRequestDto;
+import com.pjt.flowing.dto.response.FolderTableResponseDto;
+import com.pjt.flowing.dto.response.ProjectResponseDto;
 import com.pjt.flowing.model.Folder;
 import com.pjt.flowing.model.FolderTable;
 import com.pjt.flowing.model.Member;
@@ -13,6 +15,10 @@ import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
+
 @RequiredArgsConstructor
 @Service
 @Transactional(readOnly = true)
@@ -22,6 +28,7 @@ public class FolderService {
     private final FolderRepository folderRepository;
     private final MemberRepository memberRepository;
     // 폴더 생성
+    @Transactional
     public String createFolder(FolderCreateRequestDto requestDto){
 
         Member member = memberRepository.findById(requestDto.getUserId()).orElseThrow(()->new IllegalArgumentException("멤버오류"));
@@ -34,6 +41,7 @@ public class FolderService {
     }
 
     // 폴더에 프로젝트 추가.
+    @Transactional
     public String addProjectFolder(FolderAddProjectRequestDto requestDto){
         FolderTable folderTable = folderTableRepository.findById(requestDto.getFolderTableId()).orElseThrow(
                 ()->new IllegalArgumentException("폴더테이블오류")
@@ -44,5 +52,16 @@ public class FolderService {
         JSONObject obj = new JSONObject();
         obj.put("msg","폴더에 프로젝트 추가 완료");
         return obj.toString();
+    }
+
+    // 폴더정보 조회하기
+    public List<FolderTableResponseDto> getFolderAll(Long userId){
+        List<FolderTable> folderTableList =  folderTableRepository.findAllByMember_Id(userId);
+        List<FolderTableResponseDto> folderDto = folderTableList.stream()
+                .filter(x -> !x.isTrash())
+                .map(FolderTableResponseDto::myFolder)
+                .sorted(Comparator.comparing(FolderTableResponseDto::getModifiedAt).reversed())
+                .collect(Collectors.toList());
+        return folderDto;
     }
 }
