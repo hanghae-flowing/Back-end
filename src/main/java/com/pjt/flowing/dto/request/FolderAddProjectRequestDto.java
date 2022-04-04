@@ -6,6 +6,6 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class FolderAddProjectRequestDto {
-    Long folderTableId;
-    Long projectId;
+    private Long folderTableId;
+    private Long projectId;
 }

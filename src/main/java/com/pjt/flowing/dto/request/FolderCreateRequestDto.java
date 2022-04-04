@@ -6,6 +6,6 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class FolderCreateRequestDto {
-    String folderName;
-    Long userId;
+    private String folderName;
+    private Long userId;
 }
