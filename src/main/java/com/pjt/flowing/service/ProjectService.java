@@ -8,6 +8,8 @@ import com.pjt.flowing.dto.request.KickMemberRequestDto;
 import com.pjt.flowing.dto.request.ProjectCreateRequestDto;
 import com.pjt.flowing.dto.response.*;
 import com.pjt.flowing.dto.request.ProjectEditRequestDto;
+import com.pjt.flowing.exception.BadRequestException;
+import com.pjt.flowing.exception.ErrorCode;
 import com.pjt.flowing.model.*;
 import com.pjt.flowing.model.swot.SWOT;
 import com.pjt.flowing.repository.*;
@@ -311,12 +313,11 @@ public class ProjectService {
         return obj.toString();
     }
 
+    // 멤버초대하는 메세지에 닉네임과 이미지 넘겨주기
     @Transactional
     public String checkingNameByEmail(String email) {
-        JSONObject obj = new JSONObject();
         if (!memberRepository.existsByEmail(email)) {
-            obj.put("msg", "email이 존재하지 않습니다.");
-            return obj.toString();
+            throw new BadRequestException(ErrorCode.USER_EMAIL_NOT_FOUND);
         }
         Member member = memberRepository.findByEmail(email).orElseThrow(
                 () -> new IllegalArgumentException("not exist email")
@@ -325,7 +326,7 @@ public class ProjectService {
                 member.getNickname(),
                 member.getProfileImageURL()
         );
-        obj.put("responseDto", responseDto);
+        JSONObject obj = new JSONObject(responseDto);
         return obj.toString();
     }
 }
