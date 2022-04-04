@@ -310,4 +310,22 @@ public class ProjectService {
         obj.put("msg", "추방 완료");
         return obj.toString();
     }
+
+    @Transactional
+    public String checkingNameByEmail(String email) {
+        JSONObject obj = new JSONObject();
+        if (!memberRepository.existsByEmail(email)) {
+            obj.put("msg", "email이 존재하지 않습니다.");
+            return obj.toString();
+        }
+        Member member = memberRepository.findByEmail(email).orElseThrow(
+                () -> new IllegalArgumentException("not exist email")
+        );
+        CheckingNameByEmailResponseDto responseDto = new CheckingNameByEmailResponseDto(
+                member.getNickname(),
+                member.getProfileImageURL()
+        );
+        obj.put("responseDto", responseDto);
+        return obj.toString();
+    }
 }

@@ -78,4 +78,9 @@ public class ProjectController {
     public String kickMember(@RequestBody KickMemberRequestDto requestDto) {
         return projectService.kickMember(requestDto);
     }
+
+    @GetMapping("/checkingNameByEmail/{email}") // 멤버초대하는 메세지에 닉네임과 이미지 넘겨주기
+    public String checkingNameByEmail(@PathVariable String email) {
+        return projectService.checkingNameByEmail(email);
+    }
 }
