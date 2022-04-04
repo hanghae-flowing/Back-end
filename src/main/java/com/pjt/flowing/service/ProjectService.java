@@ -217,6 +217,7 @@ public class ProjectService {
     }
 
     //프로젝트 생성하기
+    @Transactional
     public String createProject(ProjectCreateRequestDto projectCreateRequestDto) throws JsonProcessingException {
         AuthorizationDto authorizationDto = new AuthorizationDto(projectCreateRequestDto.getAccessToken(), projectCreateRequestDto.getKakaoId(), projectCreateRequestDto.getUserId());
         JSONObject obj = new JSONObject();
@@ -263,6 +264,7 @@ public class ProjectService {
     }
 
     //북마크 생성하기
+    @Transactional
     public String checkBookmark(Long projectId, AuthorizationDto authorizationDto) {
         boolean check = bookmarkRepository.existsByMember_IdAndProject_Id(authorizationDto.getUserId(), projectId);
         Project project = projectRepository.findById(projectId).orElseThrow(
