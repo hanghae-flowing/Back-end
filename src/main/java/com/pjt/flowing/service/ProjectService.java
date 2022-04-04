@@ -4,6 +4,7 @@ package com.pjt.flowing.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.pjt.flowing.dto.request.AcceptRequestDto;
 import com.pjt.flowing.dto.AuthorizationDto;
+import com.pjt.flowing.dto.request.KickMemberRequestDto;
 import com.pjt.flowing.dto.request.ProjectCreateRequestDto;
 import com.pjt.flowing.dto.response.*;
 import com.pjt.flowing.dto.request.ProjectEditRequestDto;
@@ -295,5 +296,18 @@ public class ProjectService {
 
 
         return includedSearchDto;
+    }
+
+    // 프로젝트에서 멤버 추방하기
+    @Transactional
+    public String kickMember(KickMemberRequestDto requestDto) {
+        JSONObject obj = new JSONObject();
+        if (!projectRepository.existsByMember_IdAndId(requestDto.getUserId(), requestDto.getProjectId())){
+            obj.put("msg", "추방할 권리가 없습니다.");
+            return obj.toString();
+        }
+        projectMemberRepository.deleteByMember_IdAndProject_Id(requestDto.getMemberId(), requestDto.getProjectId());
+        obj.put("msg", "추방 완료");
+        return obj.toString();
     }
 }
