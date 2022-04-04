@@ -39,8 +39,7 @@ public class ProjectService {
     private final NodeService nodeService;
     private final DocumentService documentService;
     private final GapNodeService gapNodeService;
-    private final FolderTableRepository folderTableRepository;
-    private final FolderRepository folderRepository;
+
     public static <T> Predicate<T> distinctByKey(Function<? super T, ?> keyExtractor) {
         Set<Object> seen = ConcurrentHashMap.newKeySet();
         return t -> seen.add(keyExtractor.apply(t));
@@ -299,6 +298,7 @@ public class ProjectService {
         return includedSearchDto;
     }
 
+
     // 프로젝트에서 멤버 추방하기
     @Transactional
     public String kickMember(KickMemberRequestDto requestDto) {
@@ -311,5 +311,6 @@ public class ProjectService {
         obj.put("msg", "추방 완료");
         return obj.toString();
     }
+
 
 }
