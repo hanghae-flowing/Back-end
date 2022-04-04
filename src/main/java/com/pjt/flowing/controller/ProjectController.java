@@ -2,10 +2,7 @@ package com.pjt.flowing.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.pjt.flowing.dto.*;
-import com.pjt.flowing.dto.request.AcceptRequestDto;
-import com.pjt.flowing.dto.request.ProjectCreateRequestDto;
-import com.pjt.flowing.dto.request.ProjectEditRequestDto;
-import com.pjt.flowing.dto.request.ProjectSearchDto;
+import com.pjt.flowing.dto.request.*;
 import com.pjt.flowing.dto.response.ProjectResponseDto;
 import com.pjt.flowing.service.ProjectService;
 import lombok.RequiredArgsConstructor;
@@ -76,4 +73,12 @@ public class ProjectController {
     public List<ProjectResponseDto> searchProject(@RequestBody ProjectSearchDto requestDto) throws JsonProcessingException {
         return projectService.searchAll(requestDto.getUserId(),requestDto.getText());
     }
+
+    //폴더 생성하기
+    @PostMapping("/folder")
+    public String createFolder(@RequestBody FolderCreateRequestDto folderCreateRequestDto){
+        return projectService.createFolder(folderCreateRequestDto);
+    }
+
+   
 }
