@@ -2,9 +2,13 @@ package com.pjt.flowing.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.pjt.flowing.dto.*;
-import com.pjt.flowing.dto.request.*;
-import com.pjt.flowing.dto.response.ProjectResponseDto;
-import com.pjt.flowing.dto.response.ProjectTestResponseDto;
+import com.pjt.flowing.dto.request.invite.AcceptRequestDto;
+import com.pjt.flowing.dto.request.invite.KickMemberRequestDto;
+import com.pjt.flowing.dto.request.project.ProjectCreateRequestDto;
+import com.pjt.flowing.dto.request.project.ProjectEditRequestDto;
+import com.pjt.flowing.dto.request.project.ProjectSearchDto;
+import com.pjt.flowing.dto.response.project.ProjectResponseDto;
+import com.pjt.flowing.dto.response.project.ProjectTestResponseDto;
 import com.pjt.flowing.service.ProjectService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;

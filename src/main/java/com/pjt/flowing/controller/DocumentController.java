@@ -1,8 +1,8 @@
 package com.pjt.flowing.controller;
 
 
-import com.pjt.flowing.dto.request.DocumentLineEditRequestDto;
-import com.pjt.flowing.dto.request.DocumentLineRequestDto;
+import com.pjt.flowing.dto.request.document.DocumentLineEditRequestDto;
+import com.pjt.flowing.dto.request.document.DocumentLineRequestDto;
 import com.pjt.flowing.service.DocumentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;

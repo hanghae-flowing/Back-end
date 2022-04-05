@@ -1,7 +1,6 @@
 package com.pjt.flowing.model.swot;
 
 import com.pjt.flowing.dto.request.SWOTRequestDto;
-import com.pjt.flowing.model.Document;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

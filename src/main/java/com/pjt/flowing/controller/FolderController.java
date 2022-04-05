@@ -1,12 +1,11 @@
 package com.pjt.flowing.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.pjt.flowing.dto.request.FolderAddProjectRequestDto;
-import com.pjt.flowing.dto.request.FolderCreateRequestDto;
-import com.pjt.flowing.dto.request.FolderDeleteProjectRequestDto;
-import com.pjt.flowing.dto.request.FolderRequestDto;
-import com.pjt.flowing.dto.response.FolderTableResponseDto;
-import com.pjt.flowing.dto.response.ProjectResponseDto;
+import com.pjt.flowing.dto.request.folder.FolderAddProjectRequestDto;
+import com.pjt.flowing.dto.request.folder.FolderCreateRequestDto;
+import com.pjt.flowing.dto.request.folder.FolderRequestDto;
+import com.pjt.flowing.dto.response.folder.FolderTableResponseDto;
+import com.pjt.flowing.dto.response.project.ProjectResponseDto;
 import com.pjt.flowing.service.FolderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;

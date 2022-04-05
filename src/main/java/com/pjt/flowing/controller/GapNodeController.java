@@ -1,8 +1,8 @@
 package com.pjt.flowing.controller;
 
-import com.pjt.flowing.dto.request.GapNodeEditRequestDto;
-import com.pjt.flowing.dto.request.GapNodeCreateRequestDto;
-import com.pjt.flowing.dto.request.GapStoneRequestDto;
+import com.pjt.flowing.dto.request.gapnode.GapNodeEditRequestDto;
+import com.pjt.flowing.dto.request.gapnode.GapNodeCreateRequestDto;
+import com.pjt.flowing.dto.request.gapnode.GapStoneRequestDto;
 import com.pjt.flowing.service.GapNodeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;

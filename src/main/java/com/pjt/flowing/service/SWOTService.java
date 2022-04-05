@@ -2,9 +2,9 @@ package com.pjt.flowing.service;
 
 import com.pjt.flowing.dto.request.SWOTRequestDto;
 import com.pjt.flowing.dto.response.SWOTResponseDto;
-import com.pjt.flowing.model.Project;
+import com.pjt.flowing.model.project.Project;
 import com.pjt.flowing.model.swot.*;
-import com.pjt.flowing.repository.ProjectRepository;
+import com.pjt.flowing.repository.project.ProjectRepository;
 import com.pjt.flowing.repository.swot.*;
 import lombok.RequiredArgsConstructor;
 import org.json.JSONArray;

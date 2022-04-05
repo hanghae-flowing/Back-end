@@ -1,12 +1,12 @@
 package com.pjt.flowing.service;
 
-import com.pjt.flowing.dto.request.AcceptRequestDto;
-import com.pjt.flowing.dto.request.ProjectIdDeleteRequestDto;
-import com.pjt.flowing.dto.response.ProjectResponseDto;
-import com.pjt.flowing.model.Project;
-import com.pjt.flowing.model.ProjectMember;
-import com.pjt.flowing.repository.ProjectMemberRepository;
-import com.pjt.flowing.repository.ProjectRepository;
+import com.pjt.flowing.dto.request.invite.AcceptRequestDto;
+import com.pjt.flowing.dto.request.project.ProjectIdDeleteRequestDto;
+import com.pjt.flowing.dto.response.project.ProjectResponseDto;
+import com.pjt.flowing.model.project.Project;
+import com.pjt.flowing.model.project.ProjectMember;
+import com.pjt.flowing.repository.project.ProjectMemberRepository;
+import com.pjt.flowing.repository.project.ProjectRepository;
 import lombok.RequiredArgsConstructor;
 import org.json.JSONObject;
 import org.springframework.stereotype.Service;
