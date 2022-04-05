@@ -82,6 +82,16 @@ public class FolderService {
                 .collect(Collectors.toList());
         return folderDto;
     }
+    // 휴지통에 있는 폴더정보 조회하기
+    public List<FolderTableResponseDto> getTrashFolderAll(Long userId){
+        List<FolderTable> folderTableList =  folderTableRepository.findAllByMember_Id(userId);
+        List<FolderTableResponseDto> folderDto = folderTableList.stream()
+                .filter(x -> x.isTrash())
+                .map(FolderTableResponseDto::myFolder)
+                .sorted(Comparator.comparing(FolderTableResponseDto::getModifiedAt).reversed())
+                .collect(Collectors.toList());
+        return folderDto;
+    }
 
     // 폴더 휴지통에 보내기
     @Transactional
