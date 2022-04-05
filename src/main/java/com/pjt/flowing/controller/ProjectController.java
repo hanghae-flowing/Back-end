@@ -85,4 +85,7 @@ public class ProjectController {
     public String kickMember(@RequestBody KickMemberRequestDto requestDto) {
         return projectService.kickMember(requestDto);
     }
+
+
+
 }
