@@ -41,7 +41,7 @@ public class DocumentService {
         obj.put("documentId",document.getId());
 
         List<DocumentLineResponseDto> documentLineResponseDtoList = new ArrayList<>();
-        for(long i = 1L; i<20L; i++){
+        for(long i = 1L; i<29L; i++){
             DocumentLineTemplates templates = documentLineTemplatesRepository.findById(i).orElseThrow(
                     ()->new IllegalArgumentException("templates download error")
             );
