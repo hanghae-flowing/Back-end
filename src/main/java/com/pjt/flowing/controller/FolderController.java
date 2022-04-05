@@ -54,13 +54,10 @@ public class FolderController {
     public String trashFolder( @RequestBody FolderRequestDto requestDto) throws JsonProcessingException{
         return folderService.trashFolder(requestDto);
     }
-    //폴더 복구하기.
-
-
-    // 폴더에 들어있는 프로젝트 삭제하기  //이부분은 더생각해보기
-    @DeleteMapping("/folder/project")
-    public String deleteFolderProject( @RequestBody FolderDeleteProjectRequestDto requestDto) throws JsonProcessingException{
-        return folderService.deleteFolderProject(requestDto);
+    //폴더 복구하기(휴지통에서 꺼내주기)
+    @PostMapping("/folder/restore")
+    public String restoreFolder( @RequestBody FolderRequestDto requestDto) throws JsonProcessingException{
+        return folderService.restoreFolder(requestDto);
     }
 
 

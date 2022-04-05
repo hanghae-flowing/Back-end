@@ -48,7 +48,7 @@ public class TrashController {
     }
 
     //휴지통에 있는 폴더만 보여주기
-    @GetMapping("/trash/folder/{userId}") // 휴지통에 있는 프로젝트만 보여주기
+    @GetMapping("/trash/folder/{userId}")
     public List<FolderTableResponseDto> getFolder(@PathVariable Long userId) throws JsonProcessingException {
         return folderService.getTrashFolderAll(userId);
     }
