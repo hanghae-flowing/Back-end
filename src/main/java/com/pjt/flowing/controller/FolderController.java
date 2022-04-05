@@ -65,5 +65,11 @@ public class FolderController {
         return folderService.bookmarkFolder(requestDto);
     }
 
+    //북마크한 폴더 정보 조회
+    @GetMapping("/folder/{userId}")
+    public List<FolderTableResponseDto> getBookmarkedFolder(@PathVariable Long userId) throws JsonProcessingException {
+        return folderService.getFolderBookmarked(userId);
+    }
+
 
 }
