@@ -1,4 +1,4 @@
-package com.pjt.flowing.validator;
+package com.pjt.flowing.exception.validator;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.pjt.flowing.dto.AuthorizationDto;

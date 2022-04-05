@@ -8,8 +8,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Getter
 public class CheckingNameByEmailResponseDto {
-
     private String nickname;
-
     private String image;
 }

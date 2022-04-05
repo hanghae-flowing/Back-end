@@ -150,8 +150,6 @@ public class NodeService {
     }
 
     @Transactional  //여기에 template default 값 넣어줘야함
-    // levelDown 나중에 다시 string으로 보낼 경우가 생길것임
-//    public String nodeTableCreate(Long projectId){
     public Long nodeTableCreate(Long projectId){
         Project project = projectRepository.findById(projectId).orElseThrow(
                 ()-> new IllegalArgumentException("project Id error")
@@ -180,7 +178,6 @@ public class NodeService {
         NodeTable nodeTable = nodeTableRepository.findById(nodePathRequestDto.getNodeTableId()).orElseThrow(
                 () -> new IllegalArgumentException("Not exist nodeTableId")
         );
-        System.out.println("nodeTableId : " + nodePathRequestDto.getNodeTableId());
 
         NodePath nodePath = new NodePath(
                 nodePathRequestDto.getParentNode(),

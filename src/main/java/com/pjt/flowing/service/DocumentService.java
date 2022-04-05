@@ -31,8 +31,6 @@ public class DocumentService {
     private final DocumentLineTemplatesRepository documentLineTemplatesRepository;
 
     @Transactional  //기획서 생성 시키면서 default template 값 넣어주기
-    //levelDown 이거 나중에 없애기
-//    public String documentCreate(Long projectId){
     public List<DocumentLineResponseDto> documentCreate(Long projectId){
         JSONObject obj = new JSONObject();
         Project project = projectRepository.findById(projectId).orElseThrow(
@@ -70,8 +68,6 @@ public class DocumentService {
         }
         JSONArray array = new JSONArray(documentLineResponseDtoList);
         obj.append("templatesInfo",array);
-        //levelDown 여기 나중에 바꿔야함
-//        return obj.toString();
         return documentLineResponseDtoList;
 
     }

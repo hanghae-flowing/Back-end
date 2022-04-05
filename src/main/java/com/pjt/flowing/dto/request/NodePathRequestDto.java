@@ -11,9 +11,7 @@ import lombok.Setter;
 public class NodePathRequestDto {
 
     private Long nodeTableId;
-
     private Long parentNode;
-
     private Long childNode;
 
 }

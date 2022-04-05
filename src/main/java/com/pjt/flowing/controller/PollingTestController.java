@@ -26,12 +26,6 @@ public class PollingTestController {
         PollingTest pollingTest = pollingRepository.findById(textId).orElseThrow(
                 ()->new IllegalArgumentException("get error")
         );
-//        JSONObject obj = new JSONObject(pollingTest);
-//        obj.put("msg","응애응애 폴링테스트에용");
-//        String id = UUID.randomUUID().toString();
-//        obj.put("랜덤이에용",id);
-//        obj.put("textinfo",pollingTest);
-//        System.out.println("uuid test"+id);
         return pollingTest.getText();
     }
 

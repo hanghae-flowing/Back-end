@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 public class NodePathResponseDto {
 
     private Long parentNode;
-
     private Long childNode;
 
     public NodePathResponseDto(Long parentNode, Long childNode) {

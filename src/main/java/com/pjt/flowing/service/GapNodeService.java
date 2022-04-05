@@ -63,8 +63,6 @@ public class GapNodeService {
     }
     
     @Transactional
-    //levelDown 나중에 이부분다시 바꿔야함
-//    public String gapTableCreate(Long projectId){
     public Long gapTableCreate(Long projectId){
         Project project = projectRepository.findById(projectId).orElseThrow(
                 ()-> new IllegalArgumentException("project Id error")
@@ -72,9 +70,6 @@ public class GapNodeService {
 
         GapTable gapTable = new GapTable(project);
         gapTableRepository.save(gapTable);
-        //levelDown
-//        JSONObject obj = new JSONObject();
-//        obj.put("gapTableId",gapTable.getId());
         return gapTable.getId();
 
     }

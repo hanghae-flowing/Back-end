@@ -27,7 +27,5 @@ public class FolderTableResponseDto {
                 .modifiedAt(folderTable.getModifiedAt())
                 .trash(folderTable.isTrash())
                 .build();
-
-
     }
 }

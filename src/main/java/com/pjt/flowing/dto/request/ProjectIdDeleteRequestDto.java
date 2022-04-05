@@ -8,6 +8,5 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 public class ProjectIdDeleteRequestDto {
-
     private List<Long> projectIdList;
 }

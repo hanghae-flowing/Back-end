@@ -2,10 +2,8 @@ package com.pjt.flowing.dto.response;
 
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 @Getter
-@NoArgsConstructor
 public class NodeResponseDto {
     private int xval;
     private int yval;

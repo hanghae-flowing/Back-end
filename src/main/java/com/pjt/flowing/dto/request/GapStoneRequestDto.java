@@ -8,8 +8,6 @@ import lombok.NoArgsConstructor;
 public class GapStoneRequestDto {
 
     private int xval;
-
     private String text;
-
     private Long gapNodeId;
 }

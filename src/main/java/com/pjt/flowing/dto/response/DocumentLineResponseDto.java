@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 
 
 @Getter
-@NoArgsConstructor
 public class DocumentLineResponseDto {
     private Long lineId;
     private String text;

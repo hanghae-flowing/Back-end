@@ -36,9 +36,6 @@ public class TrashController {
 
     @PostMapping("project/trash/selection") // 휴지통에서 선택해서 삭제하기
     public String choiceDelete(@RequestBody ProjectIdDeleteRequestDto requestDto) {
-        for (Long ProjectId : requestDto.getProjectIdList()){
-            System.out.println(ProjectId);
-        }
         return trashService.choiceDelete(requestDto);
     }
 

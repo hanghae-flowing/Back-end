@@ -71,19 +71,6 @@ public class ProjectService {
                .sorted(Comparator.comparing(ProjectResponseDto::getModifiedAt).reversed())
                .collect(Collectors.toList());
 
-
-
-//
-//        return myCreateProjects.stream()
-//                .map(ProjectResponseDto::from)
-//                .collect(Collectors.toList());
-
-
-//        List<Project> myCreateProjects = projectRepository.findAllByMember_IdAndTrashOrderByModifiedAtDesc(userId,false); // 자기가 만든 프로젝트 리스트
-//
-//        return myCreateProjects.stream()
-//                .map(ProjectResponseDto::from)
-//                .collect(Collectors.toList());
         return includedDto;
     }
     // getAll 테스트
@@ -113,32 +100,6 @@ public class ProjectService {
                 .sorted(Comparator.comparing(ProjectTestResponseDto::getModifiedAt).reversed())
                 .collect(Collectors.toList());
     }
-
-
-//    public List<ProjectResponseDto> get4(Long userId){
-//        List<Project> all = projectRepository.findFirst4ByMember_IdOrderByModifiedAtDesc(userId);
-//        List<Bookmark> bookmarked = bookmarkRepository.findAllByMember_IdOrderByModifiedAtDesc(userId); //userId가 누른 북마크
-//
-//        List <ProjectResponseDto> re = bookmarked.stream()
-//                .map(ProjectResponseDto::from2)
-//                .collect(Collectors.toList());
-//
-//
-//        List<ProjectResponseDto> dto = all.stream()
-//                .map(ProjectResponseDto::from)
-//                .collect(Collectors.toList());
-//
-//        List<ProjectResponseDto> joined = new ArrayList<>();
-//        joined.addAll(re);
-//        joined.addAll(dto);
-//
-//        List<ProjectResponseDto> response =joined.stream()
-//                .filter(distinctByKey(ProjectResponseDto::getProjectId))
-//                .limit(4)
-//                .collect(Collectors.toList());
-//
-//        return response;
-//    }
 
     @Transactional
     public String deleteProject(Long projectId, AuthorizationDto dto) {
