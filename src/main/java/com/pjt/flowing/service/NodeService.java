@@ -173,8 +173,6 @@ public class NodeService {
 
     @Transactional
     public String nodeConnect(NodePathRequestDto nodePathRequestDto) {
-        System.out.println("cNodeId : " + nodePathRequestDto.getChildNode());
-        System.out.println("pNodeId : " + nodePathRequestDto.getParentNode());
         NodeTable nodeTable = nodeTableRepository.findById(nodePathRequestDto.getNodeTableId()).orElseThrow(
                 () -> new IllegalArgumentException("Not exist nodeTableId")
         );

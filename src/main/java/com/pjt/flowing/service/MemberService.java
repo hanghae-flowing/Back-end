@@ -79,10 +79,6 @@ public class MemberService {
 
         RestTemplate rt = new RestTemplate();
         ResponseEntity<String> response = rt.exchange("https://kapi.kakao.com/v1/user/logout", HttpMethod.POST, kakaoLogoutRequest, String.class);
-//        String responseBody = response.getBody();
-//        ObjectMapper objectMapper = new ObjectMapper();
-//        JsonNode jsonNode = objectMapper.readTree(responseBody);
-//        Long id = jsonNode.get("id").asLong();
         JSONObject obj = new JSONObject();
         obj.put("msg","logout");
         return obj.toString();
@@ -96,7 +92,6 @@ public class MemberService {
         MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
         body.add("grant_type", "authorization_code");
         body.add("client_id", kakao_api);
-//        body.add("redirect_uri", "http://localhost:8080/member/kakao/callback");
 //        body.add("redirect_uri", "http://localhost:3000/member/kakao/callback");
         body.add("redirect_uri", "http://hanghae-final5.s3-website.ap-northeast-2.amazonaws.com/member/kakao/callback");
         body.add("code", code);

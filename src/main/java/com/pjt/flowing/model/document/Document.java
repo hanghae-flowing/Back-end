@@ -24,7 +24,7 @@ public class Document {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Project project;
 
-    @OneToMany(mappedBy = "document",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "document",fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
     private List<DocumentLine> documentLineList = new ArrayList<>();
 
     public Document(Project project){

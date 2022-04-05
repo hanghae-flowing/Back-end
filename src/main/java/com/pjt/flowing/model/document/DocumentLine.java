@@ -2,6 +2,8 @@ package com.pjt.flowing.model.document;
 
 import com.pjt.flowing.dto.request.document.DocumentLineEditRequestDto;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 
@@ -34,6 +36,7 @@ public class DocumentLine {
 
     @ManyToOne
     @JoinColumn(name="document_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Document document;
 
     @Builder
