@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.Column;
+
 
 @Getter
 public class DocumentLineResponseDto {
@@ -15,10 +17,12 @@ public class DocumentLineResponseDto {
     private String color;
     private int indexNum;
     private Long documentId;
+    private int maxLength;
+    private String placeHolder;
 
     @Builder
-    public DocumentLineResponseDto(Long lineId, String text, int weight,
-                                   int fontSize, String color,int indexNum,Long documentId) {
+    public DocumentLineResponseDto(Long lineId, String text, int weight, int fontSize, String color,
+                                   int indexNum,Long documentId, int maxLength,String placeHolder) {
         this.lineId = lineId;
         this.text = text;
         this.weight = weight;
@@ -26,5 +30,7 @@ public class DocumentLineResponseDto {
         this.color = color;
         this.indexNum = indexNum;
         this.documentId = documentId;
+        this.maxLength=maxLength;
+        this.placeHolder=placeHolder;
     }
 }

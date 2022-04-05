@@ -119,6 +119,7 @@ public class ProjectService {
             includeDto.add(responseDto);
         }
         return includeDto.stream()
+                .filter(x-> !x.isTrash())
                 .sorted(Comparator.comparing(ProjectTestResponseDto::getModifiedAt).reversed())
                 .collect(Collectors.toList());
     }

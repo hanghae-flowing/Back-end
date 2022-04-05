@@ -41,7 +41,7 @@ public class DocumentService {
         obj.put("documentId",document.getId());
 
         List<DocumentLineResponseDto> documentLineResponseDtoList = new ArrayList<>();
-        for(long i = 1L; i<20L; i++){
+        for(long i = 1L; i<29L; i++){
             DocumentLineTemplates templates = documentLineTemplatesRepository.findById(i).orElseThrow(
                     ()->new IllegalArgumentException("templates download error")
             );
@@ -52,6 +52,8 @@ public class DocumentService {
                     .text(templates.getText())
                     .color(templates.getColor())
                     .document(document)
+                    .maxLength(templates.getMaxLength())
+                    .placeHolder(templates.getPlaceHolder())
                     .build();
             documentLineRepository.save(documentLine);
 
@@ -62,7 +64,9 @@ public class DocumentService {
                     .weight(documentLine.getWeight())
                     .indexNum(documentLine.getIndexNum())
                     .lineId(documentLine.getId())
-                    .documentId(document.getId())   //이부분 나중에 지워야함 dto 클래스에서도 levelDown
+                    .documentId(document.getId())
+                    .maxLength(documentLine.getMaxLength())
+                    .placeHolder(documentLine.getPlaceHolder())
                     .build();
             documentLineResponseDtoList.add(documentLineResponseDto);
         }
@@ -86,6 +90,8 @@ public class DocumentService {
                 .fontSize(dto.getFontSize())
                 .weight(dto.getWeight())
                 .indexNum(dto.getIndexNum())
+                .maxLength(dto.getMaxLength())
+                .placeHolder("not null")
                 .build();
 
         documentLineRepository.save(documentLine);
@@ -107,6 +113,7 @@ public class DocumentService {
                 .text(documentLine.getText())
                 .fontSize(documentLine.getFontSize())
                 .color(documentLine.getColor())
+                .maxLength(documentLine.getMaxLength())
                 .build();
         JSONObject obj = new JSONObject(documentLineResponseDto);
         return obj.toString();
@@ -123,6 +130,8 @@ public class DocumentService {
                     .weight(documentLine.getWeight())
                     .indexNum(documentLine.getIndexNum())
                     .lineId(documentLine.getId())
+                    .maxLength(documentLine.getMaxLength())
+                    .placeHolder(documentLine.getPlaceHolder())
                     .build();
             documentLineResponseDtoList.add(documentLineResponseDto);
         }
