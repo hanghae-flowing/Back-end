@@ -2,12 +2,11 @@ package com.pjt.flowing.service;
 
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.pjt.flowing.dto.request.AcceptRequestDto;
+import com.pjt.flowing.dto.request.*;
 import com.pjt.flowing.dto.AuthorizationDto;
 import com.pjt.flowing.dto.request.KickMemberRequestDto;
 import com.pjt.flowing.dto.request.ProjectCreateRequestDto;
 import com.pjt.flowing.dto.response.*;
-import com.pjt.flowing.dto.request.ProjectEditRequestDto;
 import com.pjt.flowing.model.*;
 import com.pjt.flowing.model.swot.SWOT;
 import com.pjt.flowing.repository.*;
@@ -17,7 +16,7 @@ import lombok.RequiredArgsConstructor;
 import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.util.CollectionUtils;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -37,6 +36,8 @@ public class ProjectService {
     private final DocumentRepository documentRepository;
     private final NodeTableRepository nodeTableRepository;
     private final GapTableRepository gapTableRepository;
+    private final FolderTableRepository folderTableRepository;
+    private final FolderRepository folderRepository;
     private final SWOTRepository swotRepository;
     private final Authorization authorization;
     private final NodeService nodeService;
@@ -50,12 +51,33 @@ public class ProjectService {
 
     public List<ProjectResponseDto> getAll(Long userId) {//휴지통 제외하고 보내주기
 
-        List<ProjectMember> myIncludedProjects = projectMemberRepository.findAllByMember_Id(userId); // 자기가 포함된 프로젝트 리스트
-        List<ProjectResponseDto> includedDto = myIncludedProjects.stream()
-                .filter(x -> !x.getProject().isTrash())
-                .map(ProjectResponseDto::includedProject)
-                .sorted(Comparator.comparing(ProjectResponseDto::getModifiedAt).reversed())
-                .collect(Collectors.toList());
+        //여기서 폴더에있는건 빼고 보내줘야함...
+        List<Long> folderProjectList=new ArrayList<>();
+        List<FolderTable> folderTableList = folderTableRepository.findAllByMember_Id(userId);
+        for(FolderTable folderTable : folderTableList){
+            List<Folder> folderList = folderRepository.findAllByFolderTable_Id(folderTable.getId());
+            for(Folder folder : folderList){
+                folderProjectList.add(folder.getProjectId());
+            }
+        }
+
+
+
+       List<ProjectMember> myIncludedProjects = projectMemberRepository.findAllByMember_Id(userId); // 자기가 포함된 프로젝트 리스트
+       List<ProjectResponseDto> includedDto = myIncludedProjects.stream()
+               .filter(x -> !x.getProject().isTrash())
+               .filter(x-> !folderProjectList.contains(x.getProject().getId())) // 폴더안에 프로젝트가 없다면 뽑아라
+               .map(ProjectResponseDto::includedProject)
+               .sorted(Comparator.comparing(ProjectResponseDto::getModifiedAt).reversed())
+               .collect(Collectors.toList());
+
+
+
+//
+//        return myCreateProjects.stream()
+//                .map(ProjectResponseDto::from)
+//                .collect(Collectors.toList());
+
 
 //        List<Project> myCreateProjects = projectRepository.findAllByMember_IdAndTrashOrderByModifiedAtDesc(userId,false); // 자기가 만든 프로젝트 리스트
 //
@@ -328,6 +350,7 @@ public class ProjectService {
         return includedSearchDto;
     }
 
+
     // 프로젝트에서 멤버 추방하기
     @Transactional
     public String kickMember(KickMemberRequestDto requestDto) {
@@ -340,4 +363,6 @@ public class ProjectService {
         obj.put("msg", "추방 완료");
         return obj.toString();
     }
+
+
 }

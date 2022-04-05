@@ -1,8 +1,10 @@
 package com.pjt.flowing.dto.response;
 
 import com.pjt.flowing.model.Bookmark;
+import com.pjt.flowing.model.Folder;
 import com.pjt.flowing.model.Project;
 import com.pjt.flowing.model.ProjectMember;
+import com.pjt.flowing.repository.ProjectRepository;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -20,6 +22,7 @@ public class ProjectResponseDto {
     private int thumbnailNum;
     private boolean trash;
 
+
     public static ProjectResponseDto from(Project project){
         List<String> nicknames = new ArrayList<>();
         project.getProjectMemberList().stream()
@@ -32,6 +35,7 @@ public class ProjectResponseDto {
                 .modifiedAt(project.getModifiedAt())
                 .memberList(nicknames)
                 .thumbnailNum(project.getThumbNailNum())
+                .trash(project.isTrash())
                 .build();
     }
     public static ProjectResponseDto from2(Bookmark bookmark){
@@ -63,7 +67,7 @@ public class ProjectResponseDto {
                     .thumbnailNum(projectMember.getProject().getThumbNailNum())
                     .trash(projectMember.getProject().isTrash())
                     .build();
-
-
     }
+
+
 }
