@@ -22,7 +22,7 @@ public class ProjectController {
     public List<ProjectTestResponseDto> getProject(@RequestBody AuthorizationDto requestDto) throws JsonProcessingException {
 
         // 인가 확인
-        authorizationValidator.tokenCheck(requestDto);
+       // authorizationValidator.tokenCheck(requestDto);
 
         return projectService.getAll2(requestDto.getUserId());
     }
@@ -33,13 +33,13 @@ public class ProjectController {
     }
 
     @PostMapping("/bookmark/{projectId}")   //북마크 생성
-    public String checkBookmark(@PathVariable Long projectId , @RequestBody AuthorizationDto authorizationDto) {
-        return projectService.checkBookmark(projectId,authorizationDto);
+    public String checkBookmark(@PathVariable Long projectId, @RequestBody AuthorizationDto authorizationDto) {
+        return projectService.checkBookmark(projectId, authorizationDto);
 
     }
 
     @PostMapping("/project/delete/{projectId}")    //프로젝트 삭제
-    public String deleteProject(@PathVariable Long projectId,@RequestBody AuthorizationDto dto){
+    public String deleteProject(@PathVariable Long projectId, @RequestBody AuthorizationDto dto) {
         return projectService.deleteProject(projectId, dto);
     }
 
@@ -49,7 +49,7 @@ public class ProjectController {
     }
 
     @GetMapping("/project/{projectId}")   //프로젝트 상세페이지 정보 보내주기
-    public String detail(@PathVariable Long projectId){
+    public String detail(@PathVariable Long projectId) {
         return projectService.detail(projectId);
     }
 
@@ -59,31 +59,31 @@ public class ProjectController {
     }
 
     @PostMapping("/bookmarked")            //북마크한 프로젝트 리스트
-    public List<ProjectResponseDto> getProjectBookmarked(@RequestBody AuthorizationDto requestDto){
+    public List<ProjectResponseDto> getProjectBookmarked(@RequestBody AuthorizationDto requestDto) {
         return projectService.getAllBookmarked(requestDto.getUserId());
 
     }
 
     @PostMapping("/invitation")  //초대 수락하는 api
-    public String accept(@RequestBody AcceptRequestDto acceptRequestDto){
+    public String accept(@RequestBody AcceptRequestDto acceptRequestDto) {
         return projectService.accept(acceptRequestDto);
     }
 
     @GetMapping("/project/{projectid}/templates")   //모든 템플릿 리스트 불러오기
-    public String showTemplates(@PathVariable Long projectid){
+    public String showTemplates(@PathVariable Long projectid) {
         return projectService.showTemplates(projectid);
     }
 
     @PostMapping("/project/searching")       //검색할 프로젝트명이 포함되어있는 프로젝트불러오기
     public List<ProjectResponseDto> searchProject(@RequestBody ProjectSearchDto requestDto) throws JsonProcessingException {
-        return projectService.searchAll(requestDto.getUserId(),requestDto.getText());
+        return projectService.searchAll(requestDto.getUserId(), requestDto.getText());
     }
+
 
     @PostMapping("/kick") // 프로젝트에서 멤버 추방하기
     public String kickMember(@RequestBody KickMemberRequestDto requestDto) {
         return projectService.kickMember(requestDto);
     }
-
     @GetMapping("/checkingNameByEmail/{email}") // 멤버초대하는 메세지에 닉네임과 이미지 넘겨주기
     public String checkingNameByEmail(@PathVariable String email) {
         return projectService.checkingNameByEmail(email);
