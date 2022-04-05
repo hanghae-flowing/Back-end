@@ -171,7 +171,7 @@ public class FolderService {
             folderTable.setBookmark(true);
             obj.put("msg", "폴더 북마크 적용");
         }
-        
+
         return obj.toString();
     }
 
@@ -180,7 +180,7 @@ public class FolderService {
         List<FolderTable> folderTableList = folderTableRepository.findAllByMember_Id(userId);
         List<FolderTableResponseDto> folderDto = folderTableList.stream()
                 .filter(x -> !x.isTrash())
-                .filter(x -> !x.isBookmark())
+                .filter(x -> x.isBookmark())
                 .map(FolderTableResponseDto::myFolder)
                 .sorted(Comparator.comparing(FolderTableResponseDto::getModifiedAt).reversed())
                 .collect(Collectors.toList());
