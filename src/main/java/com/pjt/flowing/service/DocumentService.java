@@ -52,6 +52,7 @@ public class DocumentService {
                     .text(templates.getText())
                     .color(templates.getColor())
                     .document(document)
+                    .maxLength(templates.getMaxLength())
                     .build();
             documentLineRepository.save(documentLine);
 
@@ -62,7 +63,8 @@ public class DocumentService {
                     .weight(documentLine.getWeight())
                     .indexNum(documentLine.getIndexNum())
                     .lineId(documentLine.getId())
-                    .documentId(document.getId())   //이부분 나중에 지워야함 dto 클래스에서도 levelDown
+                    .documentId(document.getId())
+                    .maxLength(documentLine.getMaxLength())
                     .build();
             documentLineResponseDtoList.add(documentLineResponseDto);
         }
@@ -86,6 +88,7 @@ public class DocumentService {
                 .fontSize(dto.getFontSize())
                 .weight(dto.getWeight())
                 .indexNum(dto.getIndexNum())
+                .maxLength(dto.getMaxLength())
                 .build();
 
         documentLineRepository.save(documentLine);
@@ -107,6 +110,7 @@ public class DocumentService {
                 .text(documentLine.getText())
                 .fontSize(documentLine.getFontSize())
                 .color(documentLine.getColor())
+                .maxLength(documentLine.getMaxLength())
                 .build();
         JSONObject obj = new JSONObject(documentLineResponseDto);
         return obj.toString();
@@ -123,6 +127,7 @@ public class DocumentService {
                     .weight(documentLine.getWeight())
                     .indexNum(documentLine.getIndexNum())
                     .lineId(documentLine.getId())
+                    .maxLength(documentLine.getMaxLength())
                     .build();
             documentLineResponseDtoList.add(documentLineResponseDto);
         }

@@ -11,4 +11,5 @@ public class DocumentLineEditRequestDto {
     private int fontSize;
     private String color;
     private int indexNum;
+    private int maxLength;
 }

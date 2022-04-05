@@ -26,4 +26,7 @@ public class DocumentLineTemplates {
 
     @Column(nullable = false)
     private int indexNum;
+
+    @Column
+    private int maxLength;
 }
