@@ -1,19 +1,19 @@
 package com.pjt.flowing.service;
 
-import com.pjt.flowing.dto.request.NodeCreateRequestDto;
-import com.pjt.flowing.dto.request.NodeEditRequestDto;
-import com.pjt.flowing.dto.request.NodePathRequestDto;
-import com.pjt.flowing.dto.request.NodePinRequestDto;
-import com.pjt.flowing.dto.response.NodePathResponseDto;
-import com.pjt.flowing.dto.response.NodeResponseDto;
-import com.pjt.flowing.model.Node;
-import com.pjt.flowing.model.NodePath;
-import com.pjt.flowing.model.NodeTable;
-import com.pjt.flowing.model.Project;
-import com.pjt.flowing.repository.NodePathRepository;
-import com.pjt.flowing.repository.NodeRepository;
-import com.pjt.flowing.repository.NodeTableRepository;
-import com.pjt.flowing.repository.ProjectRepository;
+import com.pjt.flowing.dto.request.node.NodeCreateRequestDto;
+import com.pjt.flowing.dto.request.node.NodeEditRequestDto;
+import com.pjt.flowing.dto.request.node.NodePathRequestDto;
+import com.pjt.flowing.dto.request.node.NodePinRequestDto;
+import com.pjt.flowing.dto.response.node.NodePathResponseDto;
+import com.pjt.flowing.dto.response.node.NodeResponseDto;
+import com.pjt.flowing.model.node.Node;
+import com.pjt.flowing.model.node.NodePath;
+import com.pjt.flowing.model.node.NodeTable;
+import com.pjt.flowing.model.project.Project;
+import com.pjt.flowing.repository.node.NodePathRepository;
+import com.pjt.flowing.repository.node.NodeRepository;
+import com.pjt.flowing.repository.node.NodeTableRepository;
+import com.pjt.flowing.repository.project.ProjectRepository;
 import lombok.RequiredArgsConstructor;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -150,8 +150,6 @@ public class NodeService {
     }
 
     @Transactional  //여기에 template default 값 넣어줘야함
-    // levelDown 나중에 다시 string으로 보낼 경우가 생길것임
-//    public String nodeTableCreate(Long projectId){
     public Long nodeTableCreate(Long projectId){
         Project project = projectRepository.findById(projectId).orElseThrow(
                 ()-> new IllegalArgumentException("project Id error")
@@ -175,12 +173,9 @@ public class NodeService {
 
     @Transactional
     public String nodeConnect(NodePathRequestDto nodePathRequestDto) {
-        System.out.println("cNodeId : " + nodePathRequestDto.getChildNode());
-        System.out.println("pNodeId : " + nodePathRequestDto.getParentNode());
         NodeTable nodeTable = nodeTableRepository.findById(nodePathRequestDto.getNodeTableId()).orElseThrow(
                 () -> new IllegalArgumentException("Not exist nodeTableId")
         );
-        System.out.println("nodeTableId : " + nodePathRequestDto.getNodeTableId());
 
         NodePath nodePath = new NodePath(
                 nodePathRequestDto.getParentNode(),

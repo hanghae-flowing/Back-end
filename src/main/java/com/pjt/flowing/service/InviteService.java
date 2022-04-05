@@ -1,16 +1,16 @@
 package com.pjt.flowing.service;
 
-import com.pjt.flowing.dto.request.InviteRequestDto;
+import com.pjt.flowing.dto.request.invite.InviteRequestDto;
 
-import com.pjt.flowing.dto.response.InviteResponseDto;
+import com.pjt.flowing.dto.response.invite.InviteResponseDto;
 import com.pjt.flowing.model.InviteTable;
 import com.pjt.flowing.model.Member;
-import com.pjt.flowing.model.Project;
-import com.pjt.flowing.model.ProjectMember;
+import com.pjt.flowing.model.project.Project;
+import com.pjt.flowing.model.project.ProjectMember;
 import com.pjt.flowing.repository.InviteRepository;
 import com.pjt.flowing.repository.MemberRepository;
-import com.pjt.flowing.repository.ProjectMemberRepository;
-import com.pjt.flowing.repository.ProjectRepository;
+import com.pjt.flowing.repository.project.ProjectMemberRepository;
+import com.pjt.flowing.repository.project.ProjectRepository;
 import lombok.RequiredArgsConstructor;
 import org.json.JSONArray;
 import org.json.JSONObject;

@@ -1,10 +1,10 @@
 package com.pjt.flowing.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.pjt.flowing.dto.request.AcceptRequestDto;
-import com.pjt.flowing.dto.request.ProjectIdDeleteRequestDto;
-import com.pjt.flowing.dto.response.FolderTableResponseDto;
-import com.pjt.flowing.dto.response.ProjectResponseDto;
+import com.pjt.flowing.dto.request.invite.AcceptRequestDto;
+import com.pjt.flowing.dto.request.project.ProjectIdDeleteRequestDto;
+import com.pjt.flowing.dto.response.folder.FolderTableResponseDto;
+import com.pjt.flowing.dto.response.project.ProjectResponseDto;
 import com.pjt.flowing.service.FolderService;
 import com.pjt.flowing.service.TrashService;
 import lombok.RequiredArgsConstructor;
@@ -36,9 +36,6 @@ public class TrashController {
 
     @PostMapping("project/trash/selection") // 휴지통에서 선택해서 삭제하기
     public String choiceDelete(@RequestBody ProjectIdDeleteRequestDto requestDto) {
-        for (Long ProjectId : requestDto.getProjectIdList()){
-            System.out.println(ProjectId);
-        }
         return trashService.choiceDelete(requestDto);
     }
 

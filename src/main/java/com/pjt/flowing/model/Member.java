@@ -1,5 +1,6 @@
 package com.pjt.flowing.model;
 
+import com.pjt.flowing.model.project.Project;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

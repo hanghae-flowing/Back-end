@@ -1,9 +1,9 @@
 package com.pjt.flowing.controller;
 
-import com.pjt.flowing.dto.request.NodeCreateRequestDto;
-import com.pjt.flowing.dto.request.NodeEditRequestDto;
-import com.pjt.flowing.dto.request.NodePathRequestDto;
-import com.pjt.flowing.dto.request.NodePinRequestDto;
+import com.pjt.flowing.dto.request.node.NodeCreateRequestDto;
+import com.pjt.flowing.dto.request.node.NodeEditRequestDto;
+import com.pjt.flowing.dto.request.node.NodePathRequestDto;
+import com.pjt.flowing.dto.request.node.NodePinRequestDto;
 import com.pjt.flowing.service.NodeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -12,12 +12,6 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class NodeController {
     private final NodeService nodeService;
-
-//    나중에 템플릿 맘대로 추가할때 다시 넣어주기
-//    @PostMapping("/nodeTable/{projectId}")  //노드 테이블 생성
-//    public String nodeTableCreate(@PathVariable Long projectId){
-//        return nodeService.nodeTableCreate(projectId);
-//    }
 
     @DeleteMapping("/nodeTable/{nodeTableId}")  //노드 테이블 삭제
     public String nodeTableDelete(@PathVariable Long nodeTableId){
@@ -51,8 +45,6 @@ public class NodeController {
 
     @GetMapping("/node/{nodeId}")   //노드 하나 보기
     public String getOne(@PathVariable Long nodeId) {return nodeService.showOne(nodeId);}
-
-    //////////////////////////////////////////////
 
     @PostMapping("/node/path") // 노드 연결 시키기
     public String nodePathCreate(@RequestBody NodePathRequestDto nodePathRequestDto) {

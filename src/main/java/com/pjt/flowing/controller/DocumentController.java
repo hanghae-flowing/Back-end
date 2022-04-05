@@ -1,8 +1,8 @@
 package com.pjt.flowing.controller;
 
 
-import com.pjt.flowing.dto.request.DocumentLineEditRequestDto;
-import com.pjt.flowing.dto.request.DocumentLineRequestDto;
+import com.pjt.flowing.dto.request.document.DocumentLineEditRequestDto;
+import com.pjt.flowing.dto.request.document.DocumentLineRequestDto;
 import com.pjt.flowing.service.DocumentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -17,12 +17,6 @@ public class DocumentController {
     public String documentShowAll(@PathVariable Long projectId){
         return documentService.showAll(projectId);
     }
-
-    //levelDown 나중에 여기 주석처리 해제해
-//    @PostMapping("/document/{projectId}")   // 기획서 생성
-//    public String documentCreate(@PathVariable Long projectId){
-//        return documentService.documentCreate(projectId);
-//    }
 
     @PostMapping("/documentLines")  // 기획서 줄 추가하기
     public String lineCreate(@RequestBody DocumentLineRequestDto dto){

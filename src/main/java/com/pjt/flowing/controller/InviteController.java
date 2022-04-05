@@ -1,6 +1,6 @@
 package com.pjt.flowing.controller;
 
-import com.pjt.flowing.dto.request.InviteRequestDto;
+import com.pjt.flowing.dto.request.invite.InviteRequestDto;
 import com.pjt.flowing.service.InviteService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;

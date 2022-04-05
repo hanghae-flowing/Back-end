@@ -2,17 +2,39 @@ package com.pjt.flowing.service;
 
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.pjt.flowing.dto.request.*;
 import com.pjt.flowing.dto.AuthorizationDto;
-import com.pjt.flowing.dto.request.KickMemberRequestDto;
-import com.pjt.flowing.dto.request.ProjectCreateRequestDto;
+import com.pjt.flowing.dto.request.invite.KickMemberRequestDto;
+import com.pjt.flowing.dto.request.project.ProjectCreateRequestDto;
+import com.pjt.flowing.dto.request.invite.AcceptRequestDto;
 import com.pjt.flowing.dto.response.*;
-import com.pjt.flowing.dto.request.ProjectEditRequestDto;
+import com.pjt.flowing.dto.request.project.ProjectEditRequestDto;
+import com.pjt.flowing.dto.response.document.DocumentIdResponseDto;
+import com.pjt.flowing.dto.response.gapnode.GapTableIdResponseDto;
+import com.pjt.flowing.dto.response.invite.CheckingNameByEmailResponseDto;
+import com.pjt.flowing.dto.response.node.NodeTableIdResponseDto;
+import com.pjt.flowing.dto.response.project.ProjectResponseDto;
+import com.pjt.flowing.dto.response.project.ProjectTestResponseDto;
 import com.pjt.flowing.exception.BadRequestException;
 import com.pjt.flowing.exception.ErrorCode;
 import com.pjt.flowing.model.*;
+import com.pjt.flowing.model.document.Document;
+import com.pjt.flowing.model.folder.Folder;
+import com.pjt.flowing.model.folder.FolderTable;
+import com.pjt.flowing.model.gapnode.GapTable;
+import com.pjt.flowing.model.node.NodeTable;
+import com.pjt.flowing.model.project.Bookmark;
+import com.pjt.flowing.model.project.Project;
+import com.pjt.flowing.model.project.ProjectMember;
 import com.pjt.flowing.model.swot.SWOT;
 import com.pjt.flowing.repository.*;
+import com.pjt.flowing.repository.document.DocumentRepository;
+import com.pjt.flowing.repository.folder.FolderRepository;
+import com.pjt.flowing.repository.folder.FolderTableRepository;
+import com.pjt.flowing.repository.gapnode.GapTableRepository;
+import com.pjt.flowing.repository.node.NodeTableRepository;
+import com.pjt.flowing.repository.project.BookmarkRepository;
+import com.pjt.flowing.repository.project.ProjectMemberRepository;
+import com.pjt.flowing.repository.project.ProjectRepository;
 import com.pjt.flowing.repository.swot.SWOTRepository;
 import com.pjt.flowing.security.Authorization;
 import lombok.RequiredArgsConstructor;
@@ -71,19 +93,6 @@ public class ProjectService {
                .sorted(Comparator.comparing(ProjectResponseDto::getModifiedAt).reversed())
                .collect(Collectors.toList());
 
-
-
-//
-//        return myCreateProjects.stream()
-//                .map(ProjectResponseDto::from)
-//                .collect(Collectors.toList());
-
-
-//        List<Project> myCreateProjects = projectRepository.findAllByMember_IdAndTrashOrderByModifiedAtDesc(userId,false); // 자기가 만든 프로젝트 리스트
-//
-//        return myCreateProjects.stream()
-//                .map(ProjectResponseDto::from)
-//                .collect(Collectors.toList());
         return includedDto;
     }
     // getAll 테스트
@@ -113,32 +122,6 @@ public class ProjectService {
                 .sorted(Comparator.comparing(ProjectTestResponseDto::getModifiedAt).reversed())
                 .collect(Collectors.toList());
     }
-
-
-//    public List<ProjectResponseDto> get4(Long userId){
-//        List<Project> all = projectRepository.findFirst4ByMember_IdOrderByModifiedAtDesc(userId);
-//        List<Bookmark> bookmarked = bookmarkRepository.findAllByMember_IdOrderByModifiedAtDesc(userId); //userId가 누른 북마크
-//
-//        List <ProjectResponseDto> re = bookmarked.stream()
-//                .map(ProjectResponseDto::from2)
-//                .collect(Collectors.toList());
-//
-//
-//        List<ProjectResponseDto> dto = all.stream()
-//                .map(ProjectResponseDto::from)
-//                .collect(Collectors.toList());
-//
-//        List<ProjectResponseDto> joined = new ArrayList<>();
-//        joined.addAll(re);
-//        joined.addAll(dto);
-//
-//        List<ProjectResponseDto> response =joined.stream()
-//                .filter(distinctByKey(ProjectResponseDto::getProjectId))
-//                .limit(4)
-//                .collect(Collectors.toList());
-//
-//        return response;
-//    }
 
     @Transactional
     public String deleteProject(Long projectId, AuthorizationDto dto) {

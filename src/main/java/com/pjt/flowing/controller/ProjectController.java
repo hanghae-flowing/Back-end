@@ -2,11 +2,14 @@ package com.pjt.flowing.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.pjt.flowing.dto.*;
-import com.pjt.flowing.dto.request.*;
-import com.pjt.flowing.dto.response.ProjectResponseDto;
-import com.pjt.flowing.dto.response.ProjectTestResponseDto;
+import com.pjt.flowing.dto.request.invite.AcceptRequestDto;
+import com.pjt.flowing.dto.request.invite.KickMemberRequestDto;
+import com.pjt.flowing.dto.request.project.ProjectCreateRequestDto;
+import com.pjt.flowing.dto.request.project.ProjectEditRequestDto;
+import com.pjt.flowing.dto.request.project.ProjectSearchDto;
+import com.pjt.flowing.dto.response.project.ProjectResponseDto;
+import com.pjt.flowing.dto.response.project.ProjectTestResponseDto;
 import com.pjt.flowing.service.ProjectService;
-import com.pjt.flowing.validator.AuthorizationValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,13 +19,9 @@ import java.util.List;
 @RestController
 public class ProjectController {
     private final ProjectService projectService;
-    private final AuthorizationValidator authorizationValidator;
 
     @PostMapping("/project/detail") //  프로젝트 조회하기 휴지통제외하고
     public List<ProjectTestResponseDto> getProject(@RequestBody AuthorizationDto requestDto) throws JsonProcessingException {
-
-        // 인가 확인
-       // authorizationValidator.tokenCheck(requestDto);
 
         return projectService.getAll2(requestDto.getUserId());
     }
@@ -78,7 +77,6 @@ public class ProjectController {
     public List<ProjectResponseDto> searchProject(@RequestBody ProjectSearchDto requestDto) throws JsonProcessingException {
         return projectService.searchAll(requestDto.getUserId(), requestDto.getText());
     }
-
 
     @PostMapping("/kick") // 프로젝트에서 멤버 추방하기
     public String kickMember(@RequestBody KickMemberRequestDto requestDto) {

@@ -1,17 +1,17 @@
 package com.pjt.flowing.service;
 
-import com.pjt.flowing.dto.request.DocumentLineEditRequestDto;
-import com.pjt.flowing.dto.request.DocumentLineRequestDto;
-import com.pjt.flowing.dto.response.DocumentIdResponseDto;
-import com.pjt.flowing.dto.response.DocumentLineResponseDto;
-import com.pjt.flowing.model.Document;
-import com.pjt.flowing.model.DocumentLine;
-import com.pjt.flowing.model.DocumentLineTemplates;
-import com.pjt.flowing.model.Project;
-import com.pjt.flowing.repository.DocumentLineRepository;
-import com.pjt.flowing.repository.DocumentLineTemplatesRepository;
-import com.pjt.flowing.repository.DocumentRepository;
-import com.pjt.flowing.repository.ProjectRepository;
+import com.pjt.flowing.dto.request.document.DocumentLineEditRequestDto;
+import com.pjt.flowing.dto.request.document.DocumentLineRequestDto;
+import com.pjt.flowing.dto.response.document.DocumentIdResponseDto;
+import com.pjt.flowing.dto.response.document.DocumentLineResponseDto;
+import com.pjt.flowing.model.document.Document;
+import com.pjt.flowing.model.document.DocumentLine;
+import com.pjt.flowing.model.document.DocumentLineTemplates;
+import com.pjt.flowing.model.project.Project;
+import com.pjt.flowing.repository.document.DocumentLineRepository;
+import com.pjt.flowing.repository.document.DocumentLineTemplatesRepository;
+import com.pjt.flowing.repository.document.DocumentRepository;
+import com.pjt.flowing.repository.project.ProjectRepository;
 import lombok.RequiredArgsConstructor;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -31,8 +31,6 @@ public class DocumentService {
     private final DocumentLineTemplatesRepository documentLineTemplatesRepository;
 
     @Transactional  //기획서 생성 시키면서 default template 값 넣어주기
-    //levelDown 이거 나중에 없애기
-//    public String documentCreate(Long projectId){
     public List<DocumentLineResponseDto> documentCreate(Long projectId){
         JSONObject obj = new JSONObject();
         Project project = projectRepository.findById(projectId).orElseThrow(
@@ -70,8 +68,6 @@ public class DocumentService {
         }
         JSONArray array = new JSONArray(documentLineResponseDtoList);
         obj.append("templatesInfo",array);
-        //levelDown 여기 나중에 바꿔야함
-//        return obj.toString();
         return documentLineResponseDtoList;
 
     }
