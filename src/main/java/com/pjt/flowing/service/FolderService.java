@@ -171,8 +171,7 @@ public class FolderService {
             folderTable.setBookmark(true);
             obj.put("msg", "폴더 북마크 적용");
         }
-
-        obj.put("msg", "폴더 휴지통 보내기 완료");
+        
         return obj.toString();
     }
 
