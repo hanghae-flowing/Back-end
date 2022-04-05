@@ -7,6 +7,9 @@ import com.pjt.flowing.dto.AuthorizationDto;
 import com.pjt.flowing.dto.request.KickMemberRequestDto;
 import com.pjt.flowing.dto.request.ProjectCreateRequestDto;
 import com.pjt.flowing.dto.response.*;
+import com.pjt.flowing.dto.request.ProjectEditRequestDto;
+import com.pjt.flowing.exception.BadRequestException;
+import com.pjt.flowing.exception.ErrorCode;
 import com.pjt.flowing.model.*;
 import com.pjt.flowing.model.swot.SWOT;
 import com.pjt.flowing.repository.*;
@@ -16,9 +19,6 @@ import lombok.RequiredArgsConstructor;
 import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.CollectionUtils;
-
-import java.time.LocalDateTime;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
@@ -363,6 +363,20 @@ public class ProjectService {
         obj.put("msg", "추방 완료");
         return obj.toString();
     }
-
-
+    // 멤버초대하는 메세지에 닉네임과 이미지 넘겨주기
+    @Transactional
+    public String checkingNameByEmail(String email) {
+        if (!memberRepository.existsByEmail(email)) {
+            throw new BadRequestException(ErrorCode.USER_EMAIL_NOT_FOUND);
+        }
+        Member member = memberRepository.findByEmail(email).orElseThrow(
+                () -> new IllegalArgumentException("not exist email")
+        );
+        CheckingNameByEmailResponseDto responseDto = new CheckingNameByEmailResponseDto(
+                member.getNickname(),
+                member.getProfileImageURL()
+        );
+        JSONObject obj = new JSONObject(responseDto);
+        return obj.toString();
+    }
 }
