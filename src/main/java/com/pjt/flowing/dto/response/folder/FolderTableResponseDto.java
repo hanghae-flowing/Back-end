@@ -14,6 +14,7 @@ public class FolderTableResponseDto {
     private String folderName;
     private LocalDateTime modifiedAt;
     private boolean trash;
+    private boolean bookmark;
 
     public static FolderTableResponseDto myFolder(FolderTable folderTable){
 
@@ -23,6 +24,7 @@ public class FolderTableResponseDto {
                 .folderName(folderTable.getFolderName())
                 .modifiedAt(folderTable.getModifiedAt())
                 .trash(folderTable.isTrash())
+                .bookmark(folderTable.isBookmark())
                 .build();
     }
 }

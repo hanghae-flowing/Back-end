@@ -155,5 +155,25 @@ public class FolderService {
         return dto;
     }
 
+    // 폴더 북마크
+    @Transactional
+    public String bookmarkFolder(FolderRequestDto requestDto){
+        FolderTable folderTable = folderTableRepository.findById(requestDto.getFolderTableId()).orElseThrow(
+                ()->new IllegalArgumentException("폴더테이블")
+        );
+        JSONObject obj = new JSONObject();
+        if(folderTable.isBookmark()){//이미 북마크 되어있음
+            folderTable.setBookmark(false);
+            obj.put("msg","폴더 북마크 해제");
+        }
+        else{
+            folderTable.setBookmark(true);
+            obj.put("msg","폴더 북마크 적용");
+        }
+
+        obj.put("msg","폴더 휴지통 보내기 완료");
+        return obj.toString();
+    }
+
 
 }
