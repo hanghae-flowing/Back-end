@@ -12,7 +12,7 @@ public class DocumentLineTemplates {
     @Column
     private Long id;
 
-    @Column(length=500)
+    @Column(length=400)
     private String text;
 
     @Column(nullable = false)
@@ -29,4 +29,7 @@ public class DocumentLineTemplates {
 
     @Column
     private int maxLength;
+
+    @Column(length=400)
+    private String placeHolder;
 }

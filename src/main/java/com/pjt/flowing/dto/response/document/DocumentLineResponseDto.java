@@ -18,10 +18,11 @@ public class DocumentLineResponseDto {
     private int indexNum;
     private Long documentId;
     private int maxLength;
+    private String placeHolder;
 
     @Builder
-    public DocumentLineResponseDto(Long lineId, String text, int weight,
-                                   int fontSize, String color,int indexNum,Long documentId, int maxLength) {
+    public DocumentLineResponseDto(Long lineId, String text, int weight, int fontSize, String color,
+                                   int indexNum,Long documentId, int maxLength,String placeHolder) {
         this.lineId = lineId;
         this.text = text;
         this.weight = weight;
@@ -30,5 +31,6 @@ public class DocumentLineResponseDto {
         this.indexNum = indexNum;
         this.documentId = documentId;
         this.maxLength=maxLength;
+        this.placeHolder=placeHolder;
     }
 }

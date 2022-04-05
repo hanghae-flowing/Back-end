@@ -53,6 +53,7 @@ public class DocumentService {
                     .color(templates.getColor())
                     .document(document)
                     .maxLength(templates.getMaxLength())
+                    .placeHolder(templates.getPlaceHolder())
                     .build();
             documentLineRepository.save(documentLine);
 
@@ -65,6 +66,7 @@ public class DocumentService {
                     .lineId(documentLine.getId())
                     .documentId(document.getId())
                     .maxLength(documentLine.getMaxLength())
+                    .placeHolder(documentLine.getPlaceHolder())
                     .build();
             documentLineResponseDtoList.add(documentLineResponseDto);
         }
@@ -89,6 +91,7 @@ public class DocumentService {
                 .weight(dto.getWeight())
                 .indexNum(dto.getIndexNum())
                 .maxLength(dto.getMaxLength())
+                .placeHolder("not null")
                 .build();
 
         documentLineRepository.save(documentLine);
@@ -128,6 +131,7 @@ public class DocumentService {
                     .indexNum(documentLine.getIndexNum())
                     .lineId(documentLine.getId())
                     .maxLength(documentLine.getMaxLength())
+                    .placeHolder(documentLine.getPlaceHolder())
                     .build();
             documentLineResponseDtoList.add(documentLineResponseDto);
         }
