@@ -162,6 +162,7 @@ public class ProjectService {
         Document document = documentRepository.findByProject_Id(projectId);
         GapTable gapTable = gapTableRepository.findByProject_Id(projectId);
         NodeTable nodeTable = nodeTableRepository.findByProject_Id(projectId);
+        SWOT swot = swotRepository.findByProject_Id(projectId);
 
         ProjectResponseDto dto = ProjectResponseDto.builder()
                 .projectId(project.getId())
@@ -175,6 +176,7 @@ public class ProjectService {
         obj.put("documentId", document.getId());
         obj.put("gapTableId", gapTable.getId());
         obj.put("nodeTable", nodeTable.getId());
+        obj.put("swotId",swot.getId());
         return obj.toString();
     }
 
