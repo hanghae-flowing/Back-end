@@ -1,15 +1,16 @@
 package com.pjt.flowing.model;
 
 import com.pjt.flowing.model.project.Project;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
-@NoArgsConstructor
 @Getter
+@NoArgsConstructor
 @Entity
-public class InviteTable {
+public class InviteTable extends Timestamped {
     @Id @GeneratedValue
     private Long id;
 
