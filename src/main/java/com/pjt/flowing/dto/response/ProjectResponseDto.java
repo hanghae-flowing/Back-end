@@ -35,6 +35,7 @@ public class ProjectResponseDto {
                 .modifiedAt(project.getModifiedAt())
                 .memberList(nicknames)
                 .thumbnailNum(project.getThumbNailNum())
+                .trash(project.isTrash())
                 .build();
     }
     public static ProjectResponseDto from2(Bookmark bookmark){

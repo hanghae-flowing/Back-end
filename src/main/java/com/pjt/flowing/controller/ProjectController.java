@@ -23,7 +23,7 @@ public class ProjectController {
 //            System.out.println("인가x");
 //        }
         // 인가 확인
-        authorizationValidator.tokenCheck(requestDto);
+       // authorizationValidator.tokenCheck(requestDto);
 
         return projectService.getAll(requestDto.getUserId());
     }

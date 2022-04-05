@@ -120,6 +120,8 @@ public class FolderService {
     //폴더 삭제하기.
     @Transactional
     public String deleteFolder(FolderRequestDto requestDto){
+        //해당하는 폴더 가서 프로젝트들 찾고 ㄹ
+
         folderTableRepository.deleteById(requestDto.getFolderTableId());
         JSONObject obj = new JSONObject();
         obj.put("msg","폴더 삭제 완료");
