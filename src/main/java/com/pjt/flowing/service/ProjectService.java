@@ -65,6 +65,7 @@ public class ProjectService {
     private final NodeService nodeService;
     private final DocumentService documentService;
     private final GapNodeService gapNodeService;
+    private final SWOTService swotService;
 
     public static <T> Predicate<T> distinctByKey(Function<? super T, ?> keyExtractor) {
         Set<Object> seen = ConcurrentHashMap.newKeySet();
@@ -273,14 +274,16 @@ public class ProjectService {
         ProjectMember projectMember = new ProjectMember(project, member);
         projectMemberRepository.save(projectMember);
 
-        //levelDown
         nodeService.nodeTableCreate(project.getId());
         gapNodeService.gapTableCreate(project.getId());
         documentService.documentCreate(project.getId());
+        swotService.swotCreate(project.getId());
+
 
         Document document = documentRepository.findByProject_Id(project.getId());
         GapTable gapTable = gapTableRepository.findByProject_Id(project.getId());
         NodeTable nodeTable = nodeTableRepository.findByProject_Id(project.getId());
+        SWOT swot = swotRepository.findByProject_Id(project.getId());
 
         ProjectResponseDto dto = ProjectResponseDto.builder()
                 .projectId(project.getId())
@@ -294,6 +297,7 @@ public class ProjectService {
         obj.put("documentId", document.getId());
         obj.put("gapTableId", gapTable.getId());
         obj.put("nodeTable", nodeTable.getId());
+        obj.put("swotId",swot.getId());
         return obj.toString();
     }
 
