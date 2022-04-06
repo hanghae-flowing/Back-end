@@ -59,7 +59,7 @@ public class InviteService {
         List<InviteTable> inviteList = inviteRepository.findAllByInvitedmember_Id(userId);//userid로 찾아오기
         List<InviteResponseDto> responseDtoList = new ArrayList<>();
         for(InviteTable inviteTable : inviteList){
-            InviteResponseDto responseDto = new InviteResponseDto(inviteTable.getId(),inviteTable.getInvitingmember().getNickname(),inviteTable.getProject().getProjectName(),inviteTable.getModifiedAt());
+            InviteResponseDto responseDto = new InviteResponseDto(inviteTable.getId(),inviteTable.getInvitingmember().getNickname(),inviteTable.getProject().getProjectName(),inviteTable.getModifiedAt(),inviteTable.getInvitingmember().getProfileImageURL());
             responseDtoList.add(responseDto);
         }//inviteTableid,초대한사람,초대 받은 프로젝트 보내주기
         JSONArray jsonArray = new JSONArray(responseDtoList);
