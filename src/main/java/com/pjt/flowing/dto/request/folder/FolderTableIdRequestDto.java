@@ -5,8 +5,9 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 
-@Getter
 @NoArgsConstructor
-public class FolderRequestDto {
-    private Long folderTableId;
+@Getter
+public class FolderTableIdRequestDto {
+    private List<Long> folderTableIdList;
+    private Long userId;
 }

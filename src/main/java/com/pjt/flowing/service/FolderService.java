@@ -1,9 +1,6 @@
 package com.pjt.flowing.service;
 
-import com.pjt.flowing.dto.request.folder.FolderAddProjectRequestDto;
-import com.pjt.flowing.dto.request.folder.FolderCreateRequestDto;
-import com.pjt.flowing.dto.request.folder.FolderDeleteProjectRequestDto;
-import com.pjt.flowing.dto.request.folder.FolderRequestDto;
+import com.pjt.flowing.dto.request.folder.*;
 import com.pjt.flowing.dto.response.folder.FolderTableResponseDto;
 import com.pjt.flowing.dto.response.project.ProjectResponseDto;
 import com.pjt.flowing.dto.response.project.ProjectTestResponseDto;
@@ -15,6 +12,7 @@ import com.pjt.flowing.repository.folder.FolderRepository;
 import com.pjt.flowing.repository.folder.FolderTableRepository;
 import com.pjt.flowing.repository.MemberRepository;
 import com.pjt.flowing.repository.project.BookmarkRepository;
+import com.pjt.flowing.repository.project.ProjectMemberRepository;
 import com.pjt.flowing.repository.project.ProjectRepository;
 import lombok.RequiredArgsConstructor;
 import org.json.JSONObject;
@@ -37,6 +35,7 @@ public class FolderService {
     private final MemberRepository memberRepository;
     private final ProjectRepository projectRepository;
     private final BookmarkRepository bookmarkRepository;
+    private final ProjectMemberRepository projectMemberRepository;
 
     // 폴더 생성
     @Transactional
@@ -112,22 +111,32 @@ public class FolderService {
 
     // 폴더 휴지통에서 복구하기
     @Transactional
-    public String restoreFolder(FolderRequestDto requestDto) {
-        FolderTable folderTable = folderTableRepository.findById(requestDto.getFolderTableId()).orElseThrow(
-                () -> new IllegalArgumentException("폴더테이블")
-        );
-        folderTable.setTrash(false);
+    public String restoreFolder(FolderTableIdRequestDto requestDto) {
+        for (Long folderTableId : requestDto.getFolderTableIdList()) {
+            FolderTable folderTable = folderTableRepository.findById(folderTableId).orElseThrow(
+                    () -> new IllegalArgumentException("폴더테이블"));
+            folderTable.setTrash(false);
+        }
         JSONObject obj = new JSONObject();
         obj.put("msg", "폴더 복구 완료");
         return obj.toString();
     }
 
-    //폴더 삭제하기.
+//    폴더 삭제하기.
     @Transactional
-    public String deleteFolder(FolderRequestDto requestDto) {
-        //해당하는 폴더 가서 프로젝트들 찾고 ㄹ
-
-        folderTableRepository.deleteById(requestDto.getFolderTableId());
+    public String deleteFolder(FolderTableIdRequestDto requestDto) {
+        for (Long folderTableId : requestDto.getFolderTableIdList()) {
+            List<Folder> folderList = folderRepository.findAllByFolderTable_Id(folderTableId);
+            for(Folder folder : folderList) {
+                if (projectRepository.existsByMember_IdAndId(requestDto.getUserId(), folder.getProjectId())){
+                    projectRepository.deleteById(folder.getProjectId());
+                }
+                else if (projectMemberRepository.existsByMember_IdAndProject_Id(requestDto.getUserId(), folder.getProjectId())){
+                    projectMemberRepository.deleteByMember_IdAndProject_Id(requestDto.getUserId(), folder.getProjectId());
+                }
+            }
+            folderTableRepository.deleteById(folderTableId);
+        }
         JSONObject obj = new JSONObject();
         obj.put("msg", "폴더 삭제 완료");
         return obj.toString();
