@@ -24,6 +24,7 @@
     <td align="center"><b>김효진</b></td>
     <td align="center"><b>정요한</b></td>
   </tr>
+
   <tr>
     <td align="center"><b>🪓Backend</b></td>
     <td align="center"><b>🔨Backend</b></td>
@@ -32,7 +33,8 @@
 </table>
 
 ### 🖥️ERD
-<img  width="1000" src = "https://user-images.githubusercontent.com/76610357/160750192-9845e9f7-ac26-4bd3-8c22-6b650680b9d4.PNG" />
+<img  width="1000" src = "https://user-images.githubusercontent.com/76610357/161932421-2db40f53-c58b-4db9-a20f-52e64752701c.jpg" />
+
 
 
 ### ⚙️ 아키텍쳐

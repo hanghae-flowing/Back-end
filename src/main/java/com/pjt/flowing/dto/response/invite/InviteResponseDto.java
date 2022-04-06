@@ -13,11 +13,13 @@ public class InviteResponseDto {
     private String inviting;
     private String projectName;
     private LocalDateTime modifiedAt;
+    private String image;
 
-    public InviteResponseDto(Long invitingId, String inviting, String projectName,LocalDateTime modifiedAt){
+    public InviteResponseDto(Long invitingId, String inviting, String projectName,LocalDateTime modifiedAt, String image){
         this.invitingId = invitingId;
         this.inviting=inviting;
         this.projectName = projectName;
         this.modifiedAt = modifiedAt;
+        this.image = image;
     }
 }
