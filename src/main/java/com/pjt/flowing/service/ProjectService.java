@@ -12,6 +12,7 @@ import com.pjt.flowing.dto.response.document.DocumentIdResponseDto;
 import com.pjt.flowing.dto.response.gapnode.GapTableIdResponseDto;
 import com.pjt.flowing.dto.response.invite.CheckingNameByEmailResponseDto;
 import com.pjt.flowing.dto.response.node.NodeTableIdResponseDto;
+import com.pjt.flowing.dto.response.project.ProjectMemberResponseDto;
 import com.pjt.flowing.dto.response.project.ProjectResponseDto;
 import com.pjt.flowing.dto.response.project.ProjectTestResponseDto;
 import com.pjt.flowing.exception.BadRequestException;
@@ -38,6 +39,7 @@ import com.pjt.flowing.repository.project.ProjectRepository;
 import com.pjt.flowing.repository.swot.SWOTRepository;
 import com.pjt.flowing.security.Authorization;
 import lombok.RequiredArgsConstructor;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -181,6 +183,14 @@ public class ProjectService {
                 .modifiedAt(project.getModifiedAt())
                 .thumbnailNum(project.getThumbNailNum())
                 .build();
+
+        List<ProjectMember> projectMemberList = projectMemberRepository.findAllByProject_Id(projectId);
+        List<ProjectMemberResponseDto> projectMemberResponseDtoList = new ArrayList<>();
+        for (ProjectMember projectMember : projectMemberList) {
+            ProjectMemberResponseDto projectMemberResponseDto = new ProjectMemberResponseDto(projectMember.getMember().getId(),
+                    projectMember.getMember().getNickname(),projectMember.getMember().getProfileImageURL());
+            projectMemberResponseDtoList.add(projectMemberResponseDto);
+        }
         obj.put("msg", "불러오기");
         JSONObject DTO = new JSONObject(dto);
         obj.put("projectInfo", DTO);
@@ -188,6 +198,8 @@ public class ProjectService {
         obj.put("gapTableId", gapTable.getId());
         obj.put("nodeTable", nodeTable.getId());
         obj.put("swotId",swot.getId());
+        obj.put("projectMemberInfoList",projectMemberResponseDtoList);
+
         return obj.toString();
     }
 

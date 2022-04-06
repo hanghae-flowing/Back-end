@@ -10,6 +10,7 @@ public interface ProjectMemberRepository extends JpaRepository<ProjectMember,Lon
    boolean existsByMember_EmailAndProject_Id(String userEmail,Long projectId);
    boolean existsByMember_IdAndProject_Id(Long userId, Long projectId);
    void deleteByMember_IdAndProject_Id(Long userId, Long projectId);
+   List<ProjectMember> findAllByProject_Id(Long projectId);
 
 
 }
