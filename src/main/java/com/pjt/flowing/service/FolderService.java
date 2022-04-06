@@ -113,25 +113,26 @@ public class FolderService {
     // 폴더 휴지통에서 복구하기
     @Transactional
     public String restoreFolder(FolderRequestDto requestDto) {
-        FolderTable folderTable = folderTableRepository.findById(requestDto.getFolderTableId()).orElseThrow(
-                () -> new IllegalArgumentException("폴더테이블")
-        );
-        folderTable.setTrash(false);
+        for (Long folderTableId : requestDto.getFolderTableIdList()) {
+            FolderTable folderTable = folderTableRepository.findById(folderTableId).orElseThrow(
+                    () -> new IllegalArgumentException("폴더테이블"));
+            folderTable.setTrash(false);
+        }
         JSONObject obj = new JSONObject();
         obj.put("msg", "폴더 복구 완료");
         return obj.toString();
     }
 
     //폴더 삭제하기.
-    @Transactional
-    public String deleteFolder(FolderRequestDto requestDto) {
-        //해당하는 폴더 가서 프로젝트들 찾고 ㄹ
-
-        folderTableRepository.deleteById(requestDto.getFolderTableId());
-        JSONObject obj = new JSONObject();
-        obj.put("msg", "폴더 삭제 완료");
-        return obj.toString();
-    }
+//    @Transactional
+//    public String deleteFolder(FolderRequestDto requestDto) {
+//        //해당하는 폴더 가서 프로젝트들 찾고 ㄹ
+//
+//        folderTableRepository.deleteById(requestDto.getFolderTableId());
+//        JSONObject obj = new JSONObject();
+//        obj.put("msg", "폴더 삭제 완료");
+//        return obj.toString();
+//    }
 
     // 폴더에 들어있는 프로젝트 메인으로 보내기
     @Transactional
