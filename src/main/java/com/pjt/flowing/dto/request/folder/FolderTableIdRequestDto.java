@@ -8,5 +8,6 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 public class FolderTableIdRequestDto {
-    private List<Long> 
+    private List<Long> folderTableIdList;
+    private Long userId;
 }

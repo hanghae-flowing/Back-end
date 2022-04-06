@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.pjt.flowing.dto.request.folder.FolderAddProjectRequestDto;
 import com.pjt.flowing.dto.request.folder.FolderCreateRequestDto;
 import com.pjt.flowing.dto.request.folder.FolderRequestDto;
+import com.pjt.flowing.dto.request.folder.FolderTableIdRequestDto;
 import com.pjt.flowing.dto.response.folder.FolderTableResponseDto;
 import com.pjt.flowing.dto.response.project.ProjectResponseDto;
 import com.pjt.flowing.dto.response.project.ProjectTestResponseDto;
@@ -44,8 +45,8 @@ public class FolderController {
     }
 
     // 폴더 삭제하기(휴지통에서 완전삭제)  안에있는 프로젝트들은 내가만든거면 삭제 남이만든거면 멤버 끊기
-    @DeleteMapping("/folder")
-    public String deleteFolder( @RequestBody FolderRequestDto requestDto) throws JsonProcessingException{
+    @PostMapping("/folder/trash/delete")
+    public String deleteFolder( @RequestBody FolderTableIdRequestDto requestDto) throws JsonProcessingException{
         return folderService.deleteFolder(requestDto);
     }
 
@@ -56,7 +57,7 @@ public class FolderController {
     }
     //폴더 복구하기(휴지통에서 꺼내주기)
     @PostMapping("/folder/restore")
-    public String restoreFolder( @RequestBody FolderRequestDto requestDto) throws JsonProcessingException{
+    public String restoreFolder( @RequestBody FolderTableIdRequestDto requestDto) throws JsonProcessingException{
         return folderService.restoreFolder(requestDto);
     }
 
