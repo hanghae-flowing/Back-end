@@ -6,6 +6,7 @@ import com.pjt.flowing.dto.request.folder.FolderCreateRequestDto;
 import com.pjt.flowing.dto.request.folder.FolderRequestDto;
 import com.pjt.flowing.dto.response.folder.FolderTableResponseDto;
 import com.pjt.flowing.dto.response.project.ProjectResponseDto;
+import com.pjt.flowing.dto.response.project.ProjectTestResponseDto;
 import com.pjt.flowing.service.FolderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -38,7 +39,7 @@ public class FolderController {
 
     // 선택한 폴더에 있는 프로젝트 조회하기.
     @PostMapping("/folder/projects")
-    public List<ProjectResponseDto> getProject(@RequestBody FolderRequestDto requestDto) throws JsonProcessingException {
+    public List<ProjectTestResponseDto> getProject(@RequestBody FolderRequestDto requestDto) throws JsonProcessingException {
         return folderService.getProjectAll(requestDto.getFolderTableId());
     }
 
