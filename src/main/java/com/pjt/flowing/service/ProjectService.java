@@ -101,6 +101,16 @@ public class ProjectService {
     // getAll 테스트
     public List<ProjectTestResponseDto> getAll2(Long userId) {
 
+        //여기서 폴더에있는건 빼고 보내줘야함...
+        List<Long> folderProjectList=new ArrayList<>();
+        List<FolderTable> folderTableList = folderTableRepository.findAllByMember_Id(userId);
+        for(FolderTable folderTable : folderTableList){
+            List<Folder> folderList = folderRepository.findAllByFolderTable_Id(folderTable.getId());
+            for(Folder folder : folderList){
+                folderProjectList.add(folder.getProjectId());
+            }
+        }
+
         List<ProjectMember> myIncludedProjects = projectMemberRepository.findAllByMember_Id(userId);
         List<ProjectTestResponseDto> includeDto = new ArrayList<>();
 
@@ -123,6 +133,7 @@ public class ProjectService {
         }
         return includeDto.stream()
                 .filter(x-> !x.isTrash())
+                .filter(x-> !folderProjectList.contains(x.getProjectId())) // 폴더안에 프로젝트가 없다면 뽑아라
                 .sorted(Comparator.comparing(ProjectTestResponseDto::getModifiedAt).reversed())
                 .collect(Collectors.toList());
     }

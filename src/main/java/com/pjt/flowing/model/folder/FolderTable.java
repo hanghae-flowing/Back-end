@@ -30,13 +30,21 @@ public class FolderTable extends Timestamped {
     @Column
     private boolean trash;
 
+    @Column
+    private boolean bookmark;
+
     public FolderTable(String folderName, Member member) {
         this.folderName = folderName;
         this.member = member;   //여기서의 member는 폴더 생성자를 말한다.
         this.trash = false;
+        this.bookmark = false;
     }
     public void setTrash(boolean trash) {
         this.trash = trash;
+    }
+
+    public void setBookmark(boolean bookmark) {
+        this.bookmark = bookmark;
     }
 
 }
