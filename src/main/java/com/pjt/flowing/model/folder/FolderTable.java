@@ -44,7 +44,7 @@ public class FolderTable extends Timestamped {
     }
 
     public void setBookmark(boolean bookmark) {
-        this.trash = bookmark;
+        this.bookmark = bookmark;
     }
 
 }
