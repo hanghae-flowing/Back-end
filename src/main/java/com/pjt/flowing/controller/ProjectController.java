@@ -21,7 +21,7 @@ public class ProjectController {
     private final ProjectService projectService;
 
     @PostMapping("/project/detail") //  프로젝트 조회하기 휴지통제외하고
-    public List<ProjectTestResponseDto> getProject(@RequestBody AuthorizationDto requestDto) throws JsonProcessingException {
+    public List<ProjectTestResponseDto> getProject(@RequestBody AuthorizationDto requestDto){
 
         return projectService.getAll2(requestDto.getUserId());
     }
@@ -74,7 +74,7 @@ public class ProjectController {
     }
 
     @PostMapping("/project/searching")       //검색할 프로젝트명이 포함되어있는 프로젝트불러오기
-    public List<ProjectResponseDto> searchProject(@RequestBody ProjectSearchDto requestDto) throws JsonProcessingException {
+    public List<ProjectResponseDto> searchProject(@RequestBody ProjectSearchDto requestDto){
         return projectService.searchAll(requestDto.getUserId(), requestDto.getText());
     }
 

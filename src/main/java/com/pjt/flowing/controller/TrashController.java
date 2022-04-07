@@ -1,6 +1,5 @@
 package com.pjt.flowing.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.pjt.flowing.dto.request.invite.AcceptRequestDto;
 import com.pjt.flowing.dto.request.project.ProjectIdDeleteRequestDto;
 import com.pjt.flowing.dto.response.folder.FolderTableResponseDto;
@@ -46,7 +45,7 @@ public class TrashController {
 
     //휴지통에 있는 폴더만 보여주기
     @GetMapping("/trash/folder/{userId}")
-    public List<FolderTableResponseDto> getFolder(@PathVariable Long userId) throws JsonProcessingException {
+    public List<FolderTableResponseDto> getFolder(@PathVariable Long userId){
         return folderService.getTrashFolderAll(userId);
     }
 

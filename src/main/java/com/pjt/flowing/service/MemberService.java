@@ -46,8 +46,6 @@ public class MemberService {
         String nickname = kakaoUserInfoDto.getNickname();
         String email = kakaoUserInfoDto.getEmail();
         String profileImageURL=kakaoUserInfoDto.getProfileImageURL();
-//        System.out.println(kakaoId);
-//        System.out.println("엑세스 토큰"+accessToken);
         JSONObject obj = new JSONObject();
 
         // 회원가입
