@@ -30,6 +30,12 @@
     <td align="center"><b>🔨Backend</b></td>
     <td align="center"><b>🔧Backend</b></td>
   </tr>
+ <tr>
+    <td align="center"><a href="https://github.com/jeonbar2">Github-Link</a></td>
+    <td align="center"><a href="https://github.com/HyoJinKin">Github-Link</a></td>
+    <td align="center"><a href="https://github.com/John3210of">Github-Link</a></td>
+  </tr>
+ 
 </table>
 
 ### 🖥️ERD
@@ -92,3 +98,6 @@
 - 필요한 라벨이 있다면 공동 계정(hanghae-flowing)의 `Settings` -> `Repository Defaults` 에서 추가한다.
 
 <br>
+
+### API
+https://mango-pull-bbe.notion.site/API-5e13bb2a26a7482a936eaeb56450b98f
