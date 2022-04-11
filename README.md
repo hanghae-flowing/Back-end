@@ -6,6 +6,10 @@
 
 항해5기 D반 5조 실전프로젝트 기린이
 
+# 프로젝트 기간
+프로젝트 기간 : 22.03.04 ~ 22.04.08
+
+유지보수 기간 : 22.04.18 ~ 22.05.29(예정)
 
  <image src="https://img.shields.io/website?down_message=DOWN&up_message=UP&label=server&url=http://52.79.220.93:8888/health"/>  
  <image src="https://img.shields.io/website?down_message=DOWN&up_message=UP&label=testServer&url=http://13.209.41.157"/>
