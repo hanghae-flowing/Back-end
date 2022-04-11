@@ -82,7 +82,7 @@ public class TrashService {
     public String restoreProject(ProjectIdDeleteRequestDto requestDto) {
         for (Long projectId : requestDto.getProjectIdList()) {
             Project project = projectRepository.findById(projectId).orElseThrow(
-                    () -> new IllegalArgumentException("not exist projectId")
+                    () -> new IllegalArgumentException("func/ restoreProject/ projectId")
             );
             project.setTrash(false);
         }

@@ -36,7 +36,7 @@ public class NodeService {
     public String nodeCreate(NodeCreateRequestDto nodeCreateRequestDto){
         JSONObject obj = new JSONObject();
         NodeTable nodeTable = nodeTableRepository.findById(nodeCreateRequestDto.getNodeTableId()).orElseThrow(
-                ()->new IllegalArgumentException("nodeTable Id error")
+                ()->new IllegalArgumentException("func/ nodeCreate/ nodeTable Id")
         );
 
         Node node = Node.builder()
@@ -74,7 +74,7 @@ public class NodeService {
     public String pin(NodePinRequestDto nodePinRequestDto){
         JSONObject obj = new JSONObject();
         Node node = nodeRepository.findById(nodePinRequestDto.getNodeId()).orElseThrow(
-                ()-> new IllegalArgumentException("pin error")
+                ()-> new IllegalArgumentException("func/ pin/ node Id")
         );
 
         if(node.getIsChecked()==0){
@@ -101,7 +101,7 @@ public class NodeService {
     @Transactional
     public String nodeEdit(Long id, NodeEditRequestDto nodeEditRequestDto){
         Node node = nodeRepository.findById(id).orElseThrow(
-                ()->new IllegalArgumentException("edit error")
+                ()->new IllegalArgumentException("func/ nodeEdit/ edit error")
         );
         node.update(nodeEditRequestDto);
         JSONObject obj = new JSONObject();
@@ -133,7 +133,7 @@ public class NodeService {
 
     public String showOne(Long nodeId){
         Node node = nodeRepository.findById(nodeId).orElseThrow(
-                ()->new IllegalArgumentException("node showone error")
+                ()->new IllegalArgumentException("func/ showOne/ node showone error")
         );
         NodeResponseDto nodeResponseDto = NodeResponseDto.builder()
                 .height(node.getHeight())
@@ -152,7 +152,7 @@ public class NodeService {
     @Transactional  //여기에 template default 값 넣어줘야함
     public Long nodeTableCreate(Long projectId){
         Project project = projectRepository.findById(projectId).orElseThrow(
-                ()-> new IllegalArgumentException("project Id error")
+                ()-> new IllegalArgumentException("func/ nodeTableCreate/ project Id error")
         );
 
         NodeTable nodeTable = new NodeTable(project);
@@ -174,7 +174,7 @@ public class NodeService {
     @Transactional
     public String nodeConnect(NodePathRequestDto nodePathRequestDto) {
         NodeTable nodeTable = nodeTableRepository.findById(nodePathRequestDto.getNodeTableId()).orElseThrow(
-                () -> new IllegalArgumentException("Not exist nodeTableId")
+                () -> new IllegalArgumentException("func/ nodeConnect/ nodeTableId")
         );
 
         NodePath nodePath = new NodePath(

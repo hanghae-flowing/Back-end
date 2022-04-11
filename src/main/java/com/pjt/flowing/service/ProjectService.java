@@ -142,7 +142,7 @@ public class ProjectService {
     public String deleteProject(Long projectId, AuthorizationDto dto) {
         JSONObject obj = new JSONObject();
         Project project = projectRepository.findById(projectId).orElseThrow(
-                () -> new IllegalArgumentException("no project Id error")
+                () -> new IllegalArgumentException("func/ deleteProject/ project Id")
         );
         if (dto.getUserId() == project.getMember().getId()) {
             projectRepository.deleteById(projectId);
@@ -286,7 +286,7 @@ public class ProjectService {
             return obj.toString();
         }
         Member member = memberRepository.findById(projectCreateRequestDto.getUserId()).orElseThrow(
-                () -> new IllegalArgumentException("no Id")
+                () -> new IllegalArgumentException("func/ createProject/ member Id")
         );
         Project project = new Project(
                 projectCreateRequestDto.getProjectName(),
@@ -331,10 +331,10 @@ public class ProjectService {
     public String checkBookmark(Long projectId, AuthorizationDto authorizationDto) {
         boolean check = bookmarkRepository.existsByMember_IdAndProject_Id(authorizationDto.getUserId(), projectId);
         Project project = projectRepository.findById(projectId).orElseThrow(
-                () -> new IllegalArgumentException("no Project")
+                () -> new IllegalArgumentException("func/ checkBookmark/ Project Id")
         );
         Member member = memberRepository.findById(authorizationDto.getUserId()).orElseThrow(
-                () -> new IllegalArgumentException("no Id")
+                () -> new IllegalArgumentException("func/ checkBookmark/ member Id")
         );
         JSONObject obj = new JSONObject();
         if (!check) {
@@ -383,7 +383,7 @@ public class ProjectService {
             throw new BadRequestException(ErrorCode.USER_EMAIL_NOT_FOUND);
         }
         Member member = memberRepository.findByEmail(email).orElseThrow(
-                () -> new IllegalArgumentException("not exist email")
+                () -> new IllegalArgumentException("func/ checkingNameByEmail/ not exist email")
         );
         CheckingNameByEmailResponseDto responseDto = new CheckingNameByEmailResponseDto(
                 member.getNickname(),

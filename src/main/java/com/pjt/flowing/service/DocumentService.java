@@ -34,7 +34,7 @@ public class DocumentService {
     public List<DocumentLineResponseDto> documentCreate(Long projectId){
         JSONObject obj = new JSONObject();
         Project project = projectRepository.findById(projectId).orElseThrow(
-                ()-> new IllegalArgumentException("project Id error")
+                ()-> new IllegalArgumentException("func/ documentCreate/ project Id error")
         );
         Document document = new Document(project);
         documentRepository.save(document);
@@ -43,7 +43,7 @@ public class DocumentService {
         List<DocumentLineResponseDto> documentLineResponseDtoList = new ArrayList<>();
         for(long i = 1L; i<29L; i++){
             DocumentLineTemplates templates = documentLineTemplatesRepository.findById(i).orElseThrow(
-                    ()->new IllegalArgumentException("templates download error")
+                    ()->new IllegalArgumentException("func/ documentCreate/ templates download error")
             );
             DocumentLine documentLine = DocumentLine.builder()
                     .indexNum(templates.getIndexNum())
@@ -80,7 +80,7 @@ public class DocumentService {
     @Transactional  //기획서 라인 생성 첫 요청시
     public String lineCreate(DocumentLineRequestDto dto){
         Document document = documentRepository.findById(dto.getDocumentId()).orElseThrow(
-                ()-> new IllegalArgumentException("document Id error")
+                ()-> new IllegalArgumentException("func/ lineCreate/ document Id error")
         );
 
         DocumentLine documentLine = DocumentLine.builder()
@@ -103,7 +103,7 @@ public class DocumentService {
     @Transactional  //기획서 라인 수정하기
     public String lineEdit(Long lineId, DocumentLineEditRequestDto dto){
         DocumentLine documentLine = documentLineRepository.findById(lineId).orElseThrow(
-                ()->new IllegalArgumentException("not exist Line Id")
+                ()->new IllegalArgumentException("func/ lineEdit/ not exist Line Id")
         );
         documentLine.update(dto);
         DocumentLineResponseDto documentLineResponseDto = DocumentLineResponseDto.builder()

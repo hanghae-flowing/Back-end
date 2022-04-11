@@ -30,7 +30,7 @@ public class SWOTService {
     public String swotCreate(Long projectId) {
         JSONObject obj = new JSONObject();
         Project project = projectRepository.findById(projectId).orElseThrow(
-                ()-> new IllegalArgumentException("project Id error")
+                ()-> new IllegalArgumentException("func/ swotCreate/ project Id error")
         );
         SWOT swot = new SWOT(project);
         swotRepository.save(swot);
@@ -119,7 +119,7 @@ public class SWOTService {
     @Transactional
     public String strengthEdit (Long strengthId, SWOTRequestDto requestDto) {
         StrengthTable strengthTable = strengthRepository.findById(strengthId).orElseThrow(
-                () -> new IllegalArgumentException("not found strengthId")
+                () -> new IllegalArgumentException("func/ streghtEdit/ strengthId")
         );
         strengthTable.strengthUpdate(requestDto);
         SWOTResponseDto swotResponseDto = new SWOTResponseDto(strengthId, requestDto.getText());
@@ -131,7 +131,7 @@ public class SWOTService {
     @Transactional
     public String weaknessEdit(Long weaknessId, SWOTRequestDto requestDto) {
         WeaknessTable weaknessTable = weaknessRepository.findById(weaknessId).orElseThrow(
-                () -> new IllegalArgumentException("not found weaknessId")
+                () -> new IllegalArgumentException("func/ weaknessEdit/  weaknessId")
         );
         weaknessTable.weaknessUpdate(requestDto);
         SWOTResponseDto swotResponseDto = new SWOTResponseDto(weaknessId, requestDto.getText());
@@ -143,7 +143,7 @@ public class SWOTService {
     @Transactional
     public String opportunityEdit(Long opportunityId, SWOTRequestDto requestDto) {
         OpportunityTable opportunityTable = opportunityRepository.findById(opportunityId).orElseThrow(
-                () -> new IllegalArgumentException("not found opportunityId")
+                () -> new IllegalArgumentException("func/ opportunityEdit/ opportunityId")
         );
         opportunityTable.opportunityUpdate(requestDto);
         SWOTResponseDto swotResponseDto = new SWOTResponseDto(opportunityId, requestDto.getText());
@@ -155,7 +155,7 @@ public class SWOTService {
     @Transactional
     public String threatEdit(Long threatId, SWOTRequestDto requestDto) {
         ThreatTable threatTable = threatRepository.findById(threatId).orElseThrow(
-                () -> new IllegalArgumentException("not found threatId")
+                () -> new IllegalArgumentException("func/ threatEdit/ threatId")
         );
         threatTable.threatUpdate(requestDto);
         SWOTResponseDto swotResponseDto = new SWOTResponseDto(threatId, requestDto.getText());

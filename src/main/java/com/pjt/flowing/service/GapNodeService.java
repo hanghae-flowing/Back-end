@@ -35,7 +35,7 @@ public class GapNodeService {
     public String gapNodeCreate(GapNodeCreateRequestDto gapNodeCreateRequestDto){
         JSONObject obj = new JSONObject();
         GapTable gapTable = gapTableRepository.findById(gapNodeCreateRequestDto.getGapTableId()).orElseThrow(
-                ()->new IllegalArgumentException("gapTable Id error")
+                ()->new IllegalArgumentException("func/ gapNodeCreate/ gapTable Id error")
         );
 
         GapNode gapNode = GapNode.builder()
@@ -65,7 +65,7 @@ public class GapNodeService {
     @Transactional
     public Long gapTableCreate(Long projectId){
         Project project = projectRepository.findById(projectId).orElseThrow(
-                ()-> new IllegalArgumentException("project Id error")
+                ()-> new IllegalArgumentException("func/ gapTableCreate/ project Id error")
         );
 
         GapTable gapTable = new GapTable(project);
@@ -77,7 +77,7 @@ public class GapNodeService {
     @Transactional
     public String gapNodeEdit(Long id, GapNodeEditRequestDto gapNodeEditRequestDto){
         GapNode gapNode = gapNodeRepository.findById(id).orElseThrow(
-                ()->new IllegalArgumentException("edit error")
+                ()->new IllegalArgumentException("func/ gapNodeEdit/ edit error")
         );
         gapNode.update(gapNodeEditRequestDto);
         JSONObject obj = new JSONObject();
@@ -121,7 +121,7 @@ public class GapNodeService {
     @Transactional
     public String gapStoneCreate(GapStoneRequestDto requestDto) {
         GapNode gapNode = gapNodeRepository.findById(requestDto.getGapNodeId()).orElseThrow(
-                () -> new IllegalArgumentException("not exist gapNodeId")
+                () -> new IllegalArgumentException("func/ gapStoneCreate/ not exist gapNodeId")
         );
         GapStone gapStone = new GapStone(requestDto.getXval(), requestDto.getText(), gapNode);
 
@@ -161,7 +161,7 @@ public class GapNodeService {
     @Transactional
     public String gapStoneEdit(Long gapStoneId, GapStoneRequestDto requestDto) {
         GapStone gapStone = gapStoneRepository.findById(gapStoneId).orElseThrow(
-                () -> new IllegalArgumentException("not exist gapStoneId")
+                () -> new IllegalArgumentException("func/ gapStoneEdit/ not exist gapStoneId")
         );
         gapStone.update(requestDto);
         JSONObject obj = new JSONObject();
