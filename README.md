@@ -50,6 +50,13 @@ MVP 기간 : 22.03.04 ~ 22.04.08
  
 </table>
 
+
+
+## 💬API
+https://mango-pull-bbe.notion.site/API-5e13bb2a26a7482a936eaeb56450b98f
+
+
+
 ### 🖥️ERD
 <img  width="1000" src = "https://user-images.githubusercontent.com/76610357/161932421-2db40f53-c58b-4db9-a20f-52e64752701c.jpg" />
 
@@ -111,5 +118,3 @@ MVP 기간 : 22.03.04 ~ 22.04.08
 
 <br>
 
-### API
-https://mango-pull-bbe.notion.site/API-5e13bb2a26a7482a936eaeb56450b98f
