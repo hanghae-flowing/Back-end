@@ -1,6 +1,5 @@
 package com.pjt.flowing.repository.swot;
 
-import com.pjt.flowing.model.swot.StrengthTable;
 import com.pjt.flowing.model.swot.WeaknessTable;
 import org.springframework.data.jpa.repository.JpaRepository;
 

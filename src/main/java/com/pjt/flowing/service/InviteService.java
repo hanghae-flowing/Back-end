@@ -23,7 +23,6 @@ import java.util.List;
 @RequiredArgsConstructor
 @Service
 public class InviteService {
-
     private final InviteRepository inviteRepository;
     private final MemberRepository memberRepository;
     private final ProjectMemberRepository projectMemberRepository;
@@ -53,7 +52,7 @@ public class InviteService {
     }
 
     public String getInviting(Long userId){
-        List<InviteTable> inviteList = inviteRepository.findAllByInvitedmember_Id(userId);//userid로 찾아오기
+        List<InviteTable> inviteList = inviteRepository.findAllByInvitedMember_Id(userId);//userid로 찾아오기
         List<InviteResponseDto> responseDtoList = new ArrayList<>();
         for(InviteTable inviteTable : inviteList){
             InviteResponseDto responseDto = new InviteResponseDto(inviteTable.getId(),inviteTable.getInvitingMember().getNickname(),inviteTable.getProject().getProjectName(),inviteTable.getModifiedAt(),inviteTable.getInvitingMember().getProfileImageURL());
