@@ -13,7 +13,6 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 public class Document {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "document_id")

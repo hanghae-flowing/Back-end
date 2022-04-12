@@ -26,7 +26,6 @@ import java.util.List;
 @RequiredArgsConstructor
 @Service
 public class NodeService {
-
     private final NodeRepository nodeRepository;
     private final NodeTableRepository nodeTableRepository;
     private final ProjectRepository projectRepository;
@@ -38,7 +37,6 @@ public class NodeService {
         NodeTable nodeTable = nodeTableRepository.findById(nodeCreateRequestDto.getNodeTableId()).orElseThrow(
                 ()->new IllegalArgumentException("func/ nodeCreate/ nodeTable Id")
         );
-
         Node node = Node.builder()
                 .height(nodeCreateRequestDto.getHeight())
                 .isChecked(nodeCreateRequestDto.getIsChecked())
@@ -49,9 +47,7 @@ public class NodeService {
                 .yval(nodeCreateRequestDto.getYval())
                 .nodeTable(nodeTable)
                 .build();
-
         nodeRepository.save(node);
-
         NodeResponseDto nodeResponseDto = NodeResponseDto.builder()
                 .height(node.getHeight())
                 .radius(node.getRadius())
@@ -66,7 +62,6 @@ public class NodeService {
         JSONObject obj2 = new JSONObject(nodeResponseDto);
         obj.put("msg","노드 생성");
         obj.put("nodeInfo",obj2);
-
         return obj.toString();
     }
 
@@ -76,7 +71,6 @@ public class NodeService {
         Node node = nodeRepository.findById(nodePinRequestDto.getNodeId()).orElseThrow(
                 ()-> new IllegalArgumentException("func/ pin/ node Id")
         );
-
         if(node.getIsChecked()==0){
             node.setIsChecked(1);
             obj.put("msg","check");
@@ -110,7 +104,6 @@ public class NodeService {
     }
 
     public String showAll(Long nodeTableId){
-
         List<Node> nodeList = nodeRepository.findAllByNodeTable_Id(nodeTableId);
         List<NodeResponseDto> nodeResponseDtoList = new ArrayList<>();
         for(Node node : nodeList){
@@ -154,10 +147,8 @@ public class NodeService {
         Project project = projectRepository.findById(projectId).orElseThrow(
                 ()-> new IllegalArgumentException("func/ nodeTableCreate/ project Id error")
         );
-
         NodeTable nodeTable = new NodeTable(project);
         nodeTableRepository.save(nodeTable);
-
         JSONObject obj = new JSONObject();
         obj.put("nodeTableId",nodeTable.getId());
         return nodeTable.getId();
@@ -176,7 +167,6 @@ public class NodeService {
         NodeTable nodeTable = nodeTableRepository.findById(nodePathRequestDto.getNodeTableId()).orElseThrow(
                 () -> new IllegalArgumentException("func/ nodeConnect/ nodeTableId")
         );
-
         NodePath nodePath = new NodePath(
                 nodePathRequestDto.getParentNode(),
                 nodePathRequestDto.getChildNode(),
@@ -186,7 +176,6 @@ public class NodeService {
         JSONObject obj = new JSONObject();
         obj.put("parentNode", nodePathRequestDto.getParentNode());
         obj.put("childNode", nodePathRequestDto.getChildNode());
-
         return obj.toString();
     }
 
@@ -194,7 +183,6 @@ public class NodeService {
     public String NodePathFindAll(Long nodeTableId) {
         List<NodePath> nodePathList = nodePathRepository.findAllByNodeTable_Id(nodeTableId);
         List<NodePathResponseDto> nodePathResponseDtoList = new ArrayList<>();
-
         for (NodePath nodePath : nodePathList) {
             NodePathResponseDto nodePathResponseDto = new NodePathResponseDto(
                     nodePath.getParentNode(),

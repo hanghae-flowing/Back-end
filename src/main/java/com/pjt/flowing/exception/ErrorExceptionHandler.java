@@ -9,7 +9,6 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @Slf4j
 @RestControllerAdvice
 public class ErrorExceptionHandler extends ResponseEntityExceptionHandler {
-
     @ExceptionHandler(BadRequestException.class)
     public ResponseEntity<ErrorResponse> CustomException(BadRequestException e) {
         log.error("[error] - BadRequestException : " + e.getErrorCode());

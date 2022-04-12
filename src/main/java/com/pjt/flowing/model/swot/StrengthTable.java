@@ -14,7 +14,6 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Entity
 public class StrengthTable {
-
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="strength_id")
     private Long id;
@@ -26,7 +25,6 @@ public class StrengthTable {
     @JoinColumn(name="swot_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private SWOT swot;
-
 
     public StrengthTable(String text, SWOT swot) {
         this.text = text;

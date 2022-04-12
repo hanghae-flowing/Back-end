@@ -15,9 +15,7 @@ public class FolderTableResponseDto {
     private LocalDateTime modifiedAt;
     private boolean trash;
     private boolean bookmark;
-
     public static FolderTableResponseDto myFolder(FolderTable folderTable){
-
         return FolderTableResponseDto.builder()
                 .userId(folderTable.getMember().getId())
                 .folderTableId(folderTable.getId())

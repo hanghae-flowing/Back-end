@@ -8,7 +8,6 @@ public class ProjectMemberResponseDto {
     private String nickName;
     private String profileImageUrl;
 
-
     public ProjectMemberResponseDto(Long userId, String nickName, String profileImageUrl) {
         this.userId = userId;
         this.nickName = nickName;

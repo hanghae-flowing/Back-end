@@ -56,7 +56,6 @@ public class DocumentService {
                     .placeHolder(templates.getPlaceHolder())
                     .build();
             documentLineRepository.save(documentLine);
-
             DocumentLineResponseDto documentLineResponseDto = DocumentLineResponseDto.builder()
                     .color(documentLine.getColor())
                     .fontSize(documentLine.getFontSize())
@@ -73,16 +72,13 @@ public class DocumentService {
         JSONArray array = new JSONArray(documentLineResponseDtoList);
         obj.append("templatesInfo",array);
         return documentLineResponseDtoList;
-
     }
-
 
     @Transactional  //기획서 라인 생성 첫 요청시
     public String lineCreate(DocumentLineRequestDto dto){
         Document document = documentRepository.findById(dto.getDocumentId()).orElseThrow(
                 ()-> new IllegalArgumentException("func/ lineCreate/ document Id error")
         );
-
         DocumentLine documentLine = DocumentLine.builder()
                 .document(document)
                 .color(dto.getColor())
@@ -93,7 +89,6 @@ public class DocumentService {
                 .maxLength(dto.getMaxLength())
                 .placeHolder("not null")
                 .build();
-
         documentLineRepository.save(documentLine);
         JSONObject obj = new JSONObject();
         obj.put("lineId",documentLine.getId());
@@ -154,7 +149,6 @@ public class DocumentService {
         for(Document document: documentList){
             DocumentIdResponseDto documentIdResponseDto = new DocumentIdResponseDto(document.getId());
             documentIdResponseDtoList.add(documentIdResponseDto);
-
         }
         obj.put("msg","기획서 리스트 불러오기");
         obj.put("documentIdList",documentIdResponseDtoList);

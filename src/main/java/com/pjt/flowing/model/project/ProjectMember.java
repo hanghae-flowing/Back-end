@@ -12,7 +12,6 @@ import javax.persistence.*;
 @Entity
 @Setter
 public class ProjectMember {
-
     @Id @GeneratedValue
     private Long id;
 
@@ -28,5 +27,4 @@ public class ProjectMember {
         this.project = project;
         this.member = member;
     }
-
 }

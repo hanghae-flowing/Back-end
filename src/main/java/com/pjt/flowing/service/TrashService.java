@@ -27,7 +27,6 @@ public class TrashService {
     public String trashProject(AcceptRequestDto requestDto) {
         boolean projectCheck = projectRepository.existsByMember_IdAndId(requestDto.getUserId(), requestDto.getProjectId());
         boolean projectMemberCheck = projectMemberRepository.existsByMember_IdAndProject_Id(requestDto.getUserId(), requestDto.getProjectId());
-
         JSONObject obj = new JSONObject();
         if (projectCheck && projectMemberCheck) {
             Project project = projectRepository.findByMember_IdAndId(requestDto.getUserId(), requestDto.getProjectId());
@@ -49,14 +48,12 @@ public class TrashService {
 
     @Transactional
     public List<ProjectResponseDto> showTrash(Long userId) {
-
         List<ProjectMember> myTrashProjects = projectMemberRepository.findAllByMember_Id(userId); // 자기가 포함된 프로젝트 리스트
         List<ProjectResponseDto> trashDto = myTrashProjects.stream()
                 .filter(x -> x.getProject().isTrash())
                 .map(ProjectResponseDto::includedProject)
                 .sorted(Comparator.comparing(ProjectResponseDto::getModifiedAt).reversed())
                 .collect(Collectors.toList());
-
         return trashDto;
     }
 

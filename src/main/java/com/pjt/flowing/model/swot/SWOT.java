@@ -16,7 +16,6 @@ import java.util.List;
 @Getter
 @Entity
 public class SWOT {
-
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="swot_id")
     private Long id;
@@ -37,7 +36,6 @@ public class SWOT {
 
     @OneToMany(mappedBy = "swot",fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
     private List<ThreatTable> threatTableList = new ArrayList<>();
-
 
     public SWOT(Project project) {
         this.project = project;

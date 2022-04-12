@@ -8,7 +8,6 @@ import java.time.LocalDateTime;
 @Getter
 @NoArgsConstructor
 public class InviteResponseDto {
-
     private Long invitingId;
     private String inviting;
     private String projectName;

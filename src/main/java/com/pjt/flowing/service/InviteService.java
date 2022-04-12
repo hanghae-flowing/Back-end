@@ -35,15 +35,12 @@ public class InviteService {
         Member invitingMember = memberRepository.findById(inviteRequestDto.getUserId()).orElseThrow(
                 ()->new IllegalArgumentException("func/ inviteMember/ error inviting userId")
         );
-
         Member invitedMember = memberRepository.findByEmail(inviteRequestDto.getEmail()).orElseThrow(
                 ()->new IllegalArgumentException("func/ inviteMember/ error invited user email")
         );
-
         Project project = projectRepository.findById(inviteRequestDto.getProjectId()).orElseThrow(
                 ()->new IllegalArgumentException("func/ inviteMember/ error projectid")
         );
-
         InviteTable inviteTable = new InviteTable(project,invitingMember,invitedMember);
         if(projectMemberRepository.existsByMember_EmailAndProject_Id(inviteRequestDto.getEmail(),inviteRequestDto.getProjectId())){
             obj.put("msg","이미 초대 있어");
@@ -64,7 +61,6 @@ public class InviteService {
         }//inviteTableid,초대한사람,초대 받은 프로젝트 보내주기
         JSONArray jsonArray = new JSONArray(responseDtoList);
         return jsonArray.toString();
-
     }
 
     //초대수락
@@ -73,12 +69,9 @@ public class InviteService {
         InviteTable inviteTable = inviteRepository.findById(invitingId).orElseThrow(
                 ()-> new IllegalArgumentException("func/ accept / error inviting id")
         );
-
         ProjectMember projectMember= new ProjectMember(inviteTable.getProject(),inviteTable.getInvitedMember());
         projectMemberRepository.save(projectMember);
-
         inviteRepository.delete(inviteTable);
-
         obj.put("msg","초대 수락");
         return obj.toString();
     }
@@ -93,5 +86,4 @@ public class InviteService {
         obj.put("msg","초대 거절");
         return obj.toString();
     }
-
 }

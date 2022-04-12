@@ -9,9 +9,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class NodePathRequestDto {
-
     private Long nodeTableId;
     private Long parentNode;
     private Long childNode;
-
 }

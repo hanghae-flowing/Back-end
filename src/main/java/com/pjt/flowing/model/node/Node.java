@@ -14,7 +14,6 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Entity
 public class Node {
-
     //x좌표, y좌표, width, height, text, radius, nodetableId 맵핑
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -58,7 +57,6 @@ public class Node {
         this.radius=radius;
         this.isChecked=isChecked;
         this.nodeTable=nodeTable;
-
     }
 
     public void update(NodeEditRequestDto dto){
@@ -69,5 +67,4 @@ public class Node {
         this.height=dto.getHeight();
         this.text=dto.getText();
     }
-
 }

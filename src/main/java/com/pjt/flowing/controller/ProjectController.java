@@ -22,7 +22,6 @@ public class ProjectController {
 
     @PostMapping("/project/detail") //  프로젝트 조회하기 휴지통제외하고
     public List<ProjectTestResponseDto> getProject(@RequestBody AuthorizationDto requestDto){
-
         return projectService.getAll2(requestDto.getUserId());
     }
 
