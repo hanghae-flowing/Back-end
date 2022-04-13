@@ -14,5 +14,4 @@ public class DocumentLineRequestDto {
     private String color;
     private int indexNum;
     private int maxLength;
-
 }

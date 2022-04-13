@@ -14,7 +14,6 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Entity
 public class OpportunityTable {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="opportunitiy_id")

@@ -20,7 +20,6 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 public class Project extends Timestamped {
-
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="project_id")
     private Long id;

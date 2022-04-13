@@ -14,7 +14,6 @@ import java.util.List;
 @Getter
 @Entity
 public class NodeTable{
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="nodeTable_id")
@@ -30,7 +29,6 @@ public class NodeTable{
 
     @OneToMany(mappedBy = "nodeTable",fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
     private List<NodePath> nodePathList = new ArrayList<>();
-
 
     public NodeTable(Project project) {
         this.project = project;

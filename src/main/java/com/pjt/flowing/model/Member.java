@@ -14,7 +14,6 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 public class Member extends Timestamped {
-
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Id
     @Column(name="user_id")

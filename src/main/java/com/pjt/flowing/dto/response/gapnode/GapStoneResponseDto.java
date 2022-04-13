@@ -6,7 +6,6 @@ import lombok.NoArgsConstructor;
 
 @Getter
 public class GapStoneResponseDto {
-
     private int xval;
     private String text;
     private Long gapNodeId;

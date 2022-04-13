@@ -20,13 +20,11 @@ public class ProjectResponseDto {
     private int thumbnailNum;
     private boolean trash;
 
-
     public static ProjectResponseDto from(Project project){
         List<String> nicknames = new ArrayList<>();
         project.getProjectMemberList().stream()
                 .map(c -> c.getMember().getNickname())
                 .forEach(s->nicknames.add(s));
-
         return ProjectResponseDto.builder()
                 .projectId(project.getId())
                 .projectName(project.getProjectName())
@@ -41,7 +39,6 @@ public class ProjectResponseDto {
         bookmark.getProject().getProjectMemberList().stream()
                 .map(c -> c.getMember().getNickname())
                 .forEach(s->nicknames.add(s));
-        
         return ProjectResponseDto.builder()
                 .projectId(bookmark.getProject().getId())
                 .projectName(bookmark.getProject().getProjectName())
@@ -56,7 +53,6 @@ public class ProjectResponseDto {
         projectMember.getProject().getProjectMemberList().stream()
                 .map(c -> c.getMember().getNickname())
                 .forEach(s->nicknames.add(s));
-
             return ProjectResponseDto.builder()
                     .projectId(projectMember.getProject().getId())
                     .projectName(projectMember.getProject().getProjectName())
@@ -66,6 +62,4 @@ public class ProjectResponseDto {
                     .trash(projectMember.getProject().isTrash())
                     .build();
     }
-
-
 }

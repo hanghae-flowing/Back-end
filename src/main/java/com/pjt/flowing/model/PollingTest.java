@@ -31,5 +31,4 @@ public class PollingTest {
     public void update(PollingEditDto Dto){
         this.text=Dto.getText();
     }
-
 }

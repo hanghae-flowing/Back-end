@@ -18,21 +18,16 @@ import org.springframework.web.client.RestTemplate;
 @Service
 public class Authorization {
     public int getKakaoId(@RequestBody AuthorizationDto autorizationDto) throws JsonProcessingException {
-
         HttpHeaders headers = new HttpHeaders();
         headers.add("Authorization", "Bearer " + autorizationDto.getAccessToken());
         headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
-
         HttpEntity<MultiValueMap<String, String>> kakaoRequest = new HttpEntity<>(headers);
-
         RestTemplate rt = new RestTemplate();
         ResponseEntity<String> response = rt.exchange("https://kapi.kakao.com/v2/user/me", HttpMethod.POST, kakaoRequest, String.class);
         String responseBody = response.getBody();
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode jsonNode = objectMapper.readTree(responseBody);
-
         Long kakaoId = jsonNode.get("id").asLong();
-
         int flag;
         if(kakaoId.equals(autorizationDto.getKakaoId()))
         {       //인가 허가시 flag =1, 정보 틀릴시 flag=0
@@ -43,5 +38,4 @@ public class Authorization {
         }
         return flag;
     }
-
 }

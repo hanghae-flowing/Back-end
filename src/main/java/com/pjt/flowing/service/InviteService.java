@@ -23,7 +23,6 @@ import java.util.List;
 @RequiredArgsConstructor
 @Service
 public class InviteService {
-
     private final InviteRepository inviteRepository;
     private final MemberRepository memberRepository;
     private final ProjectMemberRepository projectMemberRepository;
@@ -33,20 +32,17 @@ public class InviteService {
     public String inviteMember(InviteRequestDto inviteRequestDto){
         JSONObject obj = new JSONObject();
         Member invitingMember = memberRepository.findById(inviteRequestDto.getUserId()).orElseThrow(
-                ()->new IllegalArgumentException("error inviting userId")
+                ()->new IllegalArgumentException("func/ inviteMember/ error inviting userId")
         );
-
         Member invitedMember = memberRepository.findByEmail(inviteRequestDto.getEmail()).orElseThrow(
-                ()->new IllegalArgumentException("error invited user email")
+                ()->new IllegalArgumentException("func/ inviteMember/ error invited user email")
         );
-
         Project project = projectRepository.findById(inviteRequestDto.getProjectId()).orElseThrow(
-                ()->new IllegalArgumentException("error projectid")
+                ()->new IllegalArgumentException("func/ inviteMember/ error projectid")
         );
-
         InviteTable inviteTable = new InviteTable(project,invitingMember,invitedMember);
         if(projectMemberRepository.existsByMember_EmailAndProject_Id(inviteRequestDto.getEmail(),inviteRequestDto.getProjectId())){
-            obj.put("msg","이미초대되어있음");
+            obj.put("msg","이미 초대 있어");
         }
         else{
             inviteRepository.save(inviteTable);
@@ -56,29 +52,25 @@ public class InviteService {
     }
 
     public String getInviting(Long userId){
-        List<InviteTable> inviteList = inviteRepository.findAllByInvitedmember_Id(userId);//userid로 찾아오기
+        List<InviteTable> inviteList = inviteRepository.findAllByInvitedMember_Id(userId);//userid로 찾아오기
         List<InviteResponseDto> responseDtoList = new ArrayList<>();
         for(InviteTable inviteTable : inviteList){
-            InviteResponseDto responseDto = new InviteResponseDto(inviteTable.getId(),inviteTable.getInvitingmember().getNickname(),inviteTable.getProject().getProjectName(),inviteTable.getModifiedAt(),inviteTable.getInvitingmember().getProfileImageURL());
+            InviteResponseDto responseDto = new InviteResponseDto(inviteTable.getId(),inviteTable.getInvitingMember().getNickname(),inviteTable.getProject().getProjectName(),inviteTable.getModifiedAt(),inviteTable.getInvitingMember().getProfileImageURL());
             responseDtoList.add(responseDto);
         }//inviteTableid,초대한사람,초대 받은 프로젝트 보내주기
         JSONArray jsonArray = new JSONArray(responseDtoList);
         return jsonArray.toString();
-
     }
 
     //초대수락
     public String accept(Long invitingId){
         JSONObject obj = new JSONObject();
         InviteTable inviteTable = inviteRepository.findById(invitingId).orElseThrow(
-                ()-> new IllegalArgumentException("error inviting id")
+                ()-> new IllegalArgumentException("func/ accept / error inviting id")
         );
-
-        ProjectMember projectMember= new ProjectMember(inviteTable.getProject(),inviteTable.getInvitedmember());
+        ProjectMember projectMember= new ProjectMember(inviteTable.getProject(),inviteTable.getInvitedMember());
         projectMemberRepository.save(projectMember);
-
         inviteRepository.delete(inviteTable);
-
         obj.put("msg","초대 수락");
         return obj.toString();
     }
@@ -87,11 +79,10 @@ public class InviteService {
     public String refuse(Long invitingId){
         JSONObject obj = new JSONObject();
         InviteTable inviteTable = inviteRepository.findById(invitingId).orElseThrow(
-                ()-> new IllegalArgumentException("error inviting id")
+                ()-> new IllegalArgumentException("func/ refuse / error inviting id")
         );
         inviteRepository.delete(inviteTable);
         obj.put("msg","초대 거절");
         return obj.toString();
     }
-
 }

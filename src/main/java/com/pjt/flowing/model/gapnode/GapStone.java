@@ -14,7 +14,6 @@ import javax.persistence.*;
 @Getter
 @Entity
 public class GapStone {
-
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="gapStone_id")
     private Long id;

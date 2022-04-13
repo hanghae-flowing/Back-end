@@ -11,7 +11,6 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Entity
 public class Bookmark extends Timestamped {
-
     @Id
     @GeneratedValue
     private Long id;

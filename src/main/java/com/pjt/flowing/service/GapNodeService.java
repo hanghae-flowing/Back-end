@@ -25,7 +25,6 @@ import java.util.List;
 @RequiredArgsConstructor
 @Service
 public class GapNodeService {
-
     private final GapTableRepository gapTableRepository;
     private final GapNodeRepository gapNodeRepository;
     private final ProjectRepository projectRepository;
@@ -35,18 +34,15 @@ public class GapNodeService {
     public String gapNodeCreate(GapNodeCreateRequestDto gapNodeCreateRequestDto){
         JSONObject obj = new JSONObject();
         GapTable gapTable = gapTableRepository.findById(gapNodeCreateRequestDto.getGapTableId()).orElseThrow(
-                ()->new IllegalArgumentException("gapTable Id error")
+                ()->new IllegalArgumentException("func/ gapNodeCreate/ gapTable Id error")
         );
-
         GapNode gapNode = GapNode.builder()
                 .subject(gapNodeCreateRequestDto.getSubject())
                 .text(gapNodeCreateRequestDto.getText())
                 .targetText(gapNodeCreateRequestDto.getTargetText())
                 .gapTable(gapTable)
                 .build();
-
         gapNodeRepository.save(gapNode);
-
         GapNodeResponseDto gapNodeResponseDto = GapNodeResponseDto.builder()
                 .subject(gapNode.getSubject())
                 .text(gapNode.getText())
@@ -54,30 +50,26 @@ public class GapNodeService {
                 .gapNodeId(gapNode.getId())
                 .gapTableId(gapTable.getId())
                 .build();
-
         JSONObject obj2 = new JSONObject(gapNodeResponseDto);
         obj.put("msg","갭노드 생성");
         obj.put("info",obj2);
-
         return obj.toString();
     }
     
     @Transactional
     public Long gapTableCreate(Long projectId){
         Project project = projectRepository.findById(projectId).orElseThrow(
-                ()-> new IllegalArgumentException("project Id error")
+                ()-> new IllegalArgumentException("func/ gapTableCreate/ project Id error")
         );
-
         GapTable gapTable = new GapTable(project);
         gapTableRepository.save(gapTable);
         return gapTable.getId();
-
     }
 
     @Transactional
     public String gapNodeEdit(Long id, GapNodeEditRequestDto gapNodeEditRequestDto){
         GapNode gapNode = gapNodeRepository.findById(id).orElseThrow(
-                ()->new IllegalArgumentException("edit error")
+                ()->new IllegalArgumentException("func/ gapNodeEdit/ edit error")
         );
         gapNode.update(gapNodeEditRequestDto);
         JSONObject obj = new JSONObject();
@@ -121,10 +113,9 @@ public class GapNodeService {
     @Transactional
     public String gapStoneCreate(GapStoneRequestDto requestDto) {
         GapNode gapNode = gapNodeRepository.findById(requestDto.getGapNodeId()).orElseThrow(
-                () -> new IllegalArgumentException("not exist gapNodeId")
+                () -> new IllegalArgumentException("func/ gapStoneCreate/ not exist gapNodeId")
         );
         GapStone gapStone = new GapStone(requestDto.getXval(), requestDto.getText(), gapNode);
-
         gapStoneRepository.save(gapStone);
         GapStoneResponseDto gapStoneResponseDto = GapStoneResponseDto.builder()
                 .xval(gapStone.getXval())
@@ -134,10 +125,8 @@ public class GapNodeService {
                 .build();
         JSONObject obj2 = new JSONObject(gapStoneResponseDto);
         JSONObject obj = new JSONObject();
-
         obj.put("GapStoneResponseDto", obj2);
         obj.put("msg", "갭 스톤 생성");
-
         return obj.toString();
     }
 
@@ -161,7 +150,7 @@ public class GapNodeService {
     @Transactional
     public String gapStoneEdit(Long gapStoneId, GapStoneRequestDto requestDto) {
         GapStone gapStone = gapStoneRepository.findById(gapStoneId).orElseThrow(
-                () -> new IllegalArgumentException("not exist gapStoneId")
+                () -> new IllegalArgumentException("func/ gapStoneEdit/ not exist gapStoneId")
         );
         gapStone.update(requestDto);
         JSONObject obj = new JSONObject();

@@ -40,11 +40,9 @@ public class FolderService {
     // 폴더 생성
     @Transactional
     public String createFolder(FolderCreateRequestDto requestDto) {
-
         Member member = memberRepository.findById(requestDto.getUserId()).orElseThrow(() -> new IllegalArgumentException("멤버오류"));
         FolderTable folderTable = new FolderTable(requestDto.getFolderName(), member);
         folderTableRepository.save(folderTable);
-
         JSONObject obj = new JSONObject();
         obj.put("msg", "폴더 생성 완료");
         return obj.toString();
@@ -55,23 +53,21 @@ public class FolderService {
     public String addProjectFolder(FolderAddProjectRequestDto requestDto) {
         JSONObject obj = new JSONObject();
         FolderTable folderTable = folderTableRepository.findById(requestDto.getFolderTableId()).orElseThrow(
-                () -> new IllegalArgumentException("폴더테이블오류")
+                () -> new IllegalArgumentException("func/ addProjectFolder/ folderTable Id")
         );
         if (projectRepository.existsById(requestDto.getProjectId())) {   //프로젝트가 존재한다면
-            if (!folderRepository.existsByFolderTable_idAndProjectId(folderTable.getId(), requestDto.getProjectId())) { // 폴더에 프로젝트가 이미 존재하지않는다면
-
+            if (!folderRepository.existsByFolderTable_idAndProjectId(folderTable.getId(), requestDto.getProjectId())) {
                 Folder folder = new Folder(folderTable, requestDto.getProjectId());
-
                 folderRepository.save(folder);
                 obj.put("msg", "폴더에 프로젝트 추가 완료");
-
-            } else {
+            }
+            else {
                 obj.put("msg", "이미 폴더에 프로젝트가 있음");
             }
-        } else {
+        }
+        else {
             obj.put("msg", "프로젝트아이디가 없음");
         }
-
         return obj.toString();
     }
 
@@ -101,7 +97,7 @@ public class FolderService {
     @Transactional
     public String trashFolder(FolderRequestDto requestDto) {
         FolderTable folderTable = folderTableRepository.findById(requestDto.getFolderTableId()).orElseThrow(
-                () -> new IllegalArgumentException("폴더테이블")
+                () -> new IllegalArgumentException("func/ trashFolder/ folderTable Id")
         );
         folderTable.setTrash(true);
         JSONObject obj = new JSONObject();
@@ -114,7 +110,7 @@ public class FolderService {
     public String restoreFolder(FolderTableIdRequestDto requestDto) {
         for (Long folderTableId : requestDto.getFolderTableIdList()) {
             FolderTable folderTable = folderTableRepository.findById(folderTableId).orElseThrow(
-                    () -> new IllegalArgumentException("폴더테이블"));
+                    () -> new IllegalArgumentException("func/ restoreFolder/ folderTable Id"));
             folderTable.setTrash(false);
         }
         JSONObject obj = new JSONObject();
@@ -122,7 +118,6 @@ public class FolderService {
         return obj.toString();
     }
 
-//    폴더 삭제하기.
     @Transactional
     public String deleteFolder(FolderTableIdRequestDto requestDto) {
         for (Long folderTableId : requestDto.getFolderTableIdList()) {
@@ -151,18 +146,17 @@ public class FolderService {
         return obj.toString();
     }
 
-
     // 폴더에 들어있는 프로젝트 조회(북마크정보같이주기..)
     public List<ProjectTestResponseDto> getProjectAll(Long folderTableId) {
         FolderTable folderTable = folderTableRepository.findById(folderTableId).orElseThrow(
-                ()->new IllegalArgumentException("폴더테이블")
+                ()->new IllegalArgumentException("func/ getProjectAll/ folderTable Id")
         );
         Long userId = folderTable.getMember().getId();//폴더의 주인
         List<Folder> projectList = folderRepository.findAllByFolderTable_Id(folderTableId);
         List<Project> projects = new ArrayList<>();
         for (Folder folder : projectList) {
             Project project = projectRepository.findById(folder.getProjectId()).orElseThrow(
-                    () -> new IllegalArgumentException("프로젝트폴더")
+                    () -> new IllegalArgumentException("func/ getProjectAll/ project Id")
             );
             projects.add(project);
         }
@@ -184,8 +178,6 @@ public class FolderService {
                     bookmarkCheck
             );
             dto.add(responseDto);
-
-
         }
         return dto.stream()
                 .filter(x-> !x.isTrash())
@@ -197,13 +189,14 @@ public class FolderService {
     @Transactional
     public String bookmarkFolder(FolderRequestDto requestDto) {
         FolderTable folderTable = folderTableRepository.findById(requestDto.getFolderTableId()).orElseThrow(
-                () -> new IllegalArgumentException("폴더테이블")
+                () -> new IllegalArgumentException("func/ bookmarkFolder/ folderTable Id")
         );
         JSONObject obj = new JSONObject();
         if (folderTable.isBookmark()) {//이미 북마크 되어있음
             folderTable.setBookmark(false);
             obj.put("msg", "폴더 북마크 해제");
-        } else {
+        }
+        else {
             folderTable.setBookmark(true);
             obj.put("msg", "폴더 북마크 적용");
         }
@@ -222,6 +215,4 @@ public class FolderService {
                 .collect(Collectors.toList());
         return folderDto;
     }
-
-
 }

@@ -39,7 +39,6 @@ import com.pjt.flowing.repository.project.ProjectRepository;
 import com.pjt.flowing.repository.swot.SWOTRepository;
 import com.pjt.flowing.security.Authorization;
 import lombok.RequiredArgsConstructor;
-import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -75,7 +74,6 @@ public class ProjectService {
     }
 
     public List<ProjectResponseDto> getAll(Long userId) {//휴지통 제외하고 보내주기
-
         //여기서 폴더에있는건 빼고 보내줘야함...
         List<Long> folderProjectList=new ArrayList<>();
         List<FolderTable> folderTableList = folderTableRepository.findAllByMember_Id(userId);
@@ -85,9 +83,6 @@ public class ProjectService {
                 folderProjectList.add(folder.getProjectId());
             }
         }
-
-
-
        List<ProjectMember> myIncludedProjects = projectMemberRepository.findAllByMember_Id(userId); // 자기가 포함된 프로젝트 리스트
        List<ProjectResponseDto> includedDto = myIncludedProjects.stream()
                .filter(x -> !x.getProject().isTrash())
@@ -95,12 +90,10 @@ public class ProjectService {
                .map(ProjectResponseDto::includedProject)
                .sorted(Comparator.comparing(ProjectResponseDto::getModifiedAt).reversed())
                .collect(Collectors.toList());
-
         return includedDto;
     }
     // getAll 테스트
     public List<ProjectTestResponseDto> getAll2(Long userId) {
-
         //여기서 폴더에있는건 빼고 보내줘야함...
         List<Long> folderProjectList=new ArrayList<>();
         List<FolderTable> folderTableList = folderTableRepository.findAllByMember_Id(userId);
@@ -110,10 +103,8 @@ public class ProjectService {
                 folderProjectList.add(folder.getProjectId());
             }
         }
-
         List<ProjectMember> myIncludedProjects = projectMemberRepository.findAllByMember_Id(userId);
         List<ProjectTestResponseDto> includeDto = new ArrayList<>();
-
         for (ProjectMember projectMember : myIncludedProjects) {
             List<String> nicknames = new ArrayList<>();
             projectMember.getProject().getProjectMemberList().stream()
@@ -142,12 +133,13 @@ public class ProjectService {
     public String deleteProject(Long projectId, AuthorizationDto dto) {
         JSONObject obj = new JSONObject();
         Project project = projectRepository.findById(projectId).orElseThrow(
-                () -> new IllegalArgumentException("no project Id error")
+                () -> new IllegalArgumentException("func/ deleteProject/ project Id")
         );
         if (dto.getUserId() == project.getMember().getId()) {
             projectRepository.deleteById(projectId);
             obj.put("msg", "삭제완료");
-        } else {
+        }
+        else {
             obj.put("msg", "프로젝트 장이 아닙니다");
         }
         return obj.toString();
@@ -160,7 +152,8 @@ public class ProjectService {
         if (Objects.equals(dto.getUserId(), project.get().getMember().getId())) {
             project.get().update(dto);
             obj.put("msg", "수정 완료");
-        } else {
+        }
+        else {
             obj.put("msg", "프로젝트 장이 아닙니다");
         }
         return obj.toString();
@@ -176,14 +169,12 @@ public class ProjectService {
         GapTable gapTable = gapTableRepository.findByProject_Id(projectId);
         NodeTable nodeTable = nodeTableRepository.findByProject_Id(projectId);
         SWOT swot = swotRepository.findByProject_Id(projectId);
-
         ProjectResponseDto dto = ProjectResponseDto.builder()
                 .projectId(project.getId())
                 .projectName(project.getProjectName())
                 .modifiedAt(project.getModifiedAt())
                 .thumbnailNum(project.getThumbNailNum())
                 .build();
-
         List<ProjectMember> projectMemberList = projectMemberRepository.findAllByProject_Id(projectId);
         List<ProjectMemberResponseDto> projectMemberResponseDtoList = new ArrayList<>();
         for (ProjectMember projectMember : projectMemberList) {
@@ -199,22 +190,18 @@ public class ProjectService {
         obj.put("nodeTable", nodeTable.getId());
         obj.put("swotId",swot.getId());
         obj.put("projectMemberInfoList",projectMemberResponseDtoList);
-
         return obj.toString();
     }
 
     public List<ProjectResponseDto> getAllBookmarked(Long userId) {
         List<Bookmark> bookmarked = bookmarkRepository.findAllByMember_IdOrderByModifiedAtDesc(userId); //userId가 누른 북마크
-
         return bookmarked.stream()
                 .map(ProjectResponseDto::from2)
                 .collect(Collectors.toList());
     }
 
     public List<ProjectResponseDto> getAllCreate(Long userId) {
-        //List<Project> myCreateProjects = projectRepository.findAllByMember_IdOrderByModifiedAtDesc(userId); // 자기가 만든 프로젝트 리스트
         List<Project> myCreateProjects = projectRepository.findAllByMember_IdAndTrashOrderByModifiedAtDesc(userId, false); // 자기가 만든 프로젝트 리스트
-
         return myCreateProjects.stream()
                 .map(ProjectResponseDto::from)
                 .collect(Collectors.toList());
@@ -224,14 +211,12 @@ public class ProjectService {
     public String accept(AcceptRequestDto acceptRequestDto) {
         Long projectId = acceptRequestDto.getProjectId();
         Long userId = acceptRequestDto.getUserId();
-
         Project project = projectRepository.findById(projectId).orElseThrow(
                 () -> new IllegalArgumentException("accept (project) error")
         );
         Member member = memberRepository.findById(userId).orElseThrow(
                 () -> new IllegalArgumentException("accept (member) error")
         );
-
         ProjectMember projectMember = new ProjectMember(project, member);
         projectMemberRepository.save(projectMember);
         JSONObject obj = new JSONObject();
@@ -244,7 +229,6 @@ public class ProjectService {
         List<NodeTable> nodeTableList = nodeTableRepository.findAllByProject_Id(projectid);
         List<GapTable> gapTableList = gapTableRepository.findAllByProject_Id(projectid);
         List<SWOT> swotList = swotRepository.findAllByProject_Id(projectid);
-
         List<DocumentIdResponseDto> documentIdResponseDtoList = new ArrayList<>();
         for (Document document : documentList) {
             DocumentIdResponseDto documentIdResponseDto = new DocumentIdResponseDto(document.getId());
@@ -265,14 +249,12 @@ public class ProjectService {
             SwotIdResponseDto swotIdResponseDto = new SwotIdResponseDto(swot.getId());
             swotIdResponseDtoList.add(swotIdResponseDto);
         }
-
         JSONObject obj = new JSONObject();
         obj.put("msg", "템플릿 리스트 불러오기");
         obj.put("documentIdList", documentIdResponseDtoList);
         obj.put("nodeTableIdList", nodeTableIdResponseDtoList);
         obj.put("gapTableIdList", gapTableIdResponseDtoList);
         obj.put("swotIdList", swotIdResponseDtoList);
-
         return obj.toString();
     }
 
@@ -286,7 +268,7 @@ public class ProjectService {
             return obj.toString();
         }
         Member member = memberRepository.findById(projectCreateRequestDto.getUserId()).orElseThrow(
-                () -> new IllegalArgumentException("no Id")
+                () -> new IllegalArgumentException("func/ createProject/ member Id")
         );
         Project project = new Project(
                 projectCreateRequestDto.getProjectName(),
@@ -295,21 +277,16 @@ public class ProjectService {
                 projectCreateRequestDto.getThumbNailNum()
         );
         projectRepository.save(project);
-
         ProjectMember projectMember = new ProjectMember(project, member);
         projectMemberRepository.save(projectMember);
-
         nodeService.nodeTableCreate(project.getId());
         gapNodeService.gapTableCreate(project.getId());
         documentService.documentCreate(project.getId());
         swotService.swotCreate(project.getId());
-
-
         Document document = documentRepository.findByProject_Id(project.getId());
         GapTable gapTable = gapTableRepository.findByProject_Id(project.getId());
         NodeTable nodeTable = nodeTableRepository.findByProject_Id(project.getId());
         SWOT swot = swotRepository.findByProject_Id(project.getId());
-
         ProjectResponseDto dto = ProjectResponseDto.builder()
                 .projectId(project.getId())
                 .projectName(project.getProjectName())
@@ -331,17 +308,18 @@ public class ProjectService {
     public String checkBookmark(Long projectId, AuthorizationDto authorizationDto) {
         boolean check = bookmarkRepository.existsByMember_IdAndProject_Id(authorizationDto.getUserId(), projectId);
         Project project = projectRepository.findById(projectId).orElseThrow(
-                () -> new IllegalArgumentException("no Project")
+                () -> new IllegalArgumentException("func/ checkBookmark/ Project Id")
         );
         Member member = memberRepository.findById(authorizationDto.getUserId()).orElseThrow(
-                () -> new IllegalArgumentException("no Id")
+                () -> new IllegalArgumentException("func/ checkBookmark/ member Id")
         );
         JSONObject obj = new JSONObject();
         if (!check) {
             Bookmark bookmark = new Bookmark(project, member);
             bookmarkRepository.save(bookmark);
             obj.put("msg", "check");
-        } else {
+        }
+        else {
             bookmarkRepository.deleteByMember_IdAndProject_Id(authorizationDto.getUserId(), projectId);
             obj.put("msg", "cancel");
         }
@@ -350,7 +328,6 @@ public class ProjectService {
 
     //프로젝트 검색
     public List<ProjectResponseDto> searchAll(Long userId,String text) {//휴지통 제외하고 보내주기
-
         List<ProjectMember> myIncludedProjects = projectMemberRepository.findAllByMember_Id(userId); // 자기가 포함된 프로젝트 리스트
         List<ProjectResponseDto> includedSearchDto = myIncludedProjects.stream()
                 .filter(x -> !x.getProject().isTrash())                         // 쓰레기통에 안간거 걸러주고
@@ -358,8 +335,6 @@ public class ProjectService {
                 .map(ProjectResponseDto::includedProject)
                 .sorted(Comparator.comparing(ProjectResponseDto::getModifiedAt).reversed()) //modifiedAt으로 최신순으로 만들어주고
                 .collect(Collectors.toList());
-
-
         return includedSearchDto;
     }
 
@@ -383,7 +358,7 @@ public class ProjectService {
             throw new BadRequestException(ErrorCode.USER_EMAIL_NOT_FOUND);
         }
         Member member = memberRepository.findByEmail(email).orElseThrow(
-                () -> new IllegalArgumentException("not exist email")
+                () -> new IllegalArgumentException("func/ checkingNameByEmail/ not exist email")
         );
         CheckingNameByEmailResponseDto responseDto = new CheckingNameByEmailResponseDto(
                 member.getNickname(),

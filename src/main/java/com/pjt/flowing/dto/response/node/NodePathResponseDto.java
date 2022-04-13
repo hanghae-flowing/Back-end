@@ -6,7 +6,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Getter
 public class NodePathResponseDto {
-
     private Long parentNode;
     private Long childNode;
 

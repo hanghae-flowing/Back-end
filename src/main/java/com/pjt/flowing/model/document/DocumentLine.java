@@ -13,7 +13,6 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Entity
 public class DocumentLine {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="line_id")
@@ -67,5 +66,4 @@ public class DocumentLine {
         this.indexNum=dto.getIndexNum();
         this.maxLength=dto.getMaxLength();
     }
-
 }
