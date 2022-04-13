@@ -6,10 +6,22 @@
 
 항해5기 D반 5조 실전프로젝트 기린이
 
+<image src="https://img.shields.io/website?down_message=DOWN&up_message=UP&label=server&url=http://52.79.220.93:8888/health"/>  
+<image src="https://img.shields.io/website?down_message=DOWN&up_message=UP&label=testServer&url=http://13.209.41.157"/>
 
- <image src="https://img.shields.io/website?down_message=DOWN&up_message=UP&label=server&url=http://52.79.220.93:8888/health"/>  
- <image src="https://img.shields.io/website?down_message=DOWN&up_message=UP&label=testServer&url=http://13.209.41.157"/>
+# 📆프로젝트 기간
+MVP 기간 : 22.03.04 ~ 22.04.08
+
+유지보수 기간 : 22.04.18 ~ 22.05.29(예정)
+
+ 
 <br>
+
+## ⚙️기술스택
+
+<img src="https://img.shields.io/badge/MYSQL-4479A1?style=for-the-badge&logo=MYSQL&logoColor=white">  <img src="https://img.shields.io/badge/Spring-6DB33F?style=for-the-badge&logo=Spring&logoColor=white">  <img src="https://img.shields.io/badge/SpringBoot-6DB33F?style=for-the-badge&logo=SpringBoot&logoColor=white">  <img src="https://img.shields.io/badge/GitHubActions-2088FF?style=for-the-badge&logo=GitHubActions&logoColor=white">  <img src="https://img.shields.io/badge/JAVA-007396?style=for-the-badge&logo=java&logoColor=white">  <img src="https://img.shields.io/badge/Docker-4479A1?style=for-the-badge&logo=Docker&logoColor=white">  <img src="https://img.shields.io/badge/Nginx-6DB33F?style=for-the-badge&logo=Nginx&logoColor=white">  <img src="https://img.shields.io/badge/AWS-ff7f00?style=for-the-badge&logo=AWS&logoColor=white">  <img src="https://img.shields.io/badge/Oauth2.0-4479A1?style=for-the-badge&logo=Oauth2.0&logoColor=white">
+
+
 
 ## 🏄‍♂️팀원
 
@@ -30,7 +42,20 @@
     <td align="center"><b>🔨Backend</b></td>
     <td align="center"><b>🔧Backend</b></td>
   </tr>
+ <tr>
+    <td align="center"><a href="https://github.com/jeonbar2">Github-Link</a></td>
+    <td align="center"><a href="https://github.com/HyoJinKin">Github-Link</a></td>
+    <td align="center"><a href="https://github.com/John3210of">Github-Link</a></td>
+  </tr>
+ 
 </table>
+
+
+
+## 💬API
+https://mango-pull-bbe.notion.site/API-5e13bb2a26a7482a936eaeb56450b98f
+
+
 
 ### 🖥️ERD
 <img  width="1000" src = "https://user-images.githubusercontent.com/76610357/161932421-2db40f53-c58b-4db9-a20f-52e64752701c.jpg" />
@@ -92,3 +117,4 @@
 - 필요한 라벨이 있다면 공동 계정(hanghae-flowing)의 `Settings` -> `Repository Defaults` 에서 추가한다.
 
 <br>
+
